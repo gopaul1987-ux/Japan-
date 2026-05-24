@@ -15,6 +15,7 @@
             --text-color: #2b2d42;
             --tab-inactive: #eee;
             --border: #dee2e6;
+            --link-color: #0077b6;
         }
 
         /* Seamless Native Dark Mode Styling */
@@ -28,6 +29,7 @@
                 --text-color: #e0e0e0;
                 --tab-inactive: #2b2d42;
                 --border: #333333;
+                --link-color: #4ea8de;
             }
             body {
                 background-color: var(--bg);
@@ -185,6 +187,19 @@
             border: 2px solid white;
         }
 
+        /* Interactive Navigation Links */
+        .nav-link {
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .nav-link:hover {
+            text-decoration: underline;
+        }
+
         /* Fixed Mobile Budget Form Layout */
         .budget-summary {
             display: grid;
@@ -316,7 +331,7 @@
         }
         @media (max-width: 480px) {
             .budget-summary {
-                grid-template-columns: 1fr 1fr; /* Stays clean on very small screens */
+                grid-template-columns: 1fr 1fr;
             }
         }
     </style>
@@ -325,7 +340,7 @@
 
 <div class="container">
     <header>
-        <h1>Japan Adventure 2026 🇯🇵🇯🇵 </h1>
+        <h1>Japan Adventure 2026 👨‍❤️‍💋‍👨</h1>
         <p>15 Days | 14 Nights | London Heathrow ⇌ Tokyo Haneda</p>
     </header>
 
@@ -416,23 +431,39 @@
         <div id="tokyoTab" class="tab-content active">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li>Gyukatsu Motomura</li>
-                <li>Sushi no Midori</li>
-                <li>Chukasoba Ginza Hachigo</li>
+
+http://googleusercontent.com/map_location_reference/1
+                <li><a class="nav-link" href="https://maps.google.com/?q=Gyukatsu+Motomura+Shinjuku" target="_blank">🗺️ [Gyukatsu Motomura Shibuya Branch](http://googleusercontent.com/map_location_reference/0)</a></li>
+
+http://googleusercontent.com/map_location_reference/3
+                <li><a class="nav-link" href="https://maps.google.com/?q=Sushi+no+Midori+Shibuya" target="_blank">🗺️ [Sushi no Midori Shibuya](http://googleusercontent.com/map_location_reference/2)</a></li>
+
+http://googleusercontent.com/map_location_reference/5
+                <li><a class="nav-link" href="https://maps.google.com/?q=Ginza+Hachigou" target="_blank">🗺️ [Ginza Hachigou](http://googleusercontent.com/map_location_reference/4)</a></li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li>Fuunji (tsukemen)</li>
-                <li>Tonki (tonkatsu)</li>
-                <li>Cafe Aaliya (French toast)</li>
-                <li>Afuri (yuzu ramen)</li>
+
+http://googleusercontent.com/map_location_reference/7
+                <li><a class="nav-link" href="https://maps.google.com/?q=Fuunji+Shinjuku" target="_blank">🗺️ [Fūunji Shinjuku](http://googleusercontent.com/map_location_reference/6)</a></li>
+
+http://googleusercontent.com/map_location_reference/9
+                <li><a class="nav-link" href="https://maps.google.com/?q=Tonki+Meguro" target="_blank">🗺️ [Tonki](http://googleusercontent.com/map_location_reference/8)</a></li>
+
+http://googleusercontent.com/map_location_reference/11
+                <li><a class="nav-link" href="https://maps.google.com/?q=Cafe+Aaliya+Shinjuku" target="_blank">🗺️ [Cafe Aaliya](http://googleusercontent.com/map_location_reference/10)</a></li>
+
+http://googleusercontent.com/map_location_reference/13
+                <li><a class="nav-link" href="https://maps.google.com/?q=AFURI+Harajuku" target="_blank">🗺️ [AFURI Harajuku](http://googleusercontent.com/map_location_reference/12)</a></li>
             </ul>
         </div>
 
         <div id="osakaTab" class="tab-content">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li>Mizuno (okonomiyaki)</li>
+
+http://googleusercontent.com/map_location_reference/15
+                <li><a class="nav-link" href="https://maps.google.com/?q=Okonomiyaki+Mizuno+Osaka" target="_blank">🗺️ [Okonomiyaki Mizuno](http://googleusercontent.com/map_location_reference/14)</a></li>
                 <li>Yakiniku M Hozenji</li>
                 <li>Kushikatsu Daruma</li>
             </ul>
@@ -533,8 +564,10 @@
         <div class="date">1. 19 June - 21 June (2 Nights)</div>
         <div class="location">Tokyo: Tokyo-to <span class="tag">Arrival</span></div>
         <div class="stay-info">
-            <span class="section-title">Mitsui Garden Hotel Kyobashi - Tokyo Station:</span>
-            <p style="margin:5px 0; font-size:0.85rem;">Address:  Tokyo-to, Tokyo, Chuo-ku Kyobashi 1-3-6,  💰 £385</p>
+            <span class="section-title">
+                <a class="nav-link" href="https://maps.google.com/?q=Mitsui+Garden+Hotel+Kyobashi+Tokyo" target="_blank">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</a>
+            </span>
+            <p style="margin:5px 0; font-size:0.85rem;">Address: Tokyo-to, Tokyo, Chuo-ku Kyobashi 1-3-6, 💰 £385</p>
         </div>
         <span class="section-title">Must Do:</span>
         <ul>
@@ -547,7 +580,9 @@
         <div class="date">2. 21 June - 24 June (3 Nights)</div>
         <div class="location">Osaka Honmachi <span class="tag">Food Capital</span></div>
         <div class="stay-info">
-            <span class="section-title">The Lively Osaka Honmachi:</span>
+            <span class="section-title">
+                <a class="nav-link" href="https://maps.google.com/?q=The+Lively+Osaka+Honmachi" target="_blank">🏨 The Lively Osaka Honmachi</a>
+            </span>
             <p style="margin:5px 0; font-size:0.85rem;">541-0054 Osaka, Chuo-ku, Minami-Honmachi 1-5-11 • Near Sakaisuji-Hommachi Station • 💰£277</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -561,7 +596,9 @@
         <div class="date">3. 24 June - 27 June (3 Nights)</div>
         <div class="location">Kyoto Higashiiru <span class="tag">Culture</span></div>
         <div class="stay-info">
-            <span class="section-title">Mitsui Garden Hotel Kyoto Sanjo Premier</span>
+            <span class="section-title">
+                <a class="nav-link" href="https://maps.google.com/?q=Mitsui+Garden+Hotel+Kyoto+Sanjo+Premier" target="_blank">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</a>
+            </span>
             <p style="margin:5px 0; font-size:0.85rem;">45-1, Hishiya-cho, Higashiiru, Higashinotoin, Sanjo-dori, Nakagyo-ku,Kyoto, 604-8131. 💰£391</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -575,7 +612,9 @@
         <div class="date">4. 27 June - 29 June (2 Nights)</div>
         <div class="location">🏔 Hakone <span class="tag">Relax & Fuji</span></div>
         <div class="stay-info">
-            <span class="section-title">Stay: Nol Hakone Myojindai</span>
+            <span class="section-title">
+                <a class="nav-link" href="https://maps.google.com/?q=Nol+Hakone+Myojindai" target="_blank">🏨 Nol Hakone Myojindai</a>
+            </span>
             <p style="margin:5px 0; font-size:0.85rem;">1488-205 Miyagino, Hakone, Ashigarashimo District, Kanagawa 250-0401, Japan 💰£529.</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -589,8 +628,10 @@
         <div class="date">5. 29 June - 03 July (4 Nights)</div>
         <div class="location">Tokyo Shinjuku City<span class="tag">Mid-Luxury Finish</span></div>
         <div class="stay-info">
-            <span class="section-title">BELLUSTAR TOKYO, A Pan Pacific Hotel KABUKICHO TOWER, 45F, 1 Chome-29-1 Kabukicho, Shinjuku City, Tokyo 160-0021, Japan 💰£1,629:</span>
-            <p style="margin:5px 0; font-size:0.85rem;">Stylish choice with a terrace overlooking the Ginza district.</p>
+            <span class="section-title">
+                <a class="nav-link" href="https://maps.google.com/?q=BELLUSTAR+TOKYO+Pan+Pacific" target="_blank">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</a>
+            </span>
+            <p style="margin:5px 0; font-size:0.85rem;">KABUKICHO TOWER, 45F, 1 Chome-29-1 Kabukicho, Shinjuku City, Tokyo 160-0021, Japan 💰£1,629</p>
         </div>
         <span class="section-title">Must Do:</span>
         <ul>
@@ -718,13 +759,9 @@
         const perPerson = totalSpent / 2;
         const remaining = totalBudget - totalSpent;
         
-        // Render total spent layout value
         document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        
-        // Render per person split layout value
         document.getElementById('perPersonSpent').innerText = "£" + perPerson.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         
-        // Render remaining balance layout value
         const balanceDiv = document.getElementById('remainingBalance');
         balanceDiv.innerText = "£" + remaining.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         
