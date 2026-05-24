@@ -85,7 +85,7 @@
             padding: 15px;
             line-height: 1.5;
         }
-        .container { max-width: 700px; margin: 0 auto; box-sizing: border-box; width: 100%; }
+        .container { max-width: 700px; margin: 0 auto; }
         header {
             background: #d90429;
             color: white;
@@ -165,9 +165,6 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             border-left: 6px solid var(--primary);
-            box-sizing: border-box;
-            width: 100%;
-            overflow: hidden;
         }
         .date { font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 0.85rem; }
         .location { font-size: 1.4rem; font-weight: 800; margin: 5px 0; }
@@ -185,7 +182,7 @@
             border: 2px solid white;
         }
 
-        /* Responsive Budget UI Styling */
+        /* Budget UI Styling */
         .budget-summary {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -209,29 +206,25 @@
             margin-bottom: 15px;
         }
         .budget-input {
-            padding: 10px;
+            padding: 8px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 0.95rem;
-            width: 100%;
-            box-sizing: border-box;
+            font-size: 0.9rem;
         }
         .budget-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 10px 16px;
+            padding: 8px 12px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
-            font-size: 0.95rem;
         }
         .expense-table-container {
             max-height: 200px;
             overflow-y: auto;
             border-radius: 8px;
             border: 1px solid var(--border);
-            width: 100%;
         }
         table {
             width: 100%;
@@ -255,7 +248,6 @@
             color: #d90429;
             cursor: pointer;
             font-weight: bold;
-            padding: 4px 8px;
         }
 
         /* Tabs Layout CSS */
@@ -298,18 +290,7 @@
             font-size: 0.95rem;
         }
 
-        /* Mobile Adjustments */
-        @media (max-width: 600px) { 
-            .widget-row { grid-template-columns: 1fr; }
-            .budget-input-row {
-                grid-template-columns: 1fr;
-                gap: 10px;
-            }
-            .budget-btn {
-                width: 100%;
-                padding: 12px;
-            }
-        }
+        @media (max-width: 600px) { .widget-row { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -356,7 +337,7 @@
         <div class="budget-summary">
             <div class="budget-box">
                 <span class="widget-label">Total Budget (£)</span>
-                <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="text-align:center; font-weight:bold;" oninput="updateBudget()">
+                <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="width:70%; text-align:center; font-weight:bold;" oninput="updateBudget()">
             </div>
             <div class="budget-box">
                 <span class="widget-label">Remaining Balance</span>
@@ -584,7 +565,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // 1. Weather Benchmarks
+    // 1. Seasonal Historical Weather Benchmarks
     const travelWeather = {
         "Tokyo": "27°C • 🌧 High Humidity / Rainy Season Risk",
         "Osaka": "29°C • 🌦 Very Warm & Muggy",
@@ -648,13 +629,8 @@
         document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
     }
 
-    // 5. Smart Budget Storage Logic
-    let expenses = [];
-    try {
-        expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
-    } catch(e) {
-        expenses = [];
-    }
+    // 5. Smart Budget Storage Logic (Saves on Device)
+    let expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
     let totalBudget = localStorage.getItem('japan_budget') || 2000;
 
     document.getElementById('totalBudgetInput').value = totalBudget;
@@ -702,17 +678,17 @@
         balanceDiv.innerText = "£" + remaining.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         
         if (remaining < 0) {
-            balanceDiv.style.color = "#d90429"; 
+            balanceDiv.style.color = "#d90429"; // Turns red if over budget
         } else {
-            balanceDiv.style.color = "#06d6a0"; 
+            balanceDiv.style.color = "#06d6a0"; // Green if safe
         }
     }
 
     function renderExpenses() {
         const tbody = document.getElementById('expenseTableBody');
-        if(!tbody) return;
         tbody.innerHTML = "";
         
+        // Reverse so new expenses show right at the top
         [...expenses].reverse().forEach(exp => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -724,6 +700,7 @@
         });
     }
 
+    // Run trackers on load
     renderExpenses();
     calculateBudget();
 </script>
