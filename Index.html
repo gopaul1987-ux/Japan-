@@ -193,6 +193,12 @@
             margin-bottom: 15px;
             text-align: center;
         }
+        /* Make space for 3 boxes on mobile rows safely if needed */
+        @media (max-width: 480px) {
+            .budget-summary {
+                grid-template-columns: 1fr;
+            }
+        }
         .budget-box {
             background: var(--tab-inactive);
             padding: 10px;
@@ -346,14 +352,18 @@
         <div class="date">💰 Budget & Expenditure</div>
         <div class="location">Live Trip Tracker</div>
         
-        <div class="budget-summary">
+        <div class="budget-summary" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
             <div class="budget-box">
                 <span class="widget-label">Total Budget (£)</span>
-                <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="text-align:center; font-weight:bold;" oninput="updateBudget()">
+                <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="text-align:center; font-weight:bold; padding: 6px;" oninput="updateBudget()">
+            </div>
+            <div class="budget-box">
+                <span class="widget-label">Total Spent</span>
+                <div id="totalSpentBalance" class="budget-amount" style="color: #fb5607; padding-top: 5px;">£0.00</div>
             </div>
             <div class="budget-box">
                 <span class="widget-label">Remaining Balance</span>
-                <div id="remainingBalance" class="budget-amount" style="color: #06d6a0;">£2,000.00</div>
+                <div id="remainingBalance" class="budget-amount" style="color: #06d6a0; padding-top: 5px;">£2,000.00</div>
             </div>
         </div>
 
@@ -641,7 +651,7 @@
         document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
     }
 
-    // 5. Native Cache Storage Systems
+    // 5. Native Cache Storage Systems with Live Total Spend calculation
     let expenses = [];
     try {
         expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
@@ -691,6 +701,10 @@
         const totalSpent = expenses.reduce((sum, exp) => sum + exp.amount, 0);
         const remaining = totalBudget - totalSpent;
         
+        // Render total spent layout value
+        document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        
+        // Render remaining balance layout value
         const balanceDiv = document.getElementById('remainingBalance');
         balanceDiv.innerText = "£" + remaining.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         
