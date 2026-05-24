@@ -1,55 +1,259 @@
-<meta charset="UTF-8">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japan Itinerary 2026</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --primary: #d90429;
+            --secondary: #2b2d42;
+            --accent: #8d99ae;
+            --bg: #f1f3f5;
+            --card-bg: #ffffff;
+            --text-color: #2b2d42;
+            --tab-inactive: #eee;
+        }
+
+        /* Seamless Native Dark Mode Styling */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #ef233c;
+                --secondary: #edf2f4;
+                --accent: #8d99ae;
+                --bg: #121212;
+                --card-bg: #1e1e1e;
+                --text-color: #e0e0e0;
+                --tab-inactive: #2b2d42;
+            }
+            body {
+                background-color: var(--bg);
+                color: var(--text-color);
+            }
+            .card {
+                background: var(--card-bg) !important;
+                color: var(--text-color) !important;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+            }
+            .widget-card {
+                background: var(--card-bg) !important;
+                color: var(--text-color) !important;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+            }
+            .stay-info {
+                background: #252525 !important;
+                border: 1px solid #333 !important;
+                color: var(--text-color) !important;
+            }
+            .tab-button {
+                background: var(--tab-inactive) !important;
+                color: var(--text-color) !important;
+            }
+            .tab-button.active {
+                background: var(--primary) !important;
+                color: white !important;
+            }
+            .calc-input {
+                background: #252525 !important;
+                border: 1px solid #444 !important;
+                color: #fff !important;
+            }
+            .section-title {
+                color: #fff !important;
+            }
+            .tag {
+                background: #333 !important;
+                color: #fff !important;
+            }
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 15px;
+            line-height: 1.5;
+        }
+        .container { max-width: 700px; margin: 0 auto; }
+        header {
+            background: #d90429;
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(217, 4, 41, 0.2);
+        }
+        .flight-bar {
+            background: #2b2d42;
+            color: white;
+            padding: 15px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        #map {
+            height: 350px;
+            width: 100%;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+        .widget-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .widget-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 15px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .widget-label {
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: var(--accent);
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .calc-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .calc-group {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .calc-group:last-child { border-bottom: none; }
+        .calc-input {
+            width: 85%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+        .result-text {
+            font-weight: bold;
+            color: #d90429;
+            font-size: 1.1rem;
+        }
+        .card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-left: 6px solid var(--primary);
+        }
+        .date { font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 0.85rem; }
+        .location { font-size: 1.4rem; font-weight: 800; margin: 5px 0; }
+        .stay-info { background: #f8f9fa; padding: 12px; border-radius: 8px; margin: 10px 0; border: 1px solid #dee2e6; }
+        .section-title { font-size: 0.9rem; font-weight: bold; margin-top: 10px; color: var(--text-color); display: block; }
+        .tag { font-size: 0.7rem; background: #eee; padding: 2px 6px; border-radius: 4px; vertical-align: middle; }
+        .custom-number-icon {
+            background-color: #d90429;
+            color: white;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+
+        /* Integrated Tabs Layout CSS */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .tab-button {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: none;
+            background: var(--tab-inactive);
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        .tab-button.active {
+            background: var(--primary);
+            color: white;
+        }
+        .tab-content {
+            display: none;
+            font-size: 0.9rem;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        .food-list {
+            padding-left: 20px;
+            margin-top: 5px;
+        }
+        .food-list li { margin-bottom: 6px; }
+        .section-subtitle {
+            font-weight: bold;
+            margin-top: 12px;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 600px) { .widget-row { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
 <div class="container">
     <header>
         <h1>Japan Adventure 2026 👨‍❤️‍💋‍👨</h1>
         <p>15 Days | 14 Nights | London Heathrow ⇌ Tokyo Haneda</p>
     </header>
-    
+
     <div class="flight-bar">
         <div>✈️ <strong>OUT: BA0007</strong><br>18 Jun | 09:25 LHR</div>
         <div>🛬 <strong>RTN: BA0008</strong><br>03 Jul | 08:55 HND</div>
         <div>💰 <strong>£600</strong></div>
     </div>
 
-<style>
-/* Tabs UI */
-.tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-}
-.tab-button {
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: none;
-    background: #eee;
-    cursor: pointer;
-    font-size: 0.8rem;
-    font-weight: 600;
-}
-.tab-button.active {
-    background: #d90429;
-    color: white;
-}
-.tab-content {
-    display: none;
-    font-size: 0.9rem;
-}
-.tab-content.active {
-    display: block;
-}
-.food-list li { margin-bottom: 6px; }
-.section-subtitle {
-    font-weight: bold;
-    margin-top: 10px;
-}
-</style>
+    <div id="map"></div>
 
-<div class="container">
+    <div class="widget-row">
+        <div class="widget-card">
+            <span class="widget-label" id="weatherTitle">🌦 Tokyo Weather</span>
+            <div id="weatherBox" style="font-size:16px; font-weight:600; padding:10px 0;">Loading...</div>
+        </div>
 
-    <!-- FOOD TABS -->
-    <div class="card">
+        <div class="widget-card">
+            <span class="widget-label">Currency Converter</span>
+            <div class="calc-container">
+                <div class="calc-group">
+                    <input type="number" id="yenInput" class="calc-input" placeholder="Enter ¥" oninput="convertYenToGbp()">
+                    <div id="gbp-output" class="result-text">£ 0.00</div>
+                </div>
+                <div class="calc-group">
+                    <input type="number" id="gbpInput" class="calc-input" placeholder="Enter £" oninput="convertGbpToYen()">
+                    <div id="yen-output" class="result-text">¥ 0</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #06d6a0;">
         <div class="date">🍣 Food Guide</div>
         <div class="location">Must Book + Hidden Gems</div>
 
@@ -119,9 +323,8 @@
             </ul>
         </div>
     </div>
-    
-    <!-- ITINERARY TABS -->
-    <div class="card">
+
+    <div class="card" style="border-left-color: #118ab2;">
         <div class="date">🗓 Itinerary Planner</div>
         <div class="location">Your Destinational Plans</div>
 
@@ -174,178 +377,6 @@
             </ul>
         </div>
     </div>
-
-</div>
-
-<script>
-function openTab(evt, tabName, cityName) {
-    const parentCard = evt.currentTarget.closest('.card');
-    
-    const cardContents = parentCard.querySelectorAll(".tab-content");
-    const cardButtons = parentCard.querySelectorAll(".tab-button");
-
-    cardContents.forEach(c => c.classList.remove("active"));
-    cardButtons.forEach(b => b.classList.remove("active"));
-
-    document.getElementById(tabName).classList.add("active");
-    evt.currentTarget.classList.add("active");
-
-    // Dynamic weather switching when browsing the main itinerary planner tabs
-    if (cityName && travelWeather && travelWeather[cityName]) {
-        document.getElementById("weatherBox").innerHTML = travelWeather[cityName];
-        document.getElementById("weatherTitle").innerText = cityName + " Weather";
-    }
-}
-</script>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japan Itinerary 2026</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        :root {
-            --primary: #d90429;
-            --secondary: #2b2d42;
-            --accent: #8d99ae;
-            --bg: #f1f3f5;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--secondary);
-            margin: 0;
-            padding: 15px;
-            line-height: 1.5;
-        }
-        .container { max-width: 700px; margin: 0 auto; }
-        header {
-            background: var(--primary);
-            color: white;
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(217, 4, 41, 0.2);
-        }
-        .flight-bar {
-            background: var(--secondary);
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-        }
-        #map {
-            height: 350px;
-            width: 100%;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 1;
-        }
-        .widget-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .widget-card {
-            background: white;
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-        .widget-label {
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .calc-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .calc-group {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
-        }
-        .calc-group:last-child { border-bottom: none; }
-        .calc-input {
-            width: 85%;
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 1rem;
-            margin-bottom: 5px;
-        }
-        .result-text {
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 1.1rem;
-        }
-        .card {
-            background: white;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 6px solid var(--primary);
-        }
-        .date { font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 0.85rem; }
-        .location { font-size: 1.4rem; font-weight: 800; margin: 5px 0; }
-        .stay-info { background: #f8f9fa; padding: 12px; border-radius: 8px; margin: 10px 0; border: 1px solid #dee2e6; }
-        .section-title { font-size: 0.9rem; font-weight: bold; margin-top: 10px; color: var(--secondary); display: block; }
-        .tag { font-size: 0.7rem; background: #eee; padding: 2px 6px; border-radius: 4px; vertical-align: middle; }
-        .custom-number-icon {
-            background-color: #d90429;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 2px solid white;
-        }
-        @media (max-width: 600px) { .widget-row { grid-template-columns: 1fr; } }
-    </style>
-</head>
-<body>
-
-    
-    <div id="map"></div>
-
-    <div class="widget-row">
-        <div class="widget-card">
-            <span class="widget-label" id="weatherTitle">🌦 Tokyo Weather</span>
-            <div id="weatherBox" style="font-size:16px; font-weight:600; padding:10px 0;">Loading...</div>
-        </div>
-
-        <div class="widget-card">
-            <span class="widget-label">Currency Converter</span>
-            <div class="calc-container">
-                <div class="calc-group">
-                    <input type="number" id="yenInput" class="calc-input" placeholder="Enter ¥" oninput="convertYenToGbp()">
-                    <div id="gbp-output" class="result-text">£ 0.00</div>
-                </div>
-                <div class="calc-group">
-                    <input type="number" id="gbpInput" class="calc-input" placeholder="Enter £" oninput="convertGbpToYen()">
-                    <div id="yen-output" class="result-text">¥ 0</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    
 
     <div class="card">
         <div class="date">1. 19 June - 21 June (2 Nights)</div>
@@ -428,10 +459,30 @@ function openTab(evt, tabName, cityName) {
         "Kyoto": "28°C • 🌧 Periodic Showers / Dense Air",
         "Hakone": "22°C • 🌫 Cool, Misty Mountain Microclimate"
     };
-    // Initialize default container look
+    
+    // Initialize default weather container
     document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
 
-    // 2. Map Logic
+    // 2. Tab Toggling Engine
+    function openTab(evt, tabName, cityName) {
+        const parentCard = evt.currentTarget.closest('.card');
+        const cardContents = parentCard.querySelectorAll(".tab-content");
+        const cardButtons = parentCard.querySelectorAll(".tab-button");
+
+        cardContents.forEach(c => c.classList.remove("active"));
+        cardButtons.forEach(b => b.classList.remove("active"));
+
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
+
+        // Dynamic weather switching when browsing the main itinerary planner tabs
+        if (cityName && travelWeather && travelWeather[cityName]) {
+            document.getElementById("weatherBox").innerHTML = travelWeather[cityName];
+            document.getElementById("weatherTitle").innerText = cityName + " Weather";
+        }
+    }
+
+    // 3. Leaflet Interactive Map Logic
     var map = L.map('map').setView([35.15, 137.5], 6);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map);
 
@@ -455,7 +506,7 @@ function openTab(evt, tabName, cityName) {
     });
     L.polyline(latlngs, {color: '#d90429', weight: 3, opacity: 0.7, dashArray: '5, 10'}).addTo(map);
 
-    // 3. Accurate Currency Logic
+    // 4. Accurate Currency Conversion Logic
     const RATE = 213.93; 
     function convertYenToGbp() {
         const yen = document.getElementById('yenInput').value;
