@@ -345,8 +345,34 @@
             </div>
         </div>
 
-        <div class="budget-input-row">
-            <input type="text" id="expName" class="budget-input" placeholder="Item (e.g., Ramen)">
+.budget-input-row {
+    display: flex;
+    flex-direction: column; /* Stacks the items vertically so they never run off screen */
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.budget-input {
+    padding: 12px; /* Makes it easier to tap on mobile */
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    width: 100%; /* Keeps it perfectly inside the card borders */
+    box-sizing: border-box; /* Prevents padding from forcing it off screen */
+}
+
+.budget-btn {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 0.95rem;
+    width: 100%;
+}
+
             <input type="number" id="expAmount" class="budget-input" placeholder="£ Amount">
             <button class="budget-btn" onclick="addExpense()">Add</button>
         </div>
