@@ -85,7 +85,7 @@
             padding: 15px;
             line-height: 1.5;
         }
-        .container { max-width: 700px; margin: 0 auto; }
+        .container { max-width: 700px; margin: 0 auto; box-sizing: border-box; width: 100%; }
         header {
             background: #d90429;
             color: white;
@@ -165,6 +165,9 @@
             margin-bottom: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             border-left: 6px solid var(--primary);
+            box-sizing: border-box;
+            width: 100%;
+            overflow: hidden;
         }
         .date { font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 0.85rem; }
         .location { font-size: 1.4rem; font-weight: 800; margin: 5px 0; }
@@ -182,7 +185,7 @@
             border: 2px solid white;
         }
 
-        /* Budget UI Styling */
+        /* Fixed Mobile Budget Form Layout */
         .budget-summary {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -200,31 +203,36 @@
             font-weight: bold;
         }
         .budget-input-row {
-            display: grid;
-            grid-template-columns: 2fr 1fr auto;
-            gap: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
             margin-bottom: 15px;
         }
         .budget-input {
-            padding: 8px;
+            padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+            width: 100%;
+            box-sizing: border-box;
         }
         .budget-btn {
             background: var(--primary);
             color: white;
             border: none;
-            padding: 8px 12px;
+            padding: 12px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 0.95rem;
+            width: 100%;
         }
         .expense-table-container {
             max-height: 200px;
             overflow-y: auto;
             border-radius: 8px;
             border: 1px solid var(--border);
+            width: 100%;
         }
         table {
             width: 100%;
@@ -248,9 +256,10 @@
             color: #d90429;
             cursor: pointer;
             font-weight: bold;
+            padding: 4px 8px;
         }
 
-        /* Tabs Layout CSS */
+        /* Tabs UI */
         .tabs {
             display: flex;
             gap: 8px;
@@ -290,7 +299,10 @@
             font-size: 0.95rem;
         }
 
-        @media (max-width: 600px) { .widget-row { grid-template-columns: 1fr; } }
+        /* Mobile Viewport Adjustments */
+        @media (max-width: 600px) { 
+            .widget-row { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -337,46 +349,16 @@
         <div class="budget-summary">
             <div class="budget-box">
                 <span class="widget-label">Total Budget (£)</span>
-                <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="width:70%; text-align:center; font-weight:bold;" oninput="updateBudget()">
+                <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="text-align:center; font-weight:bold;" oninput="updateBudget()">
             </div>
             <div class="budget-box">
                 <span class="widget-label">Remaining Balance</span>
                 <div id="remainingBalance" class="budget-amount" style="color: #06d6a0;">£2,000.00</div>
             </div>
         </div>
-<style>
-    /* Put the mobile fix right here at the very top of your styles */
-    .budget-input-row {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 15px;
-    }
-    .budget-input {
-        padding: 12px;
-        border: 1px solid #ddd;
-        border-radius: 8px;
-        font-size: 0.95rem;
-        width: 100%;
-        box-sizing: border-box;
-    }
-    .budget-btn {
-        background: var(--primary);
-        color: white;
-        border: none;
-        padding: 12px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-        font-size: 0.95rem;
-        width: 100%;
-    }
 
-    /* Your existing styles continue below smoothly... */
-    /* Tabs UI */
-    .tabs {
-        display: flex;
-
+        <div class="budget-input-row">
+            <input type="text" id="expName" class="budget-input" placeholder="Item (e.g., Ramen)">
             <input type="number" id="expAmount" class="budget-input" placeholder="£ Amount">
             <button class="budget-btn" onclick="addExpense()">Add</button>
         </div>
@@ -595,7 +577,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // 1. Seasonal Historical Weather Benchmarks
+    // 1. Weather Data
     const travelWeather = {
         "Tokyo": "27°C • 🌧 High Humidity / Rainy Season Risk",
         "Osaka": "29°C • 🌦 Very Warm & Muggy",
@@ -604,7 +586,7 @@
     };
     document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
 
-    // 2. Tab Toggling Engine
+    // 2. Navigation Tab Engine
     function openTab(evt, tabName, cityName) {
         const parentCard = evt.currentTarget.closest('.card');
         const cardContents = parentCard.querySelectorAll(".tab-content");
@@ -622,7 +604,7 @@
         }
     }
 
-    // 3. Leaflet Interactive Map Logic
+    // 3. Leaflet Mapping System
     var map = L.map('map').setView([35.15, 137.5], 6);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map);
 
@@ -646,7 +628,7 @@
     });
     L.polyline(latlngs, {color: '#d90429', weight: 3, opacity: 0.7, dashArray: '5, 10'}).addTo(map);
 
-    // 4. Accurate Currency Conversion Logic
+    // 4. Currency Math Converter
     const RATE = 213.93; 
     function convertYenToGbp() {
         const yen = document.getElementById('yenInput').value;
@@ -659,8 +641,13 @@
         document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
     }
 
-    // 5. Smart Budget Storage Logic (Saves on Device)
-    let expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
+    // 5. Native Cache Storage Systems
+    let expenses = [];
+    try {
+        expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
+    } catch(e) {
+        expenses = [];
+    }
     let totalBudget = localStorage.getItem('japan_budget') || 2000;
 
     document.getElementById('totalBudgetInput').value = totalBudget;
@@ -708,17 +695,17 @@
         balanceDiv.innerText = "£" + remaining.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
         
         if (remaining < 0) {
-            balanceDiv.style.color = "#d90429"; // Turns red if over budget
+            balanceDiv.style.color = "#d90429"; 
         } else {
-            balanceDiv.style.color = "#06d6a0"; // Green if safe
+            balanceDiv.style.color = "#06d6a0"; 
         }
     }
 
     function renderExpenses() {
         const tbody = document.getElementById('expenseTableBody');
+        if(!tbody) return;
         tbody.innerHTML = "";
         
-        // Reverse so new expenses show right at the top
         [...expenses].reverse().forEach(exp => {
             const row = document.createElement('tr');
             row.innerHTML = `
@@ -730,7 +717,6 @@
         });
     }
 
-    // Run trackers on load
     renderExpenses();
     calculateBudget();
 </script>
