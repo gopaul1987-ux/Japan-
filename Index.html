@@ -14,6 +14,7 @@
             --card-bg: #ffffff;
             --text-color: #2b2d42;
             --tab-inactive: #eee;
+            --border: #dee2e6;
         }
 
         /* Seamless Native Dark Mode Styling */
@@ -26,6 +27,7 @@
                 --card-bg: #1e1e1e;
                 --text-color: #e0e0e0;
                 --tab-inactive: #2b2d42;
+                --border: #333333;
             }
             body {
                 background-color: var(--bg);
@@ -54,7 +56,7 @@
                 background: var(--primary) !important;
                 color: white !important;
             }
-            .calc-input {
+            .calc-input, .budget-input {
                 background: #252525 !important;
                 border: 1px solid #444 !important;
                 color: #fff !important;
@@ -65,6 +67,13 @@
             .tag {
                 background: #333 !important;
                 color: #fff !important;
+            }
+            table th {
+                background: #252525 !important;
+                color: #fff !important;
+            }
+            table td {
+                border-bottom: 1px solid #333 !important;
             }
         }
 
@@ -173,7 +182,75 @@
             border: 2px solid white;
         }
 
-        /* Integrated Tabs Layout CSS */
+        /* Budget UI Styling */
+        .budget-summary {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .budget-box {
+            background: var(--tab-inactive);
+            padding: 10px;
+            border-radius: 10px;
+        }
+        .budget-amount {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .budget-input-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr auto;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .budget-input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+        }
+        .budget-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .expense-table-container {
+            max-height: 200px;
+            overflow-y: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            text-align: left;
+        }
+        table th {
+            background: #eee;
+            padding: 8px;
+            position: sticky;
+            top: 0;
+        }
+        table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #d90429;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* Tabs Layout CSS */
         .tabs {
             display: flex;
             gap: 8px;
@@ -220,7 +297,7 @@
 
 <div class="container">
     <header>
-        <h1>Japan Adventure 2026 </h1>
+        <h1>Japan Adventure 2026 👨‍❤️‍💋‍👨</h1>
         <p>15 Days | 14 Nights | London Heathrow ⇌ Tokyo Haneda</p>
     </header>
 
@@ -250,6 +327,42 @@
                     <div id="yen-output" class="result-text">¥ 0</div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="card" style="border-left-color: #7209b7;">
+        <div class="date">💰 Budget & Expenditure</div>
+        <div class="location">Live Trip Tracker</div>
+        
+        <div class="budget-summary">
+            <div class="budget-box">
+                <span class="widget-label">Total Budget (£)</span>
+                <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="width:70%; text-align:center; font-weight:bold;" oninput="updateBudget()">
+            </div>
+            <div class="budget-box">
+                <span class="widget-label">Remaining Balance</span>
+                <div id="remainingBalance" class="budget-amount" style="color: #06d6a0;">£2,000.00</div>
+            </div>
+        </div>
+
+        <div class="budget-input-row">
+            <input type="text" id="expName" class="budget-input" placeholder="Item (e.g., Ramen)">
+            <input type="number" id="expAmount" class="budget-input" placeholder="£ Amount">
+            <button class="budget-btn" onclick="addExpense()">Add</button>
+        </div>
+
+        <div class="expense-table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Amount</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="expenseTableBody">
+                    </tbody>
+            </table>
         </div>
     </div>
 
@@ -354,7 +467,7 @@
         <div id="ItineraryOsakaTab" class="tab-content">
             <div class="section-subtitle">Osaka Exploration</div>
             <ul class="food-list">
-                <li><strong>23 June:</strong> Aquarium 10:30am </li>
+                <li><strong>21 June:</strong> Travel + Dotonbori food night</li>
                 <li><strong>22 June:</strong> Universal Studios Japan</li>
                 <li><strong>23 June:</strong> Osaka Castle, Kuromon Market, Shinsekai</li>
             </ul>
@@ -452,15 +565,13 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // 1. Seasonal Historical Weather Benchmarks (Late June - Early July)
+    // 1. Seasonal Historical Weather Benchmarks
     const travelWeather = {
         "Tokyo": "27°C • 🌧 High Humidity / Rainy Season Risk",
         "Osaka": "29°C • 🌦 Very Warm & Muggy",
         "Kyoto": "28°C • 🌧 Periodic Showers / Dense Air",
         "Hakone": "22°C • 🌫 Cool, Misty Mountain Microclimate"
     };
-    
-    // Initialize default weather container
     document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
 
     // 2. Tab Toggling Engine
@@ -475,7 +586,6 @@
         document.getElementById(tabName).classList.add("active");
         evt.currentTarget.classList.add("active");
 
-        // Dynamic weather switching when browsing the main itinerary planner tabs
         if (cityName && travelWeather && travelWeather[cityName]) {
             document.getElementById("weatherBox").innerHTML = travelWeather[cityName];
             document.getElementById("weatherTitle").innerText = cityName + " Weather";
@@ -518,6 +628,81 @@
         const result = gbp * RATE;
         document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
     }
+
+    // 5. Smart Budget Storage Logic (Saves on Device)
+    let expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
+    let totalBudget = localStorage.getItem('japan_budget') || 2000;
+
+    document.getElementById('totalBudgetInput').value = totalBudget;
+
+    function updateBudget() {
+        totalBudget = document.getElementById('totalBudgetInput').value || 0;
+        localStorage.setItem('japan_budget', totalBudget);
+        calculateBudget();
+    }
+
+    function addExpense() {
+        const nameInput = document.getElementById('expName');
+        const amountInput = document.getElementById('expAmount');
+        
+        if (nameInput.value.trim() === "" || amountInput.value === "") return;
+
+        const expense = {
+            id: Date.now(),
+            name: nameInput.value,
+            amount: parseFloat(amountInput.value)
+        };
+
+        expenses.push(expense);
+        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
+        
+        nameInput.value = "";
+        amountInput.value = "";
+        
+        renderExpenses();
+        calculateBudget();
+    }
+
+    function deleteExpense(id) {
+        expenses = expenses.filter(exp => exp.id !== id);
+        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
+        renderExpenses();
+        calculateBudget();
+    }
+
+    function calculateBudget() {
+        const totalSpent = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+        const remaining = totalBudget - totalSpent;
+        
+        const balanceDiv = document.getElementById('remainingBalance');
+        balanceDiv.innerText = "£" + remaining.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        
+        if (remaining < 0) {
+            balanceDiv.style.color = "#d90429"; // Turns red if over budget
+        } else {
+            balanceDiv.style.color = "#06d6a0"; // Green if safe
+        }
+    }
+
+    function renderExpenses() {
+        const tbody = document.getElementById('expenseTableBody');
+        tbody.innerHTML = "";
+        
+        // Reverse so new expenses show right at the top
+        [...expenses].reverse().forEach(exp => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${exp.name}</td>
+                <td>£${exp.amount.toFixed(2)}</td>
+                <td style="text-align:right;"><button class="delete-btn" onclick="deleteExpense(${exp.id})">✕</button></td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // Run trackers on load
+    renderExpenses();
+    calculateBudget();
 </script>
 
 </body>
