@@ -17,6 +17,7 @@
             --border: #dee2e6;
             --link-color: #0077b6;
             --modal-overlay: rgba(0, 0, 0, 0.4);
+            --tracking-color: #3a86ff;
         }
 
         /* Seamless Native Dark Mode Styling */
@@ -60,7 +61,7 @@
                 background: var(--primary) !important;
                 color: white !important;
             }
-            .calc-input, .budget-input, .scratchpad-textarea {
+            .calc-input, .budget-input, .scratchpad-textarea, .tracking-input, .tracking-select {
                 background: #252525 !important;
                 border: 1px solid #444 !important;
                 color: #fff !important;
@@ -79,12 +80,14 @@
             table td {
                 border-bottom: 1px solid #333 !important;
             }
-            /* Dark-mode map tile inversion filter for native aesthetic */
             .leaflet-tile-container {
                 filter: brightness(0.6) invert(1) contrast(95%) hue-rotate(180deg);
             }
             .leaflet-container {
                 background: #1a1a1a !important;
+            }
+            .tracking-badge {
+                background: #252525 !important;
             }
         }
 
@@ -97,6 +100,43 @@
             line-height: 1.5;
         }
         .container { max-width: 700px; margin: 0 auto; box-sizing: border-box; width: 100%; }
+        
+        /* Layout Master Navigation Bar */
+        .layout-nav {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .layout-btn {
+            padding: 12px;
+            border-radius: 12px;
+            border: none;
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            min-height: 48px;
+        }
+        .layout-btn.active {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        /* Screen View Visibility Control */
+        .app-view {
+            display: none;
+        }
+        .app-view.active {
+            display: block;
+        }
+
         header {
             background: #d90429;
             color: white;
@@ -107,7 +147,6 @@
             box-shadow: 0 4px 12px rgba(217, 4, 41, 0.2);
         }
         
-        /* Countdown Dashboard Top Banner Styles */
         .countdown-container {
             background: rgba(0, 0, 0, 0.25);
             padding: 10px 15px;
@@ -221,7 +260,7 @@
             border: 2px solid white;
         }
 
-        /* Fixed Mobile Budget Form Layout */
+        /* Budget Form Layout */
         .budget-summary {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -247,7 +286,7 @@
             gap: 10px;
             margin-bottom: 15px;
         }
-        .budget-input {
+        .budget-input, .tracking-input, .tracking-select {
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -267,8 +306,8 @@
             width: 100%;
             min-height: 48px;
         }
-        .expense-table-container {
-            max-height: 200px;
+        .expense-table-container, .tracking-table-container {
+            max-height: 250px;
             overflow-y: auto;
             border-radius: 8px;
             border: 1px solid var(--border);
@@ -285,9 +324,10 @@
             padding: 8px;
             position: sticky;
             top: 0;
+            z-index: 5;
         }
         table td {
-            padding: 8px;
+            padding: 12px 8px;
             border-bottom: 1px solid var(--border);
         }
         .delete-btn {
@@ -339,7 +379,7 @@
             z-index: 1000;
             display: none;
             justify-content: center;
-            align-items: flex-end; /* Standard design for smooth slide up on mobile viewports */
+            align-items: flex-end;
         }
         .modal-overlay.active {
             display: flex;
@@ -376,7 +416,7 @@
         }
         .scratchpad-textarea {
             width: 100%;
-            height: 220px; /* Increased canvas height inside popup */
+            height: 220px;
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
@@ -434,7 +474,6 @@
             font-size: 0.95rem;
         }
 
-        /* Group Heading Style */
         .group-heading {
             font-size: 1.4rem;
             font-weight: 800;
@@ -442,327 +481,432 @@
             color: var(--text-color);
         }
 
-        /* Mobile Viewport Adjustments */
+        /* Luggage Tracking Layout UI Elements */
+        .tracking-grid-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+        .tracking-badge {
+            background: #f1f3f5;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-transit { color: #fb5607; border: 1px solid #fb5607; }
+        .status-delivered { color: #06d6a0; border: 1px solid #06d6a0; }
+        
+        .info-blockquote {
+            background: rgba(58, 134, 255, 0.1);
+            border-left: 4px solid var(--tracking-color);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            margin-bottom: 20px;
+        }
+
         @media (max-width: 600px) { 
             .widget-row { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 480px) {
-            .budget-summary {
-                grid-template-columns: 1fr 1fr;
-            }
+            .tracking-grid-form { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <header>
-        <h1 style="margin-bottom: 5px;">Japan Adventure 2026 🇯🇵🇯🇵</h1>
-        <p style="margin: 0 0 10px 0;">15 Days | 14 Nights | London Heathrow ⇌ Tokyo Haneda</p>
-        
-        <!-- Live Countdown Integrated directly into the Header banner -->
-        <div class="countdown-container">
-            ⏳ <span id="countdownTimer">Calculating countdown...</span>
-        </div>
-    </header>
+    
+    <!-- Separate Layout Nav Toggle Header -->
+    <nav class="layout-nav">
+        <button id="navItinerary" class="layout-btn active" onclick="switchLayout('itinerary')">🗺 Main Itinerary</button>
+        <button id="navTracking" class="layout-btn" onclick="switchLayout('tracking')">📦 Luggage Desk (Takuhaibin)</button>
+    </nav>
 
-    <div class="flight-bar">
-        <div>✈️ <strong>OUT: BA0007</strong><br>18 Jun | 09:25 LHR</div>
-        <div>🛬 <strong>RTN: BA0008</strong><br>03 Jul | 08:55 HND</div>
-        <div>💰 <strong>£600</strong></div>
+    <!-- LAYOUT VIEW 1: MAIN ITINERARY DASHBOARD -->
+    <div id="viewItinerary" class="app-view active">
+        <header>
+            <h1 style="margin-bottom: 5px;">Japan Adventure 2026 🇯🇵</h1>
+            <p style="margin: 0 0 10px 0;">15 Days | 14 Nights | London Heathrow ⇌ Tokyo Haneda</p>
+            <div class="countdown-container">
+                ⏳ <span id="countdownTimer">Calculating countdown...</span>
+            </div>
+        </header>
+
+        <div class="flight-bar">
+            <div>✈️ <strong>OUT: BA0007</strong><br>18 Jun | 09:25 LHR</div>
+            <div>🛬 <strong>RTN: BA0008</strong><br>03 Jul | 08:55 HND</div>
+            <div>💰 <strong>£600</strong></div>
+        </div>
+
+        <div id="map"></div>
+
+        <div class="widget-row">
+            <div class="widget-card">
+                <span class="widget-label" id="weatherTitle">🌦 Tokyo Weather</span>
+                <div id="weatherBox" style="font-size:16px; font-weight:600; padding:10px 0;">Loading...</div>
+            </div>
+
+            <div class="widget-card">
+                <span class="widget-label">🕒 Time Sync</span>
+                <div style="display: flex; justify-content: space-around; align-items: center; height: 100%; padding-top: 5px;">
+                    <div>
+                        <span style="font-size: 0.65rem; font-weight: bold; color: var(--accent);">LON (BST)</span>
+                        <div id="londonTime" class="time-display">00:00</div>
+                    </div>
+                    <div style="font-weight: bold; color: var(--accent); font-size: 1.1rem;">✈️</div>
+                    <div>
+                        <span style="font-size: 0.65rem; font-weight: bold; color: var(--accent);">TYO (JST)</span>
+                        <div id="tokyoTime" class="time-display">00:00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="widget-card">
+                <span class="widget-label">Currency Converter</span>
+                <div class="calc-container">
+                    <div class="calc-group">
+                        <input type="number" id="yenInput" class="calc-input" placeholder="Enter ¥" oninput="convertYenToGbp()">
+                        <div id="gbp-output" class="result-text">£ 0.00</div>
+                    </div>
+                    <div class="calc-group">
+                        <input type="number" id="gbpInput" class="calc-input" placeholder="Enter £" oninput="convertGbpToYen()">
+                        <div id="yen-output" class="result-text">¥ 0</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Budget Tracker -->
+        <div class="card" style="border-left-color: #7209b7;">
+            <div class="date">💰 Budget & Expenditure</div>
+            <div class="location">Live Trip Tracker</div>
+            
+            <div class="budget-summary" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
+                <div class="budget-box">
+                    <span class="widget-label">Total Budget (£)</span>
+                    <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="text-align:center; font-weight:bold; padding: 6px;" oninput="updateBudget()">
+                </div>
+                <div class="budget-box">
+                    <span class="widget-label">Total Spent</span>
+                    <div id="totalSpentBalance" class="budget-amount" style="color: #fb5607; padding-top: 5px;">£0.00</div>
+                </div>
+                <div class="budget-box">
+                    <span class="widget-label">Per Person Spend</span>
+                    <div id="perPersonSpent" class="budget-amount" style="color: #3a86ff; padding-top: 5px;">£0.00</div>
+                </div>
+                <div class="budget-box">
+                    <span class="widget-label">Remaining Balance</span>
+                    <div id="remainingBalance" class="budget-amount" style="color: #06d6a0; padding-top: 5px;">£2,000.00</div>
+                </div>
+            </div>
+
+            <div class="budget-input-row">
+                <input type="text" id="expName" class="budget-input" placeholder="Item (e.g., Ramen)">
+                <input type="number" id="expAmount" class="budget-input" placeholder="£ Amount">
+                <button class="budget-btn" onclick="addExpense()">Add</button>
+            </div>
+
+            <div class="expense-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Amount</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenseTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Food Guide -->
+        <div class="card" style="border-left-color: #06d6a0;">
+            <div class="date">🍣 Food Guide</div>
+            <div class="location">Must Book + Hidden Gems</div>
+
+            <div class="tabs">
+                <button class="tab-button active" data-target="tokyoFood" onclick="handleTabClick(event, 'Tokyo')">Tokyo</button>
+                <button class="tab-button" data-target="osakaFood" onclick="handleTabClick(event, 'Osaka')">Osaka</button>
+                <button class="tab-button" data-target="kyotoFood" onclick="handleTabClick(event, 'Kyoto')">Kyoto</button>
+                <button class="tab-button" data-target="hakoneFood" onclick="handleTabClick(event, 'Hakone')">Hakone</button>
+            </div>
+
+            <div id="tokyoFood" class="tab-content active">
+                <div class="section-subtitle">🔥 Must Book</div>
+                <ul class="food-list">
+                    <li>🍱 Gyukatsu Motomura (Shibuya)</li>
+                    <li>🍣 Sushi no Midori (Shibuya)</li>
+                    <li>🍜 Chukasoba Ginza Hachigo</li>
+                </ul>
+                <div class="section-subtitle">💎 Hidden Gems</div>
+                <ul class="food-list">
+                    <li>🥢 Fuunji (Tsukemen)</li>
+                    <li>🥩 Tonki (Tonkatsu)</li>
+                    <li>🍞 Cafe Aaliya (French Toast)</li>
+                    <li>🍋 Afuri (Yuzu Ramen)</li>
+                </ul>
+            </div>
+
+            <div id="osakaFood" class="tab-content">
+                <div class="section-subtitle">🔥 Must Book</div>
+                <ul class="food-list">
+                    <li>🥞 Mizuno (Okonomiyaki)</li>
+                    <li>🥩 Yakiniku M Hozenji</li>
+                    <li>🍢 Kushikatsu Daruma</li>
+                </ul>
+                <div class="section-subtitle">💎 Hidden Gems</div>
+                <ul class="food-list">
+                    <li>🥢 Udon Shin</li>
+                    <li>🔥 Hajime Yakiniku</li>
+                    <li>🐙 Takoyaki Wanaka</li>
+                </ul>
+            </div>
+
+            <div id="kyotoFood" class="tab-content">
+                <div class="section-subtitle">🔥 Must Book</div>
+                <ul class="food-list">
+                    <li>🍳 Kichi Kichi Omurice</li>
+                    <li>🍕 Monk</li>
+                    <li>🍱 Gion Karyo</li>
+                </ul>
+                <div class="section-subtitle">💎 Hidden Gems</div>
+                <ul class="food-list">
+                    <li>🥢 Omen Kodai-ji</li>
+                    <li>🍜 Men-ya Inoichi</li>
+                    <li>🥞 Panel Cafe</li>
+                    <li>🍡 Nishiki Market</li>
+                </ul>
+            </div>
+
+            <div id="hakoneFood" class="tab-content">
+                <div class="section-subtitle">🔥 Must Do</div>
+                <ul class="food-list">
+                    <li>🍶 Amazake Chaya</li>
+                </ul>
+                <div class="section-subtitle">💎 Hidden Gems</div>
+                <ul class="food-list">
+                    <li>🥩 Tamura Ginkatsutei</li>
+                    <li>🥢 Lake Ashi Local Soba Spots</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Itinerary Planner -->
+        <div class="card" style="border-left-color: #118ab2;">
+            <div class="date">🗓 Itinerary Planner</div>
+            <div class="location">Your Destinational Plans</div>
+
+            <div class="tabs">
+                <button class="tab-button active" data-target="tokyoItinerary" onclick="handleTabClick(event, 'Tokyo')">Tokyo</button>
+                <button class="tab-button" data-target="osakaItinerary" onclick="handleTabClick(event, 'Osaka')">Osaka</button>
+                <button class="tab-button" data-target="kyotoItinerary" onclick="handleTabClick(event, 'Kyoto')">Kyoto</button>
+                <button class="tab-button" data-target="hakoneItinerary" onclick="handleTabClick(event, 'Hakone')">Hakone</button>
+            </div>
+
+            <div id="tokyoItinerary" class="tab-content active">
+                <div class="section-subtitle">First Stint (Arrival)</div>
+                <ul class="food-list">
+                    <li><strong>19 June:</strong> ⌚ AP Watch Museum 17:00pm</li>
+                    <li><strong>20 June:</strong> ⚾ Baseball Game Tokyo Dome 14:00</li>
+                </ul>
+                <div class="section-subtitle">Second Stint (Grand Finale)</div>
+                <ul class="food-list">
+                    <li><strong>29 June:</strong> 🌆 Return, Shinjuku, teamLabs Borderless 18:30</li>
+                    <li><strong>30 June:</strong> ⚡ Akihabara, teamLab Planets</li>
+                    <li><strong>1 July:</strong> 🏮 Asakusa, Senso-ji, Skytree</li>
+                    <li><strong>2 July:</strong> 🛍 Shopping, Imperial Palace, Shibuya</li>
+                    <li><strong>3 July:</strong> ✈️ Departure</li>
+                </ul>
+            </div>
+
+            <div id="osakaItinerary" class="tab-content">
+                <div class="section-subtitle">Osaka Exploration</div>
+                <ul class="food-list">
+                    <li><strong>21 June:</strong> 🐙 Travel + Dotonbori Food Night</li>
+                    <li><strong>22 June:</strong> 🏰 Universal Studios Japan</li>
+                    <li><strong>23 June:</strong> 🏯 Osaka Castle, Kuromon Market, Shinsekai</li>
+                </ul>
+            </div>
+
+            <div id="kyotoItinerary" class="tab-content">
+                <div class="section-subtitle">Cultural Highlights</div>
+                <ul class="food-list">
+                    <li><strong>24 June:</strong> 🦌 Nara or Kobe (optional), travel to Kyoto</li>
+                    <li><strong>25 June:</strong> 🎋 Arashiyama Bamboo Grove, Monkey Park</li>
+                    <li><strong>26 June:</strong> ⛩ Kiyomizu-dera, Gion, Higashiyama Streets</li>
+                </ul>
+            </div>
+
+            <div id="hakoneItinerary" class="tab-content">
+                <div class="section-subtitle">Relaxation & Scenic Views</div>
+                <ul class="food-list">
+                    <li><strong>27 June:</strong> 🎨 Travel, Open Air Museum, onsen</li>
+                    <li><strong>28 June:</strong> 🚠 Ropeway, Lake Ashi, Hakone Shrine</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="group-heading">🏨 Hotels</div>
+
+        <div class="card">
+            <div class="date">1. 19 June - 21 June (2 Nights)</div>
+            <div class="location">Tokyo: Tokyo-to <span class="tag">Arrival</span></div>
+            <div class="stay-info">
+                <span class="section-title">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</span>
+                <p style="margin:5px 0; font-size:0.85rem;">Address: Tokyo-to, Tokyo, Chuo-ku Kyobashi 1-3-6, 💰 £385</p>
+            </div>
+            <span class="section-title">Must Do:</span>
+            <ul>
+                <li>Explore Omoide Yokocho "Memory Lane" alleys.</li>
+                <li>Views from Tokyo Metropolitan Government Building.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="border-left-color: #3a86ff;">
+            <div class="date">2. 21 June - 24 June (3 Nights)</div>
+            <div class="location">Osaka Honmachi <span class="tag">Food Capital</span></div>
+            <div class="stay-info">
+                <span class="section-title">🏨 The Lively Osaka Honmachi</span>
+                <p style="margin:5px 0; font-size:0.85rem;">541-0054 Osaka, Chuo-ku, Minami-Honmachi 1-5-11 • Near Sakaisuji-Hommachi Station • 💰 £277</p>
+            </div>
+            <span class="section-title">Must Do:</span>
+            <ul>
+                <li>Try Takoyaki and Okonomiyaki in Dotonbori.</li>
+                <li>Day trip to Nara Park to see the deer and Great Buddha.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="border-left-color: #fb5607;">
+            <div class="date">3. 24 June - 27 June (3 Nights)</div>
+            <div class="location">Kyoto Higashiiru <span class="tag">Culture</span></div>
+            <div class="stay-info">
+                <span class="section-title">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</span>
+                <p style="margin:5px 0; font-size:0.85rem;">45-1, Hishiya-cho, Higashiiru, Higashinotoin, Sanjo-dori, Nakagyo-ku,Kyoto, 604-8131. 💰 £391</p>
+            </div>
+            <span class="section-title">Must Do:</span>
+            <ul>
+                <li>Walk through the Torii gates at Fushimi Inari.</li>
+                <li>Visit Arashiyama Bamboo Grove early morning.</li>
+            </ul>
+        </div>
+
+        <div class="card" style="border-left-color: #ffbe0b;">
+            <div class="date">4. 27 June - 29 June (2 Nights)</div>
+            <div class="location">🏔 Hakone <span class="tag">Relax & Fuji</span></div>
+            <div class="stay-info">
+                <span class="section-title">🏨 Nol Hakone Myojindai</span>
+                <p style="margin:5px 0; font-size:0.85rem;">1488-205 Miyagino, Hakone, Ashigarashimo District, Kanagawa 250-0401, Japan 💰 £529</p>
+            </div>
+            <span class="section-title">Must Do:</span>
+            <ul>
+                <li>Ride the Hakone Ropeway for Mt. Fuji views.</li>
+                <li>Take the "Pirate Ship" cruise across Lake Ashi.</li>
+            </ul>
+        </div>
+
+        <div class="card">
+            <div class="date">5. 29 June - 03 July (4 Nights)</div>
+            <div class="location">Tokyo Shinjuku City<span class="tag">Mid-Luxury Finish</span></div>
+            <div class="stay-info">
+                <span class="section-title">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</span>
+                <p style="margin:5px 0; font-size:0.85rem;">KABUKICHO TOWER, 45F, 1 Chome-29-1 Kabukicho, Shinjuku City, Tokyo 160-0021, Japan 💰 £1,629</p>
+            </div>
+            <span class="section-title">Must Do:</span>
+            <ul>
+                <li>Breakfast at Tsukiji Outer Fish Market.</li>
+                <li>Digital art at teamLab Borderless.</li>
+                <li>Souvenir shopping at Ginza Itoya.</li>
+            </ul>
+        </div>
     </div>
 
-    <div id="map"></div>
+    <!-- LAYOUT VIEW 2: LUGGAGE FORWARDING DESK (TAKUHAIBIN) -->
+    <div id="viewTracking" class="app-view">
+        <header style="background: var(--tracking-color); box-shadow: 0 4px 12px rgba(58, 134, 255, 0.2);">
+            <h1 style="margin-bottom: 5px;">Takuhaibin Desk 📦</h1>
+            <p style="margin: 0;">Hands-Free Luggage Forwarding Ledger & Manifest</p>
+        </header>
 
-    <div class="widget-row">
-        <!-- Weather Card -->
-        <div class="widget-card">
-            <span class="widget-label" id="weatherTitle">🌦 Tokyo Weather</span>
-            <div id="weatherBox" style="font-size:16px; font-weight:600; padding:10px 0;">Loading...</div>
+        <div class="info-blockquote">
+            💡 <strong>Pro-Tip:</strong> Hand your suitcases to hotel front desks 24 hours before checkout. Use Yamato Transport (Black Cat). Forward bags straight from <strong>Kyoto ➔ Bellustar Tokyo</strong> to completely bypass dragging bags across Hakone mountain lines!
         </div>
 
-        <!-- Time Zone Widget -->
-        <div class="widget-card">
-            <span class="widget-label">🕒 Time Sync</span>
-            <div style="display: flex; justify-content: space-around; align-items: center; height: 100%; padding-top: 5px;">
+        <div class="widget-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 20px;">
+            <div class="widget-card">
+                <span class="widget-label">Active Transits</span>
+                <div id="countTransit" style="font-size: 2rem; font-weight: 800; color: #fb5607;">0</div>
+            </div>
+            <div class="widget-card">
+                <span class="widget-label">Safely Delivered</span>
+                <div id="countDelivered" style="font-size: 2rem; font-weight: 800; color: #06d6a0;">0</div>
+            </div>
+        </div>
+
+        <!-- Shipping Manifest Form Card -->
+        <div class="card" style="border-left-color: var(--tracking-color);">
+            <div class="date">📝 Register Shipment</div>
+            <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Log Waybill / Tracking Voucher</div>
+            
+            <div class="tracking-grid-form">
                 <div>
-                    <span style="font-size: 0.65rem; font-weight: bold; color: var(--accent);">LON (BST)</span>
-                    <div id="londonTime" class="time-display">00:00</div>
+                    <span class="widget-label" style="margin-bottom:5px;">Waybill Number</span>
+                    <input type="text" id="trackNum" class="tracking-input" placeholder="e.g., 1234-5678-9012">
                 </div>
-                <div style="font-weight: bold; color: var(--accent); font-size: 1.1rem;">✈️</div>
                 <div>
-                    <span style="font-size: 0.65rem; font-weight: bold; color: var(--accent);">TYO (JST)</span>
-                    <div id="tokyoTime" class="time-display">00:00</div>
+                    <span class="widget-label" style="margin-bottom:5px;">Carrier Service</span>
+                    <select id="trackCarrier" class="tracking-select">
+                        <option value="Yamato (Black Cat)">Yamato (Black Cat)</option>
+                        <option value="Sagawa Express">Sagawa Express</option>
+                        <option value="Japan Post (EMS)">Japan Post</option>
+                    </select>
                 </div>
             </div>
-        </div>
-
-        <!-- Currency Converter Card -->
-        <div class="widget-card">
-            <span class="widget-label">Currency Converter</span>
-            <div class="calc-container">
-                <div class="calc-group">
-                    <input type="number" id="yenInput" class="calc-input" placeholder="Enter ¥" oninput="convertYenToGbp()">
-                    <div id="gbp-output" class="result-text">£ 0.00</div>
+            
+            <div class="tracking-grid-form">
+                <div>
+                    <span class="widget-label" style="margin-bottom:5px;">Route Description</span>
+                    <input type="text" id="trackRoute" class="tracking-input" placeholder="e.g., Kyoto ➔ Tokyo Shinjuku">
                 </div>
-                <div class="calc-group">
-                    <input type="number" id="gbpInput" class="calc-input" placeholder="Enter £" oninput="convertGbpToYen()">
-                    <div id="yen-output" class="result-text">¥ 0</div>
+                <div>
+                    <span class="widget-label" style="margin-bottom:5px;">Expected Delivery</span>
+                    <input type="text" id="trackEta" class="tracking-input" placeholder="e.g., 29 June Morning">
                 </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Budget Tracker -->
-    <div class="card" style="border-left-color: #7209b7;">
-        <div class="date">💰 Budget & Expenditure</div>
-        <div class="location">Live Trip Tracker</div>
-        
-        <div class="budget-summary" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
-            <div class="budget-box">
-                <span class="widget-label">Total Budget (£)</span>
-                <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="text-align:center; font-weight:bold; padding: 6px;" oninput="updateBudget()">
+            <button class="budget-btn" style="background: var(--tracking-color);" onclick="addShipment()">Add to Shipping Ledger</button>
+        </div>
+
+        <!-- Manifest Data Ledger Table -->
+        <div class="card" style="border-left-color: #2b2d42;">
+            <div class="date">📋 Live Manifest Ledger</div>
+            <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Your Saved Forwarding Slips</div>
+            
+            <div class="tracking-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Route / Slip Info</th>
+                            <th>Target Date</th>
+                            <th>Status</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="trackingTableBody">
+                        <!-- Filled via JavaScript Engine -->
+                    </tbody>
+                </table>
             </div>
-            <div class="budget-box">
-                <span class="widget-label">Total Spent</span>
-                <div id="totalSpentBalance" class="budget-amount" style="color: #fb5607; padding-top: 5px;">£0.00</div>
-            </div>
-            <div class="budget-box">
-                <span class="widget-label">Per Person Spend</span>
-                <div id="perPersonSpent" class="budget-amount" style="color: #3a86ff; padding-top: 5px;">£0.00</div>
-            </div>
-            <div class="budget-box">
-                <span class="widget-label">Remaining Balance</span>
-                <div id="remainingBalance" class="budget-amount" style="color: #06d6a0; padding-top: 5px;">£2,000.00</div>
-            </div>
         </div>
-
-        <div class="budget-input-row">
-            <input type="text" id="expName" class="budget-input" placeholder="Item (e.g., Ramen)">
-            <input type="number" id="expAmount" class="budget-input" placeholder="£ Amount">
-            <button class="budget-btn" onclick="addExpense()">Add</button>
-        </div>
-
-        <div class="expense-table-container">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Item</th>
-                        <th>Amount</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody id="expenseTableBody"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Food Guide -->
-    <div class="card" style="border-left-color: #06d6a0;">
-        <div class="date">🍣 Food Guide</div>
-        <div class="location">Must Book + Hidden Gems</div>
-
-        <div class="tabs">
-            <button class="tab-button active" data-target="tokyoFood" onclick="handleTabClick(event, 'Tokyo')">Tokyo</button>
-            <button class="tab-button" data-target="osakaFood" onclick="handleTabClick(event, 'Osaka')">Osaka</button>
-            <button class="tab-button" data-target="kyotoFood" onclick="handleTabClick(event, 'Kyoto')">Kyoto</button>
-            <button class="tab-button" data-target="hakoneFood" onclick="handleTabClick(event, 'Hakone')">Hakone</button>
-        </div>
-
-        <div id="tokyoFood" class="tab-content active">
-            <div class="section-subtitle">🔥 Must Book</div>
-            <ul class="food-list">
-                <li>🍱 Gyukatsu Motomura (Shibuya)</li>
-                <li>🍣 Sushi no Midori (Shibuya)</li>
-                <li>🍜 Chukasoba Ginza Hachigo</li>
-            </ul>
-            <div class="section-subtitle">💎 Hidden Gems</div>
-            <ul class="food-list">
-                <li>🥢 Fuunji (Tsukemen)</li>
-                <li>🥩 Tonki (Tonkatsu)</li>
-                <li>🍞 Cafe Aaliya (French Toast)</li>
-                <li>🍋 Afuri (Yuzu Ramen)</li>
-            </ul>
-        </div>
-
-        <div id="osakaFood" class="tab-content">
-            <div class="section-subtitle">🔥 Must Book</div>
-            <ul class="food-list">
-                <li>🥞 Mizuno (Okonomiyaki)</li>
-                <li>🥩 Yakiniku M Hozenji</li>
-                <li>🍢 Kushikatsu Daruma</li>
-            </ul>
-            <div class="section-subtitle">💎 Hidden Gems</div>
-            <ul class="food-list">
-                <li>🥢 Udon Shin</li>
-                <li>🔥 Hajime Yakiniku</li>
-                <li>🐙 Takoyaki Wanaka</li>
-            </ul>
-        </div>
-
-        <div id="kyotoFood" class="tab-content">
-            <div class="section-subtitle">🔥 Must Book</div>
-            <ul class="food-list">
-                <li>🍳 Kichi Kichi Omurice</li>
-                <li>🍕 Monk</li>
-                <li>🍱 Gion Karyo</li>
-            </ul>
-            <div class="section-subtitle">💎 Hidden Gems</div>
-            <ul class="food-list">
-                <li>🥢 Omen Kodai-ji</li>
-                <li>🍜 Men-ya Inoichi</li>
-                <li>🥞 Panel Cafe</li>
-                <li>🍡 Nishiki Market</li>
-            </ul>
-        </div>
-
-        <div id="hakoneFood" class="tab-content">
-            <div class="section-subtitle">🔥 Must Do</div>
-            <ul class="food-list">
-                <li>🍶 Amazake Chaya</li>
-            </ul>
-            <div class="section-subtitle">💎 Hidden Gems</div>
-            <ul class="food-list">
-                <li>🥩 Tamura Ginkatsutei</li>
-                <li>🥢 Lake Ashi Local Soba Spots</li>
-            </ul>
-        </div>
-    </div>
-
-    <!-- Itinerary Planner -->
-    <div class="card" style="border-left-color: #118ab2;">
-        <div class="date">🗓 Itinerary Planner</div>
-        <div class="location">Your Destinational Plans</div>
-
-        <div class="tabs">
-            <button class="tab-button active" data-target="tokyoItinerary" onclick="handleTabClick(event, 'Tokyo')">Tokyo</button>
-            <button class="tab-button" data-target="osakaItinerary" onclick="handleTabClick(event, 'Osaka')">Osaka</button>
-            <button class="tab-button" data-target="kyotoItinerary" onclick="handleTabClick(event, 'Kyoto')">Kyoto</button>
-            <button class="tab-button" data-target="hakoneItinerary" onclick="handleTabClick(event, 'Hakone')">Hakone</button>
-        </div>
-
-        <div id="tokyoItinerary" class="tab-content active">
-            <div class="section-subtitle">First Stint (Arrival)</div>
-            <ul class="food-list">
-                <li><strong>19 June:</strong> ⌚ AP Watch Museum 17:00pm</li>
-                <li><strong>20 June:</strong> ⚾ Baseball Game Tokyo Dome 14:00</li>
-            </ul>
-            <div class="section-subtitle">Second Stint (Grand Finale)</div>
-            <ul class="food-list">
-                <li><strong>29 June:</strong> 🌆 Return, Shinjuku, teamLabs Borderless 18:30</li>
-                <li><strong>30 June:</strong> ⚡ Akihabara, teamLab Planets</li>
-                <li><strong>1 July:</strong> 🏮 Asakusa, Senso-ji, Skytree</li>
-                <li><strong>2 July:</strong> 🛍 Shopping, Imperial Palace, Shibuya</li>
-                <li><strong>3 July:</strong> ✈️ Departure</li>
-            </ul>
-        </div>
-
-        <div id="osakaItinerary" class="tab-content">
-            <div class="section-subtitle">Osaka Exploration</div>
-            <ul class="food-list">
-                <li><strong>21 June:</strong> 🐙 Travel + Dotonbori Food Night</li>
-                <li><strong>22 June:</strong> 🏰 Universal Studios Japan</li>
-                <li><strong>23 June:</strong> 🏯 Osaka Castle, Kuromon Market, Shinsekai</li>
-            </ul>
-        </div>
-
-        <div id="kyotoItinerary" class="tab-content">
-            <div class="section-subtitle">Cultural Highlights</div>
-            <ul class="food-list">
-                <li><strong>24 June:</strong> 🦌 Nara or Kobe (optional), travel to Kyoto</li>
-                <li><strong>25 June:</strong> 🎋 Arashiyama Bamboo Grove, Monkey Park</li>
-                <li><strong>26 June:</strong> ⛩ Kiyomizu-dera, Gion, Higashiyama Streets</li>
-            </ul>
-        </div>
-
-        <div id="hakoneItinerary" class="tab-content">
-            <div class="section-subtitle">Relaxation & Scenic Views</div>
-            <ul class="food-list">
-                <li><strong>27 June:</strong> 🎨 Travel, Open Air Museum, onsen</li>
-                <li><strong>28 June:</strong> 🚠 Ropeway, Lake Ashi, Hakone Shrine</li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="group-heading">🏨 Hotels</div>
-
-    <!-- Hotel List -->
-    <div class="card">
-        <div class="date">1. 19 June - 21 June (2 Nights)</div>
-        <div class="location">Tokyo: Tokyo-to <span class="tag">Arrival</span></div>
-        <div class="stay-info">
-            <span class="section-title">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</span>
-            <p style="margin:5px 0; font-size:0.85rem;">Address: Tokyo-to, Tokyo, Chuo-ku Kyobashi 1-3-6, 💰 £385</p>
-        </div>
-        <span class="section-title">Must Do:</span>
-        <ul>
-            <li>Explore Omoide Yokocho "Memory Lane" alleys.</li>
-            <li>Views from Tokyo Metropolitan Government Building.</li>
-        </ul>
-    </div>
-
-    <div class="card" style="border-left-color: #3a86ff;">
-        <div class="date">2. 21 June - 24 June (3 Nights)</div>
-        <div class="location">Osaka Honmachi <span class="tag">Food Capital</span></div>
-        <div class="stay-info">
-            <span class="section-title">🏨 The Lively Osaka Honmachi</span>
-            <p style="margin:5px 0; font-size:0.85rem;">541-0054 Osaka, Chuo-ku, Minami-Honmachi 1-5-11 • Near Sakaisuji-Hommachi Station • 💰 £277</p>
-        </div>
-        <span class="section-title">Must Do:</span>
-        <ul>
-            <li>Try Takoyaki and Okonomiyaki in Dotonbori.</li>
-            <li>Day trip to Nara Park to see the deer and Great Buddha.</li>
-        </ul>
-    </div>
-
-    <div class="card" style="border-left-color: #fb5607;">
-        <div class="date">3. 24 June - 27 June (3 Nights)</div>
-        <div class="location">Kyoto Higashiiru <span class="tag">Culture</span></div>
-        <div class="stay-info">
-            <span class="section-title">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</span>
-            <p style="margin:5px 0; font-size:0.85rem;">45-1, Hishiya-cho, Higashiiru, Higashinotoin, Sanjo-dori, Nakagyo-ku,Kyoto, 604-8131. 💰 £391</p>
-        </div>
-        <span class="section-title">Must Do:</span>
-        <ul>
-            <li>Walk through the Torii gates at Fushimi Inari.</li>
-            <li>Visit Arashiyama Bamboo Grove early morning.</li>
-        </ul>
-    </div>
-
-    <div class="card" style="border-left-color: #ffbe0b;">
-        <div class="date">4. 27 June - 29 June (2 Nights)</div>
-        <div class="location">🏔 Hakone <span class="tag">Relax & Fuji</span></div>
-        <div class="stay-info">
-            <span class="section-title">🏨 Nol Hakone Myojindai</span>
-            <p style="margin:5px 0; font-size:0.85rem;">1488-205 Miyagino, Hakone, Ashigarashimo District, Kanagawa 250-0401, Japan 💰 £529</p>
-        </div>
-        <span class="section-title">Must Do:</span>
-        <ul>
-            <li>Ride the Hakone Ropeway for Mt. Fuji views.</li>
-            <li>Take the "Pirate Ship" cruise across Lake Ashi.</li>
-        </ul>
-    </div>
-
-    <div class="card">
-        <div class="date">5. 29 June - 03 July (4 Nights)</div>
-        <div class="location">Tokyo Shinjuku City<span class="tag">Mid-Luxury Finish</span></div>
-        <div class="stay-info">
-            <span class="section-title">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</span>
-            <p style="margin:5px 0; font-size:0.85rem;">KABUKICHO TOWER, 45F, 1 Chome-29-1 Kabukicho, Shinjuku City, Tokyo 160-0021, Japan 💰 £1,629</p>
-        </div>
-        <span class="section-title">Must Do:</span>
-        <ul>
-            <li>Breakfast at Tsukiji Outer Fish Market.</li>
-            <li>Digital art at teamLab Borderless.</li>
-            <li>Souvenir shopping at Ginza Itoya.</li>
-        </ul>
     </div>
 </div>
 
-<!-- Sticky FAB Trigger Button -->
+<!-- Sticky Popup Note Trigger -->
 <button class="scratchpad-fab" onclick="toggleScratchpad(true)">📝 Notes</button>
 
-<!-- Slide-Up Modal Scratchpad Framework -->
+<!-- Slide-Up Quick Scratchpad Overlay Frame -->
 <div id="scratchpadModal" class="modal-overlay" onclick="handleOutsideClick(event)">
     <div class="modal-content">
         <div class="modal-header">
@@ -779,7 +923,23 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // 1. Weather Data
+    // 1. Layout View Switching Controller
+    function switchLayout(layoutName) {
+        document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
+        document.querySelectorAll('.layout-btn').forEach(btn => btn.classList.remove('active'));
+        
+        if (layoutName === 'itinerary') {
+            document.getElementById('viewItinerary').classList.add('active');
+            document.getElementById('navItinerary').classList.add('active');
+            // Invalidate Map size to ensure Leaflet renders container coordinates correctly upon layout reveal
+            setTimeout(() => { map.invalidateSize(); }, 50);
+        } else if (layoutName === 'tracking') {
+            document.getElementById('viewTracking').classList.add('active');
+            document.getElementById('navTracking').classList.add('active');
+        }
+    }
+
+    // 2. Weather Simulation Manifest
     const travelWeather = {
         "Tokyo": "27°C • 🌧 High Humidity / Rainy Season Risk",
         "Osaka": "29°C • 🌦 Very Warm & Muggy",
@@ -788,7 +948,7 @@
     };
     document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
 
-    // 2. Scoped Navigation Tab Engine
+    // 3. Navigation Tab Script
     function handleTabClick(evt, cityName) {
         const button = evt.currentTarget;
         const parentCard = button.closest('.card');
@@ -809,16 +969,16 @@
         }
     }
 
-    // 3. Leaflet Mapping System
+    // 4. Leaflet Geolocation Map System
     const map = L.map('map').setView([35.15, 137.5], 6);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map);
 
     const locations = [
-        {name: "Stop 1: Tokyo (Toyosu)", coords: [35.6550, 139.7961], date: "June 19-21"},
-        {name: "Stop 2: Osaka", coords: [34.6937, 135.5023], date: "June 21-24"},
-        {name: "Stop 3: Kyoto", coords: [35.0116, 135.7681], date: "June 24-27"},
-        {name: "Stop 4: Hakone", coords: [35.2324, 139.1033], date: "June 27-29"},
-        {name: "Stop 5: Tokyo (Ginza)", coords: [35.6715, 139.7649], date: "June 29-July 3"}
+        {name: "Stop 1: Tokyo (Kyobashi)", coords: [35.6791, 139.7699], date: "June 19-21"},
+        {name: "Stop 2: Osaka Honmachi", coords: [34.6814, 135.5065], date: "June 21-24"},
+        {name: "Stop 3: Kyoto Nakagyo", coords: [35.0088, 135.7607], date: "June 24-27"},
+        {name: "Stop 4: Hakone Miyagino", coords: [35.2477, 139.0494], date: "June 27-29"},
+        {name: "Stop 5: Tokyo (Kabukicho)", coords: [35.6954, 139.7018], date: "June 29-July 3"}
     ];
 
     const latlngs = [];
@@ -833,7 +993,7 @@
     });
     L.polyline(latlngs, {color: '#d90429', weight: 3, opacity: 0.7, dashArray: '5, 10'}).addTo(map);
 
-    // 4. Currency Math Converter
+    // 5. Currency Converter Calculations
     const RATE = 213.93; 
     function convertYenToGbp() {
         const yen = document.getElementById('yenInput').value;
@@ -846,7 +1006,7 @@
         document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
     }
 
-    // 5. Budget Tracker Functions
+    // 6. Budget Management Engine
     let expenses = [];
     try {
         expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
@@ -906,12 +1066,95 @@
         updateBudget();
     }
 
-    // 6. Refactored Popup Scratchpad Engine
+    // 7. Luggage Forwarding Data Persistence & Tracking Engine
+    let shipments = [];
+    try {
+        shipments = JSON.parse(localStorage.getItem('japan_shipments')) || [
+            // Sample initialization values matching itinerary context flow
+            { slip: "4051-9231-5023", carrier: "Yamato (Black Cat)", route: "Kyoto Hotel ➔ Tokyo Bellustar", eta: "29 June Morning", status: "In Transit" }
+        ];
+    } catch(e) {
+        shipments = [];
+    }
+
+    function renderShipments() {
+        const tbody = document.getElementById('trackingTableBody');
+        tbody.innerHTML = '';
+        
+        let transitCount = 0;
+        let deliveredCount = 0;
+
+        shipments.forEach((ship, index) => {
+            if (ship.status === 'In Transit') transitCount++;
+            if (ship.status === 'Delivered') deliveredCount++;
+
+            const badgeClass = ship.status === 'In Transit' ? 'status-transit' : 'status-delivered';
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>
+                    <strong>${ship.route}</strong><br>
+                    <span style="font-size:0.75rem; color:var(--accent); font-family:monospace;">${ship.slip} (${ship.carrier})</span>
+                </td>
+                <td>${ship.eta}</td>
+                <td>
+                    <span class="tracking-badge ${badgeClass}" style="cursor:pointer;" onclick="toggleShipmentStatus(${index})" title="Click to toggle status">
+                        ${ship.status} 🔄
+                    </span>
+                </td>
+                <td style="text-align:right;"><button class="delete-btn" onclick="deleteShipment(${index})">×</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById('countTransit').innerText = transitCount;
+        document.getElementById('countDelivered').innerText = deliveredCount;
+    }
+
+    function addShipment() {
+        const slipInput = document.getElementById('trackNum');
+        const carrierInput = document.getElementById('trackCarrier');
+        const routeInput = document.getElementById('trackRoute');
+        const etaInput = document.getElementById('trackEta');
+
+        const slip = slipInput.value.trim();
+        const carrier = carrierInput.value;
+        const route = routeInput.value.trim();
+        const eta = etaInput.value.trim();
+
+        if (slip && route) {
+            shipments.push({ slip, carrier, route, eta, status: "In Transit" });
+            localStorage.setItem('japan_shipments', JSON.stringify(shipments));
+            
+            slipInput.value = '';
+            routeInput.value = '';
+            etaInput.value = '';
+            
+            renderShipments();
+        } else {
+            alert("Please complete the Tracking Number and Route fields before saving.");
+        }
+    }
+
+    function toggleShipmentStatus(index) {
+        shipments[index].status = shipments[index].status === 'In Transit' ? 'Delivered' : 'In Transit';
+        localStorage.setItem('japan_shipments', JSON.stringify(shipments));
+        renderShipments();
+    }
+
+    document.toggleShipmentStatus = toggleShipmentStatus;
+
+    function deleteShipment(index) {
+        shipments.splice(index, 1);
+        localStorage.setItem('japan_shipments', JSON.stringify(shipments));
+        renderShipments();
+    }
+
+    // 8. Popup Scratchpad Modal Handlers
     function toggleScratchpad(show) {
         const modal = document.getElementById('scratchpadModal');
         if (show) {
             modal.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevents background body scrolling
+            document.body.style.overflow = 'hidden';
         } else {
             modal.classList.remove('active');
             document.body.style.overflow = '';
@@ -943,7 +1186,7 @@
         }, 3000);
     }
 
-    // 7. Dual Time Zone Clock Engine
+    // 9. Clock Synchronizer Engine
     function updateClocks() {
         const now = new Date();
         const options = { hour: '2-digit', minute: '2-digit', hour12: false };
@@ -955,7 +1198,7 @@
         document.getElementById('tokyoTime').innerText = tyoStr;
     }
 
-    // 8. Flight Departure Countdown Engine
+    // 10. Live Countdown Timer Engine
     function updateCountdown() {
         const targetDate = new Date("2026-06-18T09:25:00+01:00");
         const now = new Date();
@@ -980,13 +1223,13 @@
         timerElement.innerText = `${days}d ${displayHours}h ${displayMinutes}m ${displaySeconds}s until departure`;
     }
 
-    // Centralized loop interval updates
+    // Interval Loops
     setInterval(function() {
         updateClocks();
         updateCountdown();
     }, 1000);
 
-    // Initial load sequences
+    // Onload Trigger Manifest Initialization
     window.onload = function() {
         const savedBudget = localStorage.getItem('japan_budget');
         if (savedBudget) {
@@ -994,6 +1237,7 @@
         }
         renderExpenses();
         updateBudget();
+        renderShipments();
         loadScratchpad();
         updateClocks();
         updateCountdown();
