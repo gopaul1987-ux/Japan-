@@ -148,7 +148,7 @@
         .calc-group:last-child { border-bottom: none; }
         .calc-input {
             width: 85%;
-            padding: 8px;
+            padding: 10px;
             border: 1px solid #ddd;
             border-radius: 8px;
             text-align: center;
@@ -194,6 +194,7 @@
             font-weight: 600;
             display: inline-flex;
             align-items: center;
+            min-height: 44px; /* Touch target baseline */
             gap: 4px;
         }
         .nav-link:hover {
@@ -244,6 +245,7 @@
             font-weight: bold;
             font-size: 0.95rem;
             width: 100%;
+            min-height: 48px;
         }
         .expense-table-container {
             max-height: 200px;
@@ -274,7 +276,9 @@
             color: #d90429;
             cursor: pointer;
             font-weight: bold;
-            padding: 4px 8px;
+            padding: 8px 12px;
+            font-size: 1rem;
+            min-height: 44px;
         }
 
         /* Tabs UI */
@@ -286,14 +290,15 @@
             flex-wrap: wrap;
         }
         .tab-button {
-            padding: 8px 12px;
+            padding: 10px 14px;
             border-radius: 8px;
             border: none;
             background: var(--tab-inactive);
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 600;
             color: var(--text-color);
+            min-height: 44px;
         }
         .tab-button.active {
             background: var(--primary);
@@ -373,6 +378,7 @@
         </div>
     </div>
 
+    <!-- Budget Tracker -->
     <div class="card" style="border-left-color: #7209b7;">
         <div class="date">💰 Budget & Expenditure</div>
         <div class="location">Live Trip Tracker</div>
@@ -411,24 +417,24 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody id="expenseTableBody">
-                    </tbody>
+                <tbody id="expenseTableBody"></tbody>
             </table>
         </div>
     </div>
 
+    <!-- Food Guide -->
     <div class="card" style="border-left-color: #06d6a0;">
         <div class="date">🍣 Food Guide</div>
         <div class="location">Must Book + Hidden Gems</div>
 
         <div class="tabs">
-            <button class="tab-button active" onclick="openTab(event, 'tokyoTab')">Tokyo</button>
-            <button class="tab-button" onclick="openTab(event, 'osakaTab')">Osaka</button>
-            <button class="tab-button" onclick="openTab(event, 'kyotoTab')">Kyoto</button>
-            <button class="tab-button" onclick="openTab(event, 'hakoneTab')">Hakone</button>
+            <button class="tab-button active" data-target="tokyoFood" onclick="handleTabClick(event, 'Tokyo')">Tokyo</button>
+            <button class="tab-button" data-target="osakaFood" onclick="handleTabClick(event, 'Osaka')">Osaka</button>
+            <button class="tab-button" data-target="kyotoFood" onclick="handleTabClick(event, 'Kyoto')">Kyoto</button>
+            <button class="tab-button" data-target="hakoneFood" onclick="handleTabClick(event, 'Hakone')">Hakone</button>
         </div>
 
-        <div id="tokyoTab" class="tab-content active">
+        <div id="tokyoFood" class="tab-content active">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
                 <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Gyukatsu+Motomura+Shibuya" target="_blank">🗺️ Gyukatsu Motomura (Shibuya)</a></li>
@@ -444,7 +450,7 @@
             </ul>
         </div>
 
-        <div id="osakaTab" class="tab-content">
+        <div id="osakaFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
                 <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Mizuno+Okonomiyaki+Osaka" target="_blank">🗺️ Mizuno (Okonomiyaki)</a></li>
@@ -459,7 +465,7 @@
             </ul>
         </div>
 
-        <div id="kyotoTab" class="tab-content">
+        <div id="kyotoFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
                 <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Kichi+Kichi+Omurice+Kyoto" target="_blank">🗺️ Kichi Kichi Omurice</a></li>
@@ -475,7 +481,7 @@
             </ul>
         </div>
 
-        <div id="hakoneTab" class="tab-content">
+        <div id="hakoneFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Do</div>
             <ul class="food-list">
                 <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Amazake+Chaya+Hakone" target="_blank">🗺️ Amazake Chaya</a></li>
@@ -488,18 +494,19 @@
         </div>
     </div>
 
+    <!-- Itinerary Planner -->
     <div class="card" style="border-left-color: #118ab2;">
         <div class="date">🗓 Itinerary Planner</div>
         <div class="location">Your Destinational Plans</div>
 
         <div class="tabs">
-            <button class="tab-button active" onclick="openTab(event, 'ItineraryTokyoTab', 'Tokyo')">Tokyo</button>
-            <button class="tab-button" onclick="openTab(event, 'ItineraryOsakaTab', 'Osaka')">Osaka</button>
-            <button class="tab-button" onclick="openTab(event, 'ItineraryKyotoTab', 'Kyoto')">Kyoto</button>
-            <button class="tab-button" onclick="openTab(event, 'ItineraryHakoneTab', 'Hakone')">Hakone</button>
+            <button class="tab-button active" data-target="tokyoItinerary" onclick="handleTabClick(event, 'Tokyo')">Tokyo</button>
+            <button class="tab-button" data-target="osakaItinerary" onclick="handleTabClick(event, 'Osaka')">Osaka</button>
+            <button class="tab-button" data-target="kyotoItinerary" onclick="handleTabClick(event, 'Kyoto')">Kyoto</button>
+            <button class="tab-button" data-target="hakoneItinerary" onclick="handleTabClick(event, 'Hakone')">Hakone</button>
         </div>
 
-        <div id="ItineraryTokyoTab" class="tab-content active">
+        <div id="tokyoItinerary" class="tab-content active">
             <div class="section-subtitle">First Stint (Arrival)</div>
             <ul class="food-list">
                 <li><strong>19 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Audemars+Piguet+House+Tokyo" target="_blank">🗺️ AP Watch Museum 17:00pm</a></li>
@@ -515,7 +522,7 @@
             </ul>
         </div>
 
-        <div id="ItineraryOsakaTab" class="tab-content">
+        <div id="osakaItinerary" class="tab-content">
             <div class="section-subtitle">Osaka Exploration</div>
             <ul class="food-list">
                 <li><strong>21 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Dotonbori+Osaka" target="_blank">🗺️ Travel + Dotonbori Food Night</a></li>
@@ -524,7 +531,7 @@
             </ul>
         </div>
 
-        <div id="ItineraryKyotoTab" class="tab-content">
+        <div id="kyotoItinerary" class="tab-content">
             <div class="section-subtitle">Cultural Highlights</div>
             <ul class="food-list">
                 <li><strong>24 June:</strong> Nara or Kobe (optional), travel to Kyoto</li>
@@ -533,7 +540,7 @@
             </ul>
         </div>
 
-        <div id="ItineraryHakoneTab" class="tab-content">
+        <div id="hakoneItinerary" class="tab-content">
             <div class="section-subtitle">Relaxation & Scenic Views</div>
             <ul class="food-list">
                 <li><strong>27 June:</strong> Travel, Open Air Museum, onsen</li>
@@ -544,6 +551,7 @@
 
     <div class="group-heading">🏨 Hotels</div>
 
+    <!-- Hotel List -->
     <div class="card">
         <div class="date">1. 19 June - 21 June (2 Nights)</div>
         <div class="location">Tokyo: Tokyo-to <span class="tag">Arrival</span></div>
@@ -637,19 +645,24 @@
     };
     document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
 
-    // 2. Navigation Tab Engine
-    function openTab(evt, tabName, cityName) {
-        const parentCard = evt.currentTarget.closest('.card');
-        const cardContents = parentCard.querySelectorAll(".tab-content");
-        const cardButtons = parentCard.querySelectorAll(".tab-button");
+    // 2. Scoped Navigation Tab Engine
+    function handleTabClick(evt, cityName) {
+        const button = evt.currentTarget;
+        const parentCard = button.closest('.card');
+        const targetId = button.getAttribute('data-target');
 
-        cardContents.forEach(c => c.classList.remove("active"));
-        cardButtons.forEach(b => b.classList.remove("active"));
+        // Scoped transitions inside this specific card container only
+        parentCard.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
+        parentCard.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
 
-        document.getElementById(tabName).classList.add("active");
-        evt.currentTarget.classList.add("active");
+        button.classList.add("active");
+        const targetContent = document.getElementById(targetId);
+        if (targetContent) {
+            targetContent.classList.add("active");
+        }
 
-        if (cityName && travelWeather && travelWeather[cityName]) {
+        // Global live update for weather view widget
+        if (cityName && travelWeather[cityName]) {
             document.getElementById("weatherBox").innerHTML = travelWeather[cityName];
             document.getElementById("weatherTitle").innerText = cityName + " Weather";
         }
