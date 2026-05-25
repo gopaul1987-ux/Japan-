@@ -18,7 +18,6 @@
             --link-color: #0077b6;
         }
 
-        /* Seamless Native Dark Mode Styling */
         @media (prefers-color-scheme: dark) {
             :root {
                 --primary: #ef233c;
@@ -31,59 +30,22 @@
                 --border: #333333;
                 --link-color: #4ea8de;
             }
-            body {
-                background-color: var(--bg);
-                color: var(--text-color);
-            }
-            .card {
+            body { background-color: var(--bg); color: var(--text-color); }
+            .card, .widget-card {
                 background: var(--card-bg) !important;
                 color: var(--text-color) !important;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
             }
-            .widget-card {
-                background: var(--card-bg) !important;
-                color: var(--text-color) !important;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-            }
-            .stay-info {
-                background: #252525 !important;
-                border: 1px solid #333 !important;
-                color: var(--text-color) !important;
-            }
-            .tab-button {
-                background: var(--tab-inactive) !important;
-                color: var(--text-color) !important;
-            }
-            .tab-button.active {
-                background: var(--primary) !important;
-                color: white !important;
-            }
-            .calc-input, .budget-input, .budget-select {
-                background: #252525 !important;
-                border: 1px solid #444 !important;
-                color: #fff !important;
-            }
-            .section-title {
-                color: #fff !important;
-            }
-            .tag {
-                background: #333 !important;
-                color: #fff !important;
-            }
-            table th {
-                background: #252525 !important;
-                color: #fff !important;
-            }
-            table td {
-                border-bottom: 1px solid #333 !important;
-            }
-            /* Dark-mode map tile inversion filter for native aesthetic */
-            .leaflet-tile-container {
-                filter: brightness(0.6) invert(1) contrast(95%) hue-rotate(180deg);
-            }
-            .leaflet-container {
-                background: #1a1a1a !important;
-            }
+            .stay-info { background: #252525 !important; border: 1px solid #333 !important; color: var(--text-color) !important; }
+            .tab-button { background: var(--tab-inactive) !important; color: var(--text-color) !important; }
+            .tab-button.active { background: var(--primary) !important; color: white !important; }
+            .calc-input, .budget-input { background: #252525 !important; border: 1px solid #444 !important; color: #fff !important; }
+            .section-title { color: #fff !important; }
+            .tag { background: #333 !important; color: #fff !important; }
+            table th { background: #252525 !important; color: #fff !important; }
+            table td { border-bottom: 1px solid #333 !important; }
+            .leaflet-tile-container { filter: brightness(0.6) invert(1) contrast(95%) hue-rotate(180deg); }
+            .leaflet-container { background: #1a1a1a !important; }
         }
 
         body {
@@ -122,251 +84,44 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             z-index: 10;
         }
-        .widget-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .widget-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            text-align: center;
-            box-sizing: border-box;
-        }
-        .widget-label {
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .calc-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .calc-group {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
-        }
+        .widget-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .widget-card { background: var(--card-bg); border-radius: 15px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; box-sizing: border-box; }
+        .widget-label { font-size: 0.7rem; font-weight: bold; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .calc-container { display: flex; flex-direction: column; gap: 10px; }
+        .calc-group { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
         .calc-group:last-child { border-bottom: none; }
-        .calc-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 1rem;
-            margin-bottom: 5px;
-            box-sizing: border-box;
-        }
-        .result-text {
-            font-weight: bold;
-            color: #d90429;
-            font-size: 1.1rem;
-        }
-        .card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 6px solid var(--primary);
-            box-sizing: border-box;
-            width: 100%;
-            overflow: hidden;
-        }
+        .calc-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; text-align: center; font-size: 1rem; margin-bottom: 5px; box-sizing: border-box; }
+        .result-text { font-weight: bold; color: #d90429; font-size: 1.1rem; }
+        .card { background: var(--card-bg); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 6px solid var(--primary); box-sizing: border-box; width: 100%; overflow: hidden; }
         .date { font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 0.85rem; }
         .location { font-size: 1.4rem; font-weight: 800; margin: 5px 0; }
         .stay-info { background: #f8f9fa; padding: 12px; border-radius: 8px; margin: 10px 0; border: 1px solid #dee2e6; }
         .section-title { font-size: 0.9rem; font-weight: bold; margin-top: 10px; color: var(--text-color); display: block; }
         .tag { font-size: 0.7rem; background: #eee; padding: 2px 6px; border-radius: 4px; vertical-align: middle; }
-        .custom-number-icon {
-            background-color: #d90429;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 2px solid white;
-        }
-
-        /* Interactive Navigation Links */
-        .nav-link {
-            color: var(--link-color);
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            min-height: 44px; /* Fluid touch target padding */
-            gap: 4px;
-        }
-        .nav-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Fixed Mobile Budget Form Layout */
-        .budget-summary {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .budget-box {
-            background: var(--tab-inactive);
-            padding: 10px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .budget-amount {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        .budget-input-row {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .budget-input, .budget-select {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .budget-select {
-            background-color: var(--card-bg);
-            color: var(--text-color);
-        }
-        .budget-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.95rem;
-            width: 100%;
-            min-height: 48px;
-        }
-        .expense-table-container {
-            max-height: 250px;
-            overflow-y: auto;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            width: 100%;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            text-align: left;
-        }
-        table th {
-            background: #eee;
-            padding: 8px;
-            position: sticky;
-            top: 0;
-            z-index: 5;
-        }
-        table td {
-            padding: 8px;
-            border-bottom: 1px solid var(--border);
-            vertical-align: middle;
-        }
-        .table-input, .table-select {
-            width: 100%;
-            padding: 6px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            box-sizing: border-box;
-            background: var(--card-bg);
-            color: var(--text-color);
-            font-size: 0.85rem;
-        }
-        .action-btn {
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: bold;
-            padding: 6px 8px;
-            font-size: 0.85rem;
-            min-height: 38px;
-            border-radius: 4px;
-        }
-        .edit-btn { color: #0077b6; }
-        .save-btn { color: #06d6a0; }
-        .delete-btn { color: #d90429; }
-
-        /* Tabs UI */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        .tab-button {
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: none;
-            background: var(--tab-inactive);
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-color);
-            min-height: 44px;
-        }
-        .tab-button.active {
-            background: var(--primary);
-            color: white;
-        }
-        .tab-content {
-            display: none;
-            font-size: 0.9rem;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .food-list {
-            padding-left: 20px;
-            margin-top: 5px;
-        }
+        .custom-number-icon { background-color: #d90429; color: white; font-weight: bold; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid white; }
+        .nav-link { color: var(--link-color); text-decoration: none; font-weight: 600; display: inline-flex; align-items: center; min-height: 44px; gap: 4px; }
+        .nav-link:hover { text-decoration: underline; }
+        .budget-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; text-align: center; }
+        .budget-box { background: var(--tab-inactive); padding: 10px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; }
+        .budget-amount { font-size: 1.2rem; font-weight: bold; }
+        .budget-input-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .budget-input { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; width: 100%; box-sizing: border-box; }
+        .budget-btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.95rem; width: 100%; min-height: 48px; }
+        .expense-table-container { max-height: 200px; overflow-y: auto; border-radius: 8px; border: 1px solid var(--border); width: 100%; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+        table th { background: #eee; padding: 8px; position: sticky; top: 0; }
+        table td { padding: 8px; border-bottom: 1px solid var(--border); }
+        .delete-btn { background: none; border: none; color: #d90429; cursor: pointer; font-weight: bold; padding: 8px 12px; font-size: 1rem; min-height: 44px; }
+        .tabs { display: flex; gap: 8px; margin-bottom: 10px; margin-top: 10px; flex-wrap: wrap; }
+        .tab-button { padding: 10px 14px; border-radius: 8px; border: none; background: var(--tab-inactive); cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--text-color); min-height: 44px; }
+        .tab-button.active { background: var(--primary); color: white; }
+        .tab-content { display: none; font-size: 0.9rem; }
+        .tab-content.active { display: block; }
+        .food-list { padding-left: 20px; margin-top: 5px; }
         .food-list li { margin-bottom: 6px; }
-        .section-subtitle {
-            font-weight: bold;
-            margin-top: 12px;
-            font-size: 0.95rem;
-        }
-
-        /* Group Heading Style */
-        .group-heading {
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin: 25px 0 10px 5px;
-            color: var(--text-color);
-        }
-
-        /* Mobile Viewport Adjustments */
-        @media (max-width: 600px) { 
-            .widget-row { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 480px) {
-            .budget-summary {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
+        .section-subtitle { font-weight: bold; margin-top: 12px; font-size: 0.95rem; }
+        .group-heading { font-size: 1.4rem; font-weight: 800; margin: 25px 0 10px 5px; color: var(--text-color); }
+        @media (max-width: 600px) { .widget-row { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -432,14 +187,6 @@
 
         <div class="budget-input-row">
             <input type="text" id="expName" class="budget-input" placeholder="Item (e.g., Ramen)">
-            <select id="expCategory" class="budget-select">
-                <option value="Food">🍣 Food</option>
-                <option value="Transport">🚄 Transport</option>
-                <option value="Hotel">🏨 Hotel</option>
-                <option value="Activities">🎟️ Activities</option>
-                <option value="Shopping">🛍️ Shopping</option>
-                <option value="Other">✨ Other</option>
-            </select>
             <input type="number" id="expAmount" class="budget-input" placeholder="£ Amount">
             <button class="budget-btn" onclick="addExpense()">Add</button>
         </div>
@@ -449,9 +196,8 @@
                 <thead>
                     <tr>
                         <th>Item</th>
-                        <th>Category</th>
                         <th>Amount</th>
-                        <th style="width: 90px; text-align: center;">Actions</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="expenseTableBody"></tbody>
@@ -474,59 +220,59 @@
         <div id="tokyoFood" class="tab-content active">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Gyukatsu+Motomura+Shibuya" target="_blank">🗺️ Gyukatsu Motomura (Shibuya)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Sushi+no+Midori+Shibuya" target="_blank">🗺️ Sushi no Midori (Shibuya)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Chukasoba+Ginza+Hachigo" target="_blank">🗺️ Chukasoba Ginza Hachigo</a></li>
+                <li>📌 Gyukatsu Motomura (Shibuya)</li>
+                <li>📌 Sushi no Midori (Shibuya)</li>
+                <li>📌 Chukasoba Ginza Hachigo</li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Fuunji+Shinjuku" target="_blank">🗺️ Fuunji (Tsukemen)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Tonki+Meguro+Tokyo" target="_blank">🗺️ Tonki (Tonkatsu)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Cafe+Aaliya+Shinjuku" target="_blank">🗺️ Cafe Aaliya (French Toast)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Afuri+Harajuku+Tokyo" target="_blank">🗺️ Afuri (Yuzu Ramen)</a></li>
+                <li>💎 Fuunji (Tsukemen)</li>
+                <li>💎 Tonki (Tonkatsu)</li>
+                <li>💎 Cafe Aaliya (French Toast)</li>
+                <li>💎 Afuri (Yuzu Ramen)</li>
             </ul>
         </div>
 
         <div id="osakaFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Mizuno+Okonomiyaki+Osaka" target="_blank">🗺️ Mizuno (Okonomiyaki)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Yakiniku+M+Hozenji+Osaka" target="_blank">🗺️ Yakiniku M Hozenji</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Kushikatsu+Daruma+Dotombori" target="_blank">🗺️ Kushikatsu Daruma</a></li>
+                <li>📌 Mizuno (Okonomiyaki)</li>
+                <li>📌 Yakiniku M Hozenji</li>
+                <li>📌 Kushikatsu Daruma</li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Udon+Shin+Osaka" target="_blank">🗺️ Udon Shin</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Hajime+Yakiniku+Osaka" target="_blank">🗺️ Hajime Yakiniku</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Takoyaki+Wanaka+Dotonbori" target="_blank">🗺️ Takoyaki Wanaka</a></li>
+                <li>💎 Udon Shin</li>
+                <li>💎 Hajime Yakiniku</li>
+                <li>💎 Takoyaki Wanaka</li>
             </ul>
         </div>
 
         <div id="kyotoFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Kichi+Kichi+Omurice+Kyoto" target="_blank">🗺️ Kichi Kichi Omurice</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Restaurant+Monk+Kyoto" target="_blank">🗺️ Monk</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Gion+Karyo+Kyoto" target="_blank">🗺️ Gion Karyo</a></li>
+                <li>📌 Kichi Kichi Omurice</li>
+                <li>📌 Monk</li>
+                <li>📌 Gion Karyo</li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Omen+Kodai-ji+Kyoto" target="_blank">🗺️ Omen Kodai-ji</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Men-ya+Inoichi+Kyoto" target="_blank">🗺️ Men-ya Inoichi</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Panel+Cafe+Kyoto" target="_blank">🗺️ Panel Cafe</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Nishiki+Market+Kyoto" target="_blank">🗺️ Nishiki Market</a></li>
+                <li>💎 Omen Kodai-ji</li>
+                <li>💎 Men-ya Inoichi</li>
+                <li>💎 Panel Cafe</li>
+                <li>💎 Nishiki Market</li>
             </ul>
         </div>
 
         <div id="hakoneFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Do</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Amazake+Chaya+Hakone" target="_blank">🗺️ Amazake Chaya</a></li>
+                <li>📌 Amazake Chaya</li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Tamura+Ginkatsutei+Hakone" target="_blank">🗺️ Tamura Ginkatsutei</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Lake+Ashi+Soba+Hakone" target="_blank">🗺️ Lake Ashi Local Soba Spots</a></li>
+                <li>💎 Tamura Ginkatsutei</li>
+                <li>💎 Lake Ashi Local Soba Spots</li>
             </ul>
         </div>
     </div>
@@ -546,24 +292,24 @@
         <div id="tokyoItinerary" class="tab-content active">
             <div class="section-subtitle">First Stint (Arrival)</div>
             <ul class="food-list">
-                <li><strong>19 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Audemars+Piguet+House+Tokyo" target="_blank">🗺️ AP Watch Museum 17:00pm</a></li>
-                <li><strong>20 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Tokyo+Dome" target="_blank">🗺️ Baseball Game Tokyo Dome 14:00</a></li>
+                <li><strong>19 June:</strong> 🏎️ AP Watch Museum 17:00pm</li>
+                <li><strong>20 June:</strong> ⚾ Baseball Game Tokyo Dome 14:00</li>
             </ul>
             <div class="section-subtitle">Second Stint (Grand Finale)</div>
             <ul class="food-list">
-                <li><strong>29 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=teamLab+Borderless+Azabudai+Hills+Tokyo" target="_blank">🗺️ Return, Shinjuku, teamLabs Borderless 18:30</a></li>
-                <li><strong>30 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=teamLab+Planets+Toyosu+Tokyo" target="_blank">🗺️ Akihabara, teamLab Planets</a></li>
-                <li><strong>1 July:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Asakusa+Tokyo" target="_blank">🗺️ Asakusa, Senso-ji, Skytree</a></li>
-                <li><strong>2 July:</strong> Shopping, Imperial Palace, Shibuya</li>
-                <li><strong>3 July:</strong> Departure</li>
+                <li><strong>29 June:</strong> 🖼️ Return, Shinjuku, teamLabs Borderless 18:30</li>
+                <li><strong>30 June:</strong> ⚡ Akihabara, teamLab Planets</li>
+                <li><strong>1 July:</strong> 🏮 Asakusa, Senso-ji, Skytree</li>
+                <li><strong>2 July:</strong> 🛍️ Shopping, Imperial Palace, Shibuya</li>
+                <li><strong>3 July:</strong> ✈️ Departure</li>
             </ul>
         </div>
 
         <div id="osakaItinerary" class="tab-content">
             <div class="section-subtitle">Osaka Exploration</div>
             <ul class="food-list">
-                <li><strong>21 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Dotonbori+Osaka" target="_blank">🗺️ Travel + Dotonbori Food Night</a></li>
-                <li><strong>22 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Universal+Studios+Japan+Osaka" target="_blank">🗺️ Universal Studios Japan</a></li>
+                <li><strong>21 June:</strong> 🧳 Travel + Dotonbori Food Night</li>
+                <li><strong>22 June:</strong> 🏰 Universal Studios Japan</li>
                 <li><strong>23 June:</strong> Osaka Castle, Kuromon Market, Shinsekai</li>
             </ul>
         </div>
@@ -572,8 +318,8 @@
             <div class="section-subtitle">Cultural Highlights</div>
             <ul class="food-list">
                 <li><strong>24 June:</strong> Nara or Kobe (optional), travel to Kyoto</li>
-                <li><strong>25 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Arashiyama+Bamboo+Grove+Kyoto" target="_blank">🗺️ Arashiyama Bamboo Grove, Monkey Park</a></li>
-                <li><strong>26 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Kiyomizu-dera+Kyoto" target="_blank">🗺️ Kiyomizu-dera, Gion, Higashiyama Streets</a></li>
+                <li><strong>25 June:</strong> 🎋 Arashiyama Bamboo Grove, Monkey Park</li>
+                <li><strong>26 June:</strong> ⛩️ Kiyomizu-dera, Gion, Higashiyama Streets</li>
             </ul>
         </div>
 
@@ -581,7 +327,7 @@
             <div class="section-subtitle">Relaxation & Scenic Views</div>
             <ul class="food-list">
                 <li><strong>27 June:</strong> Travel, Open Air Museum, onsen</li>
-                <li><strong>28 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Hakone+Ropeway" target="_blank">🗺️ Ropeway, Lake Ashi, Hakone Shrine</a></li>
+                <li><strong>28 June:</strong> 🚠 Ropeway, Lake Ashi, Hakone Shrine</li>
             </ul>
         </div>
     </div>
@@ -593,9 +339,7 @@
         <div class="date">1. 19 June - 21 June (2 Nights)</div>
         <div class="location">Tokyo: Tokyo-to <span class="tag">Arrival</span></div>
         <div class="stay-info">
-            <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Mitsui+Garden+Hotel+Kyobashi+Tokyo" target="_blank">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</a>
-            </span>
+            <span class="section-title">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</span>
             <p style="margin:5px 0; font-size:0.85rem;">Address: Tokyo-to, Tokyo, Chuo-ku Kyobashi 1-3-6, 💰 £385</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -609,9 +353,7 @@
         <div class="date">2. 21 June - 24 June (3 Nights)</div>
         <div class="location">Osaka Honmachi <span class="tag">Food Capital</span></div>
         <div class="stay-info">
-            <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=The+Lively+Osaka+Honmachi+Hotel" target="_blank">🏨 The Lively Osaka Honmachi</a>
-            </span>
+            <span class="section-title">🏨 The Lively Osaka Honmachi</span>
             <p style="margin:5px 0; font-size:0.85rem;">541-0054 Osaka, Chuo-ku, Minami-Honmachi 1-5-11 • Near Sakaisuji-Hommachi Station • 💰 £277</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -625,9 +367,7 @@
         <div class="date">3. 24 June - 27 June (3 Nights)</div>
         <div class="location">Kyoto Higashiiru <span class="tag">Culture</span></div>
         <div class="stay-info">
-            <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Mitsui+Garden+Hotel+Kyoto+Sanjo+Premier" target="_blank">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</a>
-            </span>
+            <span class="section-title">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</span>
             <p style="margin:5px 0; font-size:0.85rem;">45-1, Hishiya-cho, Higashiiru, Higashinotoin, Sanjo-dori, Nakagyo-ku,Kyoto, 604-8131. 💰 £391</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -641,9 +381,7 @@
         <div class="date">4. 27 June - 29 June (2 Nights)</div>
         <div class="location">🏔 Hakone <span class="tag">Relax & Fuji</span></div>
         <div class="stay-info">
-            <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Nol+Hakone+Myojindai" target="_blank">🏨 Nol Hakone Myojindai</a>
-            </span>
+            <span class="section-title">🏨 Nol Hakone Myojindai</span>
             <p style="margin:5px 0; font-size:0.85rem;">1488-205 Miyagino, Hakone, Ashigarashimo District, Kanagawa 250-0401, Japan 💰 £529</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -657,9 +395,7 @@
         <div class="date">5. 29 June - 03 July (4 Nights)</div>
         <div class="location">Tokyo Shinjuku City<span class="tag">Mid-Luxury Finish</span></div>
         <div class="stay-info">
-            <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=BELLUSTAR+TOKYO+Pan+Pacific+Hotel" target="_blank">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</a>
-            </span>
+            <span class="section-title">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</span>
             <p style="margin:5px 0; font-size:0.85rem;">KABUKICHO TOWER, 45F, 1 Chome-29-1 Kabukicho, Shinjuku City, Tokyo 160-0021, Japan 💰 £1,629</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -688,7 +424,6 @@
         const parentCard = button.closest('.card');
         const targetId = button.getAttribute('data-target');
 
-        // Scoped transitions inside this specific card container only
         parentCard.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
         parentCard.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
 
@@ -698,7 +433,6 @@
             targetContent.classList.add("active");
         }
 
-        // Global live update for weather view widget
         if (cityName && travelWeather[cityName]) {
             document.getElementById("weatherBox").innerHTML = travelWeather[cityName];
             document.getElementById("weatherTitle").innerText = cityName + " Weather";
@@ -742,154 +476,70 @@
         document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
     }
 
-    // 5. Cache Storage Systems
+    // 5. Budget Tracker Storage Systems
     let expenses = [];
-    let editTaskId = null; // Track row index being edited
-
     try {
-        let rawData = localStorage.getItem('japan_expenses');
-        expenses = rawData ? JSON.parse(rawData) : [];
-        
-        // Backward-compatibility: ensure older stored expenses have a category field
-        expenses.forEach(exp => {
-            if (!exp.category) exp.category = "Food";
-        });
+        expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
     } catch(e) {
         expenses = [];
     }
 
-    function saveToLocalStorage() {
-        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
-    }
-
-    function calculateBalances() {
-        let totalBudget = parseFloat(document.getElementById('totalBudgetInput').value) || 0;
-        let totalSpent = expenses.reduce((sum, exp) => sum + parseFloat(exp.amount || 0), 0);
-        let balance = totalBudget - totalSpent;
-        let splitSpend = totalSpent / 2;
-
-        document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        document.getElementById('perPersonSpent').innerText = "£" + splitSpend.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        document.getElementById('remainingBalance').innerText = "£" + balance.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        
-        // Dynamically color remaining balance alert
-        document.getElementById('remainingBalance').style.color = balance < 0 ? "#d90429" : "#06d6a0";
-    }
-
     function updateBudget() {
-        calculateBalances();
+        const totalBudget = parseFloat(document.getElementById('totalBudgetInput').value) || 0;
+        let totalSpent = 0;
+        
+        expenses.forEach(exp => {
+            totalSpent += exp.amount;
+        });
+
+        const remaining = totalBudget - totalSpent;
+        const perPerson = totalSpent / 2;
+
+        document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toFixed(2);
+        document.getElementById('perPersonSpent').innerText = "£" + perPerson.toFixed(2);
+        document.getElementById('remainingBalance').innerText = "£" + remaining.toFixed(2);
+        
+        renderExpenses();
+    }
+
+    function addExpense() {
+        const nameInput = document.getElementById('expName');
+        const amountInput = document.getElementById('expAmount');
+        const name = nameInput.value.trim();
+        const amount = parseFloat(amountInput.value) || 0;
+
+        if (name && amount > 0) {
+            expenses.push({ id: Date.now(), name: name, amount: amount });
+            localStorage.setItem('japan_expenses', JSON.stringify(expenses));
+            nameInput.value = '';
+            amountInput.value = '';
+            updateBudget();
+        }
+    }
+
+    function deleteExpense(id) {
+        expenses = expenses.filter(exp => exp.id !== id);
+        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
+        updateBudget();
     }
 
     function renderExpenses() {
         const tbody = document.getElementById('expenseTableBody');
         tbody.innerHTML = '';
-
-        expenses.forEach((exp, index) => {
+        expenses.forEach(exp => {
             const tr = document.createElement('tr');
-            
-            // Render inline input if this specific item is flagged for editing
-            if (editTaskId === index) {
-                tr.innerHTML = `
-                    <td><input type="text" id="inlineEditName" class="table-input" value="${exp.name}"></td>
-                    <td>
-                        <select id="inlineEditCategory" class="table-select">
-                            <option value="Food" ${exp.category === 'Food' ? 'selected' : ''}>Food</option>
-                            <option value="Transport" ${exp.category === 'Transport' ? 'selected' : ''}>Transport</option>
-                            <option value="Hotel" ${exp.category === 'Hotel' ? 'selected' : ''}>Hotel</option>
-                            <option value="Activities" ${exp.category === 'Activities' ? 'selected' : ''}>Activities</option>
-                            <option value="Shopping" ${exp.category === 'Shopping' ? 'selected' : ''}>Shopping</option>
-                            <option value="Other" ${exp.category === 'Other' ? 'selected' : ''}>Other</option>
-                        </select>
-                    </td>
-                    <td><input type="number" id="inlineEditAmount" class="table-input" value="${exp.amount}" step="any"></td>
-                    <td style="text-align: center; white-space: nowrap;">
-                        <button class="action-btn save-btn" onclick="saveInlineEdit(${index})">💾</button>
-                        <button class="action-btn delete-btn" onclick="cancelInlineEdit()">❌</button>
-                    </td>
-                `;
-            } else {
-                tr.innerHTML = `
-                    <td><strong>${exp.name}</strong></td>
-                    <td><span class="tag">${exp.category || 'Food'}</span></td>
-                    <td>£${parseFloat(exp.amount).toFixed(2)}</td>
-                    <td style="text-align: center; white-space: nowrap;">
-                        <button class="action-btn edit-btn" onclick="startInlineEdit(${index})">✏️</button>
-                        <button class="action-btn delete-btn" onclick="deleteExpense(${index})">🗑️</button>
-                    </td>
-                `;
-            }
+            tr.innerHTML = `
+                <td>${exp.name}</td>
+                <td>£${exp.amount.toFixed(2)}</td>
+                <td style="text-align:right;"><button class="delete-btn" onclick="deleteExpense(${exp.id})">×</button></td>
+            `;
             tbody.appendChild(tr);
         });
-
-        calculateBalances();
     }
 
-    function addExpense() {
-        const nameInput = document.getElementById('expName');
-        const catSelect = document.getElementById('expCategory');
-        const amtInput = document.getElementById('expAmount');
-
-        const name = nameInput.value.trim();
-        const category = catSelect.value;
-        const amount = parseFloat(amtInput.value);
-
-        if (!name || isNaN(amount) || amount <= 0) {
-            alert("Please enter a valid description and positive amount.");
-            return;
-        }
-
-        expenses.push({ name, category, amount });
-        saveToLocalStorage();
-        renderExpenses();
-
-        // Flush text form controls
-        nameInput.value = '';
-        amtInput.value = '';
-        catSelect.selectedIndex = 0;
-    }
-
-    function startInlineEdit(index) {
-        editTaskId = index;
-        renderExpenses();
-    }
-
-    function cancelInlineEdit() {
-        editTaskId = null;
-        renderExpenses();
-    }
-
-    function saveInlineEdit(index) {
-        const updatedName = document.getElementById('inlineEditName').value.trim();
-        const updatedCategory = document.getElementById('inlineEditCategory').value;
-        const updatedAmount = parseFloat(document.getElementById('inlineEditAmount').value);
-
-        if (!updatedName || isNaN(updatedAmount) || updatedAmount <= 0) {
-            alert("Please check your entries. Fields cannot be left blank.");
-            return;
-        }
-
-        expenses[index] = {
-            name: updatedName,
-            category: updatedCategory,
-            amount: updatedAmount
-        };
-
-        editTaskId = null;
-        saveToLocalStorage();
-        renderExpenses();
-    }
-
-    function deleteExpense(index) {
-        if (confirm("Remove this entry?")) {
-            expenses.splice(index, 1);
-            saveToLocalStorage();
-            renderExpenses();
-        }
-    }
-
-    // Initialize display layout
+    // Initialize budget on page layout load
     window.onload = function() {
-        renderExpenses();
+        updateBudget();
     };
 </script>
 </body>
