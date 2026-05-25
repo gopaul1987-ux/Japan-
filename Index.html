@@ -104,6 +104,23 @@
             margin-bottom: 20px;
             box-shadow: 0 4px 12px rgba(217, 4, 41, 0.2);
         }
+        
+        /* New Countdown Dashboard Top Banner Styles */
+        .countdown-container {
+            background: rgba(0, 0, 0, 0.25);
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            display: inline-block;
+            letter-spacing: 0.5px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+        }
+        #countdownTimer {
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
         .flight-bar {
             background: #2b2d42;
             color: white;
@@ -380,8 +397,13 @@
 
 <div class="container">
     <header>
-        <h1>Japan Adventure 2026 🇯🇵🇯🇵 </h1>
-        <p>15 Days | 14 Nights | London Heathrow ⇌ Tokyo Haneda</p>
+        <h1 style="margin-bottom: 5px;">Japan Adventure 2026 🇯🇵🇯🇵</h1>
+        <p style="margin: 0 0 10px 0;">15 Days | 14 Nights | London Heathrow ⇌ Tokyo Haneda</p>
+        
+        <!-- Live Countdown Integrated directly into the Header banner -->
+        <div class="countdown-container">
+            ⏳ <span id="countdownTimer">Calculating countdown...</span>
+        </div>
     </header>
 
     <div class="flight-bar">
@@ -846,7 +868,40 @@
         document.getElementById('londonTime').innerText = lonStr;
         document.getElementById('tokyoTime').innerText = tyoStr;
     }
-    setInterval(updateClocks, 1000);
+
+    // 8. Flight Departure Countdown Engine
+    function updateCountdown() {
+        // Departure Target: 18 June 2026 at 09:25 AM London (BST / UTC+1)
+        // ISO format with explicitly specified target timezone offset (+01:00)
+        const targetDate = new Date("2026-06-18T09:25:00+01:00");
+        const now = new Date();
+        const diff = targetDate - now;
+
+        const timerElement = document.getElementById('countdownTimer');
+
+        if (diff <= 0) {
+            timerElement.innerText = "✈️ Trip Started! Enjoy Japan!";
+            return;
+        }
+
+        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+        // Standardized padding to prevent layout jitter
+        const displayHours = String(hours).padStart(2, '0');
+        const displayMinutes = String(minutes).padStart(2, '0');
+        const displaySeconds = String(seconds).padStart(2, '0');
+
+        timerElement.innerText = `${days}d ${displayHours}h ${displayMinutes}m ${displaySeconds}s until departure`;
+    }
+
+    // Centralized interval loop handling clocks and countdown updates perfectly in sync
+    setInterval(function() {
+        updateClocks();
+        updateCountdown();
+    }, 1000);
 
     // Initial load sequences
     window.onload = function() {
@@ -858,6 +913,7 @@
         updateBudget();
         loadScratchpad();
         updateClocks();
+        updateCountdown();
     };
 </script>
 </body>
