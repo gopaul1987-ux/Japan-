@@ -16,6 +16,8 @@
             --tab-inactive: #eee;
             --border: #dee2e6;
             --link-color: #0077b6;
+            --drawer-bg: #1e1e24;
+            --drawer-text: #f8f9fa;
         }
 
         /* Seamless Native Dark Mode Styling */
@@ -30,6 +32,8 @@
                 --tab-inactive: #2b2d42;
                 --border: #333333;
                 --link-color: #4ea8de;
+                --drawer-bg: #121215;
+                --drawer-text: #e0e0e0;
             }
             body {
                 background-color: var(--bg);
@@ -94,7 +98,7 @@
             padding: 15px;
             line-height: 1.5;
         }
-        .container { max-width: 700px; margin: 0 auto; box-sizing: border-box; width: 100%; }
+        .container { max-width: 700px; margin: 0 auto; box-sizing: border-box; width: 100%; padding-bottom: 60px; }
         header {
             background: #d90429;
             color: white;
@@ -203,7 +207,7 @@
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            min-height: 44px; /* Fluid touch target padding */
+            min-height: 44px;
             gap: 4px;
         }
         .nav-link:hover {
@@ -337,6 +341,116 @@
             font-weight: 800;
             margin: 25px 0 10px 5px;
             color: var(--text-color);
+        }
+
+        /* Persistent Menu Drawer Components */
+        .menu-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0 20px;
+            height: 50px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.25);
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .menu-toggle-btn:block { outline: none; }
+        .menu-toggle-btn:active { transform: scale(0.95); }
+
+        .drawer-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000;
+        }
+        .drawer-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 85%;
+            max-width: 380px;
+            height: 100vh;
+            background: var(--drawer-bg);
+            color: var(--drawer-text);
+            box-shadow: -4px 0 24px rgba(0,0,0,0.3);
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 1001;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .side-drawer.open {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+        .drawer-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0;
+        }
+        .close-drawer-btn {
+            background: none;
+            border: none;
+            color: var(--drawer-text);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .notepad-area {
+            flex-grow: 1;
+            width: 100%;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 15px;
+            box-sizing: border-box;
+            color: #fff;
+            font-family: inherit;
+            font-size: 0.95rem;
+            resize: none;
+            line-height: 1.6;
+        }
+        .notepad-area:focus {
+            outline: 1px solid var(--primary);
+            background: rgba(255,255,255,0.08);
+        }
+        .notepad-status {
+            font-size: 0.75rem;
+            color: var(--accent);
+            text-align: right;
+            margin-top: 8px;
         }
 
         /* Mobile Viewport Adjustments */
@@ -499,7 +613,6 @@
             <ul class="food-list">
                 <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Tamura+Ginkatsutei+Hakone" target="_blank">🗺️ Tamura Ginkatsutei</a></li>
                 <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Lake+Ashi+Soba+Hakone" target="_blank">🗺️ Lake Ashi Local Soba Spots</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Fujimi+Cafe+Gotemba" target="_blank">🗺️ Fujimi Cafe (Fuji View Drive-Stop)</a></li>
             </ul>
         </div>
     </div>
@@ -551,14 +664,10 @@
         </div>
 
         <div id="hakoneItinerary" class="tab-content">
-            <div class="section-subtitle">Relaxation & Scenic Driving Views</div>
+            <div class="section-subtitle">Relaxation & Scenic Views</div>
             <ul class="food-list">
-                <li><strong>27 June:</strong> Travel, Open Air Museum, onsen check-in</li>
+                <li><strong>27 June:</strong> Travel, Open Air Museum, onsen</li>
                 <li><strong>28 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Hakone+Ropeway" target="_blank">🗺️ Ropeway, Lake Ashi, Hakone Shrine</a></li>
-                <li><strong>Driving Excursions:</strong> 
-                    <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Ashinoko+Hakone+Skyline" target="_blank">🚗 Ashinoko-Hakone Skyline Drive</a> | 
-                    <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Taikanzan+Sky+Lounge" target="_blank">🏔️ Taikanzan Panoramic Ridge Lookout</a>
-                </li>
             </ul>
         </div>
     </div>
@@ -625,7 +734,7 @@
         </div>
         <span class="section-title">Must Do:</span>
         <ul>
-            <li>Cruise the high-altitude panoramic ridge lines along the toll road routes.</li>
+            <li>Ride the Hakone Ropeway for Mt. Fuji views.</li>
             <li>Take the "Pirate Ship" cruise across Lake Ashi.</li>
         </ul>
     </div>
@@ -646,6 +755,24 @@
             <li>Souvenir shopping at Ginza Itoya.</li>
         </ul>
     </div>
+</div>
+
+<!-- Floating Action Button for Persistent Notes Module -->
+<button class="menu-toggle-btn" onclick="toggleNotesDrawer()">
+    <span>📝</span> Notes
+</button>
+
+<!-- Dimming Overlay Surface -->
+<div class="drawer-overlay" id="drawerOverlay" onclick="toggleNotesDrawer()"></div>
+
+<!-- Slide-Out Sidebar Component Layer -->
+<div class="side-drawer" id="notesDrawer">
+    <div class="drawer-header">
+        <h3 class="drawer-title">📋 Sticky Scratchpad</h3>
+        <button class="close-drawer-btn" onclick="toggleNotesDrawer()">&times;</button>
+    </div>
+    <textarea id="persistentNotepad" class="notepad-area" placeholder="Write down reminders, flight references, or shopping ideas here... Data auto-saves instantly." oninput="saveNotes()"></textarea>
+    <div class="notepad-status" id="notepadStatus">Saved to storage</div>
 </div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -690,10 +817,8 @@
         {name: "Stop 1: Tokyo (Toyosu)", coords: [35.6550, 139.7961], date: "June 19-21"},
         {name: "Stop 2: Osaka", coords: [34.6937, 135.5023], date: "June 21-24"},
         {name: "Stop 3: Kyoto", coords: [35.0116, 135.7681], date: "June 24-27"},
-        {name: "Stop 4: Hakone Skyline Drives", coords: [35.2155, 138.9940], date: "June 27-29 Viewpoints"},
-        {name: "Stop 5: Mt. Taikan Viewpoint", coords: [35.1914, 139.0465], date: "June 27-29 Ridge Lookouts"},
-        {name: "Stop 6: Central Hakone (Nol)", coords: [35.2445, 139.0510], date: "June 27-29 Stay"},
-        {name: "Stop 7: Tokyo (Shinjuku)", coords: [35.6938, 139.7034], date: "June 29-July 3"}
+        {name: "Stop 4: Hakone", coords: [35.2324, 139.1033], date: "June 27-29"},
+        {name: "Stop 5: Tokyo (Ginza)", coords: [35.6715, 139.7649], date: "June 29-July 3"}
     ];
 
     const latlngs = [];
@@ -721,24 +846,69 @@
         document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
     }
 
-    // 5. Cache Storage Systems
+    // 5. Cache Budget Storage Systems
     let expenses = [];
     try {
         expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
     } catch(e) {
         expenses = [];
     }
-    let totalSpent = 0;
 
     function updateBudget() {
-        const totalBudget = parseFloat(document.getElementById('totalBudgetInput').value) || 0;
-        totalSpent = expenses.reduce((sum, exp) => sum + exp.amount, 0);
-        const remaining = totalBudget - totalSpent;
-        const perPerson = totalSpent / 2;
+        const budgetInput = document.getElementById('totalBudgetInput').value;
+        localStorage.setItem('japan_total_budget', budgetInput);
+        calculateFinancials();
+    }
 
-        document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toFixed(2);
-        document.getElementById('perPersonSpent').innerText = "£" + perPerson.toFixed(2);
-        document.getElementById('remainingBalance').innerText = "£" + remaining.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    function addExpense() {
+        const nameInput = document.getElementById('expName');
+        const amountInput = document.getElementById('expAmount');
+        const name = nameInput.value.trim();
+        const amount = parseFloat(amountInput.value);
+
+        if (!name || isNaN(amount) || amount <= 0) return;
+
+        expenses.push({ id: Date.now(), name, amount });
+        nameInput.value = '';
+        amountInput.value = '';
+        
+        saveAndRenderExpenses();
+    }
+
+    function deleteExpense(id) {
+        expenses = expenses.filter(exp => exp.id !== id);
+        saveAndRenderExpenses();
+    }
+
+    function saveAndRenderExpenses() {
+        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
+        renderExpensesTable();
+        calculateFinancials();
+    }
+
+    function renderExpensesTable() {
+        const tbody = document.getElementById('expenseTableBody');
+        tbody.innerHTML = '';
+        expenses.forEach(exp => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${exp.name}</td>
+                <td>£${exp.amount.toFixed(2)}</td>
+                <td style="text-align:right;"><button class="delete-btn" onclick="deleteExpense(${exp.id})">&times;</button></td>
+            `;
+            tbody.appendChild(tr);
+        });
+    }
+
+    function calculateFinancials() {
+        const totalBudget = parseFloat(document.getElementById('totalBudgetInput').value) || 0;
+        const totalSpent = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+        const perPerson = totalSpent / 2;
+        const remaining = totalBudget - totalSpent;
+
+        document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('perPersonSpent').innerText = "£" + perPerson.toLocaleString(undefined, {minimumFractionDigits: 2});
+        document.getElementById('remainingBalance').innerText = "£" + remaining.toLocaleString(undefined, {minimumFractionDigits: 2});
         
         const remainingBox = document.getElementById('remainingBalance');
         if (remaining < 0) {
@@ -748,46 +918,45 @@
         }
     }
 
-    function renderExpenses() {
-        const tbody = document.getElementById('expenseTableBody');
-        tbody.innerHTML = '';
-        expenses.forEach((exp, index) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>${exp.name}</td>
-                <td>£${exp.amount.toFixed(2)}</td>
-                <td style="text-align:right;"><button class="delete-btn" onclick="deleteExpense(${index})">×</button></td>
-            `;
-            tbody.appendChild(tr);
-        });
-        updateBudget();
+    // 6. Sliding Sidebar Navigation & Persistent Notepad System
+    function toggleNotesDrawer() {
+        const drawer = document.getElementById('notesDrawer');
+        const overlay = document.getElementById('drawerOverlay');
+        drawer.classList.toggle('open');
+        overlay.classList.toggle('open');
     }
 
-    function addExpense() {
-        const nameInput = document.getElementById('expName');
-        const amountInput = document.getElementById('expAmount');
-        const name = nameInput.value.trim();
-        const amount = parseFloat(amountInput.value);
+    function saveNotes() {
+        const text = document.getElementById('persistentNotepad').value;
+        localStorage.setItem('japan_itinerary_notes', text);
+        
+        const status = document.getElementById('notepadStatus');
+        status.innerText = "Saving...";
+        setTimeout(() => {
+            status.innerText = "Saved to storage";
+        }, 400);
+    }
 
-        if (name && !isNaN(amount) && amount > 0) {
-            expenses.push({ name, amount });
-            localStorage.setItem('japan_expenses', JSON.stringify(expenses));
-            nameInput.value = '';
-            amountInput.value = '';
-            renderExpenses();
+    function loadNotes() {
+        const savedText = localStorage.getItem('japan_itinerary_notes');
+        if (savedText !== null) {
+            document.getElementById('persistentNotepad').value = savedText;
         }
     }
 
-    function deleteExpense(index) {
-        expenses.splice(index, 1);
-        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
-        renderExpenses();
-    }
-
-    // Initial load setup execution
-    window.onload = function() {
-        renderExpenses();
-    };
+    // App Initialization Lifecycles
+    window.addEventListener('DOMContentLoaded', () => {
+        // Load stored budget limit configs
+        const storedBudget = localStorage.getItem('japan_total_budget');
+        if (storedBudget) {
+            document.getElementById('totalBudgetInput').value = storedBudget;
+        }
+        
+        // Render saved state data arrays
+        renderExpensesTable();
+        calculateFinancials();
+        loadNotes();
+    });
 </script>
 </body>
 </html>
