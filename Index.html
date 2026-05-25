@@ -124,7 +124,7 @@
         }
         .widget-row {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 15px;
             margin-bottom: 20px;
         }
@@ -143,6 +143,12 @@
             text-transform: uppercase;
             margin-bottom: 10px;
             display: block;
+        }
+        .time-display {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 2px 0;
         }
         .calc-container {
             display: flex;
@@ -387,11 +393,29 @@
     <div id="map"></div>
 
     <div class="widget-row">
+        <!-- Weather Card -->
         <div class="widget-card">
             <span class="widget-label" id="weatherTitle">🌦 Tokyo Weather</span>
             <div id="weatherBox" style="font-size:16px; font-weight:600; padding:10px 0;">Loading...</div>
         </div>
 
+        <!-- Time Zone Widget -->
+        <div class="widget-card">
+            <span class="widget-label">🕒 Time Sync</span>
+            <div style="display: flex; justify-content: space-around; align-items: center; height: 100%; padding-top: 5px;">
+                <div>
+                    <span style="font-size: 0.65rem; font-weight: bold; color: var(--accent);">LON (BST)</span>
+                    <div id="londonTime" class="time-display">00:00</div>
+                </div>
+                <div style="font-weight: bold; color: var(--accent); font-size: 1.1rem;">✈️</div>
+                <div>
+                    <span style="font-size: 0.65rem; font-weight: bold; color: var(--accent);">TYO (JST)</span>
+                    <div id="tokyoTime" class="time-display">00:00</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Currency Converter Card -->
         <div class="widget-card">
             <span class="widget-label">Currency Converter</span>
             <div class="calc-container">
@@ -811,6 +835,19 @@
         }, 3000);
     }
 
+    // 7. Dual Time Zone Clock Engine
+    function updateClocks() {
+        const now = new Date();
+        const options = { hour: '2-digit', minute: '2-digit', hour12: false };
+        
+        const lonStr = now.toLocaleTimeString('en-GB', { ...options, timeZone: 'Europe/London' });
+        const tyoStr = now.toLocaleTimeString('en-GB', { ...options, timeZone: 'Asia/Tokyo' });
+        
+        document.getElementById('londonTime').innerText = lonStr;
+        document.getElementById('tokyoTime').innerText = tyoStr;
+    }
+    setInterval(updateClocks, 1000);
+
     // Initial load sequences
     window.onload = function() {
         const savedBudget = localStorage.getItem('japan_budget');
@@ -820,6 +857,7 @@
         renderExpenses();
         updateBudget();
         loadScratchpad();
+        updateClocks();
     };
 </script>
 </body>
