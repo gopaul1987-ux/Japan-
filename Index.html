@@ -77,6 +77,12 @@
             table td {
                 border-bottom: 1px solid #333 !important;
             }
+            .leaflet-tile-container {
+                filter: brightness(0.6) invert(1) contrast(95%) hue-rotate(180deg);
+            }
+            .leaflet-container {
+                background: #1a1a1a !important;
+            }
         }
 
         body {
@@ -113,7 +119,7 @@
             border-radius: 15px;
             margin-bottom: 20px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 1;
+            z-index: 10;
         }
         .widget-row {
             display: grid;
@@ -127,6 +133,7 @@
             padding: 15px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.05);
             text-align: center;
+            box-sizing: border-box;
         }
         .widget-label {
             font-size: 0.7rem;
@@ -142,18 +149,19 @@
             gap: 10px;
         }
         .calc-group {
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid var(--border);
             padding-bottom: 10px;
         }
         .calc-group:last-child { border-bottom: none; }
         .calc-input {
-            width: 85%;
+            width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
             border-radius: 8px;
             text-align: center;
             font-size: 1rem;
             margin-bottom: 5px;
+            box-sizing: border-box;
         }
         .result-text {
             font-weight: bold;
@@ -187,21 +195,19 @@
             border: 2px solid white;
         }
 
-        /* Interactive Navigation Links */
         .nav-link {
             color: var(--link-color);
             text-decoration: none;
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            min-height: 44px; /* Touch target baseline */
+            min-height: 44px;
             gap: 4px;
         }
         .nav-link:hover {
             text-decoration: underline;
         }
 
-        /* Fixed Mobile Budget Form Layout */
         .budget-summary {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -222,8 +228,8 @@
             font-weight: bold;
         }
         .budget-input-row {
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: 1fr 1fr auto;
             gap: 10px;
             margin-bottom: 15px;
         }
@@ -239,12 +245,11 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px;
+            padding: 12px 20px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: bold;
             font-size: 0.95rem;
-            width: 100%;
             min-height: 48px;
         }
         .expense-table-container {
@@ -265,6 +270,7 @@
             padding: 8px;
             position: sticky;
             top: 0;
+            z-index: 5;
         }
         table td {
             padding: 8px;
@@ -276,12 +282,10 @@
             color: #d90429;
             cursor: pointer;
             font-weight: bold;
-            padding: 8px 12px;
+            padding: 4px 8px;
             font-size: 1rem;
-            min-height: 44px;
         }
 
-        /* Tabs UI */
         .tabs {
             display: flex;
             gap: 8px;
@@ -322,7 +326,6 @@
             font-size: 0.95rem;
         }
 
-        /* Group Heading Style */
         .group-heading {
             font-size: 1.4rem;
             font-weight: 800;
@@ -330,14 +333,9 @@
             color: var(--text-color);
         }
 
-        /* Mobile Viewport Adjustments */
         @media (max-width: 600px) { 
             .widget-row { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 480px) {
-            .budget-summary {
-                grid-template-columns: 1fr 1fr;
-            }
+            .budget-input-row { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -378,7 +376,6 @@
         </div>
     </div>
 
-    <!-- Budget Tracker -->
     <div class="card" style="border-left-color: #7209b7;">
         <div class="date">💰 Budget & Expenditure</div>
         <div class="location">Live Trip Tracker</div>
@@ -414,7 +411,7 @@
                     <tr>
                         <th>Item</th>
                         <th>Amount</th>
-                        <th></th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody id="expenseTableBody"></tbody>
@@ -422,7 +419,6 @@
         </div>
     </div>
 
-    <!-- Food Guide -->
     <div class="card" style="border-left-color: #06d6a0;">
         <div class="date">🍣 Food Guide</div>
         <div class="location">Must Book + Hidden Gems</div>
@@ -437,64 +433,63 @@
         <div id="tokyoFood" class="tab-content active">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Gyukatsu+Motomura+Shibuya" target="_blank">🗺️ Gyukatsu Motomura (Shibuya)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Sushi+no+Midori+Shibuya" target="_blank">🗺️ Sushi no Midori (Shibuya)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Chukasoba+Ginza+Hachigo" target="_blank">🗺️ Chukasoba Ginza Hachigo</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Gyukatsu+Motomura+Shibuya" target="_blank">🗺️ Gyukatsu Motomura (Shibuya)</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Sushi+no+Midori+Shibuya" target="_blank">🗺️ Sushi no Midori (Shibuya)</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Chukasoba+Ginza+Hachigo" target="_blank">🗺️ Chukasoba Ginza Hachigo</a></li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Fuunji+Shinjuku" target="_blank">🗺️ Fuunji (Tsukemen)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Tonki+Meguro+Tokyo" target="_blank">🗺️ Tonki (Tonkatsu)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Cafe+Aaliya+Shinjuku" target="_blank">🗺️ Cafe Aaliya (French Toast)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Afuri+Harajuku+Tokyo" target="_blank">🗺️ Afuri (Yuzu Ramen)</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Fuunji+Shinjuku" target="_blank">🗺️ Fuunji (Tsukemen)</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Tonkatsu+Tonki+Meguro" target="_blank">🗺️ Tonki (Tonkatsu)</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Cafe+Aaliya+Shinjuku" target="_blank">🗺️ Cafe Aaliya (French Toast)</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Afuri+Harajuku" target="_blank">🗺️ Afuri (Yuzu Ramen)</a></li>
             </ul>
         </div>
 
         <div id="osakaFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Mizuno+Okonomiyaki+Osaka" target="_blank">🗺️ Mizuno (Okonomiyaki)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Yakiniku+M+Hozenji+Osaka" target="_blank">🗺️ Yakiniku M Hozenji</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Kushikatsu+Daruma+Dotombori" target="_blank">🗺️ Kushikatsu Daruma</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Mizuno+Okonomiyaki+Osaka" target="_blank">🗺️ Mizuno (Okonomiyaki)</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Yakiniku+M+Hozenji+Yokocho" target="_blank">🗺️ Yakiniku M Hozenji</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Kushikatsu+Daruma+Dotombori" target="_blank">🗺️ Kushikatsu Daruma</a></li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Udon+Shin+Osaka" target="_blank">🗺️ Udon Shin</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Hajime+Yakiniku+Osaka" target="_blank">🗺️ Hajime Yakiniku</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Takoyaki+Wanaka+Dotonbori" target="_blank">🗺️ Takoyaki Wanaka</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Udon+Shin+Osaka" target="_blank">🗺️ Udon Shin</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Hajime+Yakiniku+Osaka" target="_blank">🗺️ Hajime Yakiniku</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Takoyaki+Wanaka+Namba" target="_blank">🗺️ Takoyaki Wanaka</a></li>
             </ul>
         </div>
 
         <div id="kyotoFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Kichi+Kichi+Omurice+Kyoto" target="_blank">🗺️ Kichi Kichi Omurice</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Restaurant+Monk+Kyoto" target="_blank">🗺️ Monk</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Gion+Karyo+Kyoto" target="_blank">🗺️ Gion Karyo</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Kichi+Kichi+Omurice+Kyoto" target="_blank">🗺️ Kichi Kichi Omurice</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Monk+Restaurant+Kyoto" target="_blank">🗺️ Monk</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Gion+Karyo+Kyoto" target="_blank">🗺️ Gion Karyo</a></li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Omen+Kodai-ji+Kyoto" target="_blank">🗺️ Omen Kodai-ji</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Men-ya+Inoichi+Kyoto" target="_blank">🗺️ Men-ya Inoichi</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Panel+Cafe+Kyoto" target="_blank">🗺️ Panel Cafe</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Nishiki+Market+Kyoto" target="_blank">🗺️ Nishiki Market</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Omen+Kodai-ji+Kyoto" target="_blank">🗺️ Omen Kodai-ji</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Men-ya+Inoichi+Kyoto" target="_blank">🗺️ Men-ya Inoichi</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Panel+Cafe+Kyoto" target="_blank">🗺️ Panel Cafe</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Nishiki+Market+Kyoto" target="_blank">🗺️ Nishiki Market</a></li>
             </ul>
         </div>
 
         <div id="hakoneFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Do</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Amazake+Chaya+Hakone" target="_blank">🗺️ Amazake Chaya</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Amazake+Chaya+Hakone" target="_blank">🗺️ Amazake Chaya</a></li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Tamura+Ginkatsutei+Hakone" target="_blank">🗺️ Tamura Ginkatsutei</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Lake+Ashi+Soba+Hakone" target="_blank">🗺️ Lake Ashi Local Soba Spots</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Tamura+Ginkatsutei+Hakone" target="_blank">🗺️ Tamura Ginkatsutei</a></li>
+                <li><a class="nav-link" href="https://maps.google.com/?q=Lake+Ashi+Soba+Hakone" target="_blank">🗺️ Lake Ashi Local Soba Spots</a></li>
             </ul>
         </div>
     </div>
 
-    <!-- Itinerary Planner -->
     <div class="card" style="border-left-color: #118ab2;">
         <div class="date">🗓 Itinerary Planner</div>
         <div class="location">Your Destinational Plans</div>
@@ -509,14 +504,14 @@
         <div id="tokyoItinerary" class="tab-content active">
             <div class="section-subtitle">First Stint (Arrival)</div>
             <ul class="food-list">
-                <li><strong>19 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Audemars+Piguet+House+Tokyo" target="_blank">🗺️ AP Watch Museum 17:00pm</a></li>
-                <li><strong>20 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Tokyo+Dome" target="_blank">🗺️ Baseball Game Tokyo Dome 14:00</a></li>
+                <li><strong>19 June:</strong> <a class="nav-link" href="https://maps.google.com/?q=Audemars+Piguet+Lounge+Tokyo" target="_blank">🗺️ AP Watch Museum 17:00pm</a></li>
+                <li><strong>20 June:</strong> <a class="nav-link" href="https://maps.google.com/?q=Tokyo+Dome" target="_blank">🗺️ Baseball Game Tokyo Dome 14:00</a></li>
             </ul>
             <div class="section-subtitle">Second Stint (Grand Finale)</div>
             <ul class="food-list">
-                <li><strong>29 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=teamLab+Borderless+Azabudai+Hills+Tokyo" target="_blank">🗺️ Return, Shinjuku, teamLabs Borderless 18:30</a></li>
-                <li><strong>30 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=teamLab+Planets+Toyosu+Tokyo" target="_blank">🗺️ Akihabara, teamLab Planets</a></li>
-                <li><strong>1 July:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Asakusa+Tokyo" target="_blank">🗺️ Asakusa, Senso-ji, Skytree</a></li>
+                <li><strong>29 June:</strong> <a class="nav-link" href="https://maps.google.com/?q=teamLab+Borderless+Azabudai+Hills" target="_blank">🗺️ Return, Shinjuku, teamLabs Borderless 18:30</a></li>
+                <li><strong>30 June:</strong> <a class="nav-link" href="https://maps.google.com/?q=teamLab+Planets+Toyosu" target="_blank">🗺️ Akihabara, teamLab Planets</a></li>
+                <li><strong>1 July:</strong> <a class="nav-link" href="https://maps.google.com/?q=Sensoji+Temple+Asakusa" target="_blank">🗺️ Asakusa, Senso-ji, Skytree</a></li>
                 <li><strong>2 July:</strong> Shopping, Imperial Palace, Shibuya</li>
                 <li><strong>3 July:</strong> Departure</li>
             </ul>
@@ -525,8 +520,8 @@
         <div id="osakaItinerary" class="tab-content">
             <div class="section-subtitle">Osaka Exploration</div>
             <ul class="food-list">
-                <li><strong>21 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Dotonbori+Osaka" target="_blank">🗺️ Travel + Dotonbori Food Night</a></li>
-                <li><strong>22 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Universal+Studios+Japan+Osaka" target="_blank">🗺️ Universal Studios Japan</a></li>
+                <li><strong>21 June:</strong> <a class="nav-link" href="https://maps.google.com/?q=Dotonbori+Osaka" target="_blank">🗺️ Travel + Dotonbori Food Night</a></li>
+                <li><strong>22 June:</strong> <a class="nav-link" href="https://maps.google.com/?q=Universal+Studios+Japan" target="_blank">🗺️ Universal Studios Japan</a></li>
                 <li><strong>23 June:</strong> Osaka Castle, Kuromon Market, Shinsekai</li>
             </ul>
         </div>
@@ -535,8 +530,8 @@
             <div class="section-subtitle">Cultural Highlights</div>
             <ul class="food-list">
                 <li><strong>24 June:</strong> Nara or Kobe (optional), travel to Kyoto</li>
-                <li><strong>25 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Arashiyama+Bamboo+Grove+Kyoto" target="_blank">🗺️ Arashiyama Bamboo Grove, Monkey Park</a></li>
-                <li><strong>26 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Kiyomizu-dera+Kyoto" target="_blank">🗺️ Kiyomizu-dera, Gion, Higashiyama Streets</a></li>
+                <li><strong>25 June:</strong> <a class="nav-link" href="https://maps.google.com/?q=Arashiyama+Bamboo+Grove" target="_blank">🗺️ Arashiyama Bamboo Grove, Monkey Park</a></li>
+                <li><strong>26 June:</strong> <a class="nav-link" href="https://maps.google.com/?q=Kiyomizudera+Kyoto" target="_blank">🗺️ Kiyomizu-dera, Gion, Higashiyama Streets</a></li>
             </ul>
         </div>
 
@@ -544,20 +539,19 @@
             <div class="section-subtitle">Relaxation & Scenic Views</div>
             <ul class="food-list">
                 <li><strong>27 June:</strong> Travel, Open Air Museum, onsen</li>
-                <li><strong>28 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Hakone+Ropeway" target="_blank">🗺️ Ropeway, Lake Ashi, Hakone Shrine</a></li>
+                <li><strong>28 June:</strong> <a class="nav-link" href="https://maps.google.com/?q=Hakone+Ropeway" target="_blank">🗺️ Ropeway, Lake Ashi, Hakone Shrine</a></li>
             </ul>
         </div>
     </div>
 
     <div class="group-heading">🏨 Hotels</div>
 
-    <!-- Hotel List -->
     <div class="card">
         <div class="date">1. 19 June - 21 June (2 Nights)</div>
         <div class="location">Tokyo: Tokyo-to <span class="tag">Arrival</span></div>
         <div class="stay-info">
             <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Mitsui+Garden+Hotel+Kyobashi+Tokyo" target="_blank">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</a>
+                <a class="nav-link" href="https://maps.google.com/?q=Mitsui+Garden+Hotel+Kyobashi+Tokyo" target="_blank">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</a>
             </span>
             <p style="margin:5px 0; font-size:0.85rem;">Address: Tokyo-to, Tokyo, Chuo-ku Kyobashi 1-3-6, 💰 £385</p>
         </div>
@@ -573,7 +567,7 @@
         <div class="location">Osaka Honmachi <span class="tag">Food Capital</span></div>
         <div class="stay-info">
             <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=The+Lively+Osaka+Honmachi+Hotel" target="_blank">🏨 The Lively Osaka Honmachi</a>
+                <a class="nav-link" href="https://maps.google.com/?q=The+Lively+Osaka+Honmachi" target="_blank">🏨 The Lively Osaka Honmachi</a>
             </span>
             <p style="margin:5px 0; font-size:0.85rem;">541-0054 Osaka, Chuo-ku, Minami-Honmachi 1-5-11 • Near Sakaisuji-Hommachi Station • 💰 £277</p>
         </div>
@@ -589,7 +583,7 @@
         <div class="location">Kyoto Higashiiru <span class="tag">Culture</span></div>
         <div class="stay-info">
             <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Mitsui+Garden+Hotel+Kyoto+Sanjo+Premier" target="_blank">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</a>
+                <a class="nav-link" href="https://maps.google.com/?q=Mitsui+Garden+Hotel+Kyoto+Sanjo+Premier" target="_blank">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</a>
             </span>
             <p style="margin:5px 0; font-size:0.85rem;">45-1, Hishiya-cho, Higashiiru, Higashinotoin, Sanjo-dori, Nakagyo-ku,Kyoto, 604-8131. 💰 £391</p>
         </div>
@@ -605,7 +599,7 @@
         <div class="location">🏔 Hakone <span class="tag">Relax & Fuji</span></div>
         <div class="stay-info">
             <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Nol+Hakone+Myojindai" target="_blank">🏨 Nol Hakone Myojindai</a>
+                <a class="nav-link" href="https://maps.google.com/?q=Nol+Hakone+Myojindai" target="_blank">🏨 Nol Hakone Myojindai</a>
             </span>
             <p style="margin:5px 0; font-size:0.85rem;">1488-205 Miyagino, Hakone, Ashigarashimo District, Kanagawa 250-0401, Japan 💰 £529</p>
         </div>
@@ -621,7 +615,7 @@
         <div class="location">Tokyo Shinjuku City<span class="tag">Mid-Luxury Finish</span></div>
         <div class="stay-info">
             <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=BELLUSTAR+TOKYO+Pan+Pacific+Hotel" target="_blank">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</a>
+                <a class="nav-link" href="https://maps.google.com/?q=BELLUSTAR+TOKYO+Pan+Pacific" target="_blank">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</a>
             </span>
             <p style="margin:5px 0; font-size:0.85rem;">KABUKICHO TOWER, 45F, 1 Chome-29-1 Kabukicho, Shinjuku City, Tokyo 160-0021, Japan 💰 £1,629</p>
         </div>
@@ -636,22 +630,21 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // 1. Weather Data
+    // 1. Weather Setup
     const travelWeather = {
-        "Tokyo": "27°C • 🌧 High Humidity / Rainy Season Risk",
+        "Tokyo": "27°C • 🌧 Rainy Season Shift",
         "Osaka": "29°C • 🌦 Very Warm & Muggy",
-        "Kyoto": "28°C • 🌧 Periodic Showers / Dense Air",
-        "Hakone": "22°C • 🌫 Cool, Misty Mountain Microclimate"
+        "Kyoto": "28°C • 🌧 Periodic Showers",
+        "Hakone": "22°C • 🌫 Misty Mountain Climate"
     };
     document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
 
-    // 2. Scoped Navigation Tab Engine
+    // 2. Navigation Tab Engine (Scoped strictly by card)
     function handleTabClick(evt, cityName) {
         const button = evt.currentTarget;
         const parentCard = button.closest('.card');
         const targetId = button.getAttribute('data-target');
 
-        // Scoped transitions inside this specific card container only
         parentCard.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
         parentCard.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
 
@@ -661,18 +654,17 @@
             targetContent.classList.add("active");
         }
 
-        // Global live update for weather view widget
         if (cityName && travelWeather[cityName]) {
             document.getElementById("weatherBox").innerHTML = travelWeather[cityName];
             document.getElementById("weatherTitle").innerText = cityName + " Weather";
         }
     }
 
-    // 3. Leaflet Mapping System
-    var map = L.map('map').setView([35.15, 137.5], 6);
+    // 3. Mapping Engine
+    const map = L.map('map').setView([35.15, 137.5], 6);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map);
 
-    var locations = [
+    const locations = [
         {name: "Stop 1: Tokyo (Toyosu)", coords: [35.6550, 139.7961], date: "June 19-21"},
         {name: "Stop 2: Osaka", coords: [34.6937, 135.5023], date: "June 21-24"},
         {name: "Stop 3: Kyoto", coords: [35.0116, 135.7681], date: "June 24-27"},
@@ -680,9 +672,9 @@
         {name: "Stop 5: Tokyo (Ginza)", coords: [35.6715, 139.7649], date: "June 29-July 3"}
     ];
 
-    var latlngs = [];
+    const latlngs = [];
     locations.forEach((loc, index) => {
-        var numberIcon = L.divIcon({
+        const numberIcon = L.divIcon({
             className: 'custom-number-icon',
             html: index + 1,
             iconSize: [30, 30]
@@ -692,8 +684,24 @@
     });
     L.polyline(latlngs, {color: '#d90429', weight: 3, opacity: 0.7, dashArray: '5, 10'}).addTo(map);
 
-    // 4. Currency Math Converter
-    const RATE = 213.93; 
+    // 4. Fallback Currency Exchange Configuration
+    let RATE = 213.93; 
+    async function fetchLiveRates() {
+        try {
+            const response = await fetch('https://open.er-api.com/v6/latest/GBP');
+            if (response.ok) {
+                const data = await response.json();
+                if (data.rates && data.rates.JPY) {
+                    RATE = data.rates.JPY;
+                    console.log("Live JPY rate loaded successfully: ", RATE);
+                }
+            }
+        } catch (e) {
+            console.warn("Could not load live rates, using fallback rate.", e);
+        }
+    }
+    fetchLiveRates();
+
     function convertYenToGbp() {
         const yen = document.getElementById('yenInput').value;
         const result = yen / RATE;
@@ -705,89 +713,86 @@
         document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
     }
 
-    // 5. Cache Storage Systems
+    // 5. Complete Budget & Expense Storage Engine
     let expenses = [];
     try {
         expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
+        let storedBudget = localStorage.getItem('japan_total_budget');
+        if (storedBudget) {
+            document.getElementById('totalBudgetInput').value = storedBudget;
+        }
     } catch(e) {
         expenses = [];
     }
-    let totalBudget = localStorage.getItem('japan_budget') || 2000;
-
-    document.getElementById('totalBudgetInput').value = totalBudget;
 
     function updateBudget() {
-        totalBudget = document.getElementById('totalBudgetInput').value || 0;
-        localStorage.setItem('japan_budget', totalBudget);
-        calculateBudget();
-    }
-
-    function addExpense() {
-        const nameInput = document.getElementById('expName');
-        const amountInput = document.getElementById('expAmount');
+        const totalBudget = parseFloat(document.getElementById('totalBudgetInput').value) || 0;
+        localStorage.setItem('japan_total_budget', totalBudget);
         
-        if (nameInput.value.trim() === "" || amountInput.value === "") return;
+        let totalSpent = 0;
+        expenses.forEach(exp => {
+            totalSpent += exp.amount;
+        });
 
-        const expense = {
-            id: Date.now(),
-            name: nameInput.value,
-            amount: parseFloat(amountInput.value)
-        };
-
-        expenses.push(expense);
-        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
-        
-        nameInput.value = "";
-        amountInput.value = "";
-        
-        renderExpenses();
-        calculateBudget();
-    }
-
-    function deleteExpense(id) {
-        expenses = expenses.filter(exp => exp.id !== id);
-        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
-        renderExpenses();
-        calculateBudget();
-    }
-
-    function calculateBudget() {
-        const totalSpent = expenses.reduce((sum, exp) => sum + exp.amount, 0);
-        const perPerson = totalSpent / 2;
         const remaining = totalBudget - totalSpent;
+        const perPerson = totalSpent / 2; // Assuming 2 travelers based on header emoji
+
+        document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toFixed(2);
+        document.getElementById('perPersonSpent').innerText = "£" + perPerson.toFixed(2);
+        document.getElementById('remainingBalance').innerText = "£" + remaining.toFixed(2);
         
-        document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        document.getElementById('perPersonSpent').innerText = "£" + perPerson.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        
-        const balanceDiv = document.getElementById('remainingBalance');
-        balanceDiv.innerText = "£" + remaining.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        
+        // Color alert transitions based on staying within budget limits
+        const remainingElement = document.getElementById('remainingBalance');
         if (remaining < 0) {
-            balanceDiv.style.color = "#d90429"; 
+            remainingElement.style.color = "#d90429";
         } else {
-            balanceDiv.style.color = "#06d6a0"; 
+            remainingElement.style.color = "#06d6a0";
         }
     }
 
     function renderExpenses() {
         const tbody = document.getElementById('expenseTableBody');
-        if(!tbody) return;
-        tbody.innerHTML = "";
+        tbody.innerHTML = '';
         
-        [...expenses].reverse().forEach(exp => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${exp.name}</td>
+        expenses.forEach((exp, index) => {
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${escapeHtml(exp.name)}</td>
                 <td>£${exp.amount.toFixed(2)}</td>
-                <td style="text-align:right;"><button class="delete-btn" onclick="deleteExpense(${exp.id})">✕</button></td>
+                <td><button class="delete-btn" onclick="deleteExpense(${index})">×</button></td>
             `;
-            tbody.appendChild(row);
+            tbody.appendChild(tr);
         });
+        updateBudget();
     }
 
-    renderExpenses();
-    calculateBudget();
-</script>
+    function addExpense() {
+        const nameInput = document.getElementById('expName');
+        const amountInput = document.getElementById('expAmount');
+        const name = nameInput.value.trim();
+        const amount = parseFloat(amountInput.value);
 
+        if (name && !isNaN(amount) && amount > 0) {
+            expenses.push({ name, amount });
+            localStorage.setItem('japan_expenses', JSON.stringify(expenses));
+            nameInput.value = '';
+            amountInput.value = '';
+            renderExpenses();
+        }
+    }
+
+    function deleteExpense(index) {
+        expenses.splice(index, 1);
+        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
+        renderExpenses();
+    }
+
+    function escapeHtml(str) {
+        return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+    }
+
+    // Initial load view setup execution
+    renderExpenses();
+</script>
 </body>
 </html>
