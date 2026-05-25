@@ -16,6 +16,7 @@
             --tab-inactive: #eee;
             --border: #dee2e6;
             --link-color: #0077b6;
+            --modal-overlay: rgba(0, 0, 0, 0.4);
         }
 
         /* Seamless Native Dark Mode Styling */
@@ -30,6 +31,7 @@
                 --tab-inactive: #2b2d42;
                 --border: #333333;
                 --link-color: #4ea8de;
+                --modal-overlay: rgba(0, 0, 0, 0.7);
             }
             body {
                 background-color: var(--bg);
@@ -105,7 +107,7 @@
             box-shadow: 0 4px 12px rgba(217, 4, 41, 0.2);
         }
         
-        /* New Countdown Dashboard Top Banner Styles */
+        /* Countdown Dashboard Top Banner Styles */
         .countdown-container {
             background: rgba(0, 0, 0, 0.25);
             padding: 10px 15px;
@@ -219,20 +221,6 @@
             border: 2px solid white;
         }
 
-        /* Interactive Navigation Links */
-        .nav-link {
-            color: var(--link-color);
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            min-height: 44px;
-            gap: 4px;
-        }
-        .nav-link:hover {
-            text-decoration: underline;
-        }
-
         /* Fixed Mobile Budget Form Layout */
         .budget-summary {
             display: grid;
@@ -313,16 +301,88 @@
             min-height: 44px;
         }
 
-        /* Scratchpad Elements */
+        /* Floating Trigger Button for Popup Scratchpad */
+        .scratchpad-fab {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #f72585;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 12px 20px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 16px rgba(247, 37, 133, 0.4);
+            cursor: pointer;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            min-height: 44px;
+            transition: transform 0.2s ease;
+        }
+        .scratchpad-fab:active {
+            transform: scale(0.95);
+        }
+
+        /* Scratchpad Modal Overlay Frame */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--modal-overlay);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: flex-end; /* Standard design for smooth slide up on mobile viewports */
+        }
+        .modal-overlay.active {
+            display: flex;
+        }
+        .modal-content {
+            background: var(--card-bg);
+            width: 100%;
+            max-width: 600px;
+            border-top-left-radius: 20px;
+            border-top-right-radius: 20px;
+            padding: 20px;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.15);
+            box-sizing: border-box;
+            animation: slideUp 0.25s ease-out forwards;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .modal-close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--accent);
+            cursor: pointer;
+            padding: 5px 10px;
+            min-height: 44px;
+        }
         .scratchpad-textarea {
             width: 100%;
-            height: 120px;
+            height: 220px; /* Increased canvas height inside popup */
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
             font-family: inherit;
             font-size: 0.95rem;
-            resize: vertical;
+            resize: none;
             box-sizing: border-box;
             margin-bottom: 10px;
         }
@@ -495,15 +555,6 @@
                 <tbody id="expenseTableBody"></tbody>
             </table>
         </div>
-    </div>
-
-    <!-- Scratchpad Widget -->
-    <div class="card" style="border-left-color: #f72585;">
-        <div class="date">📝 Quick Scratchpad</div>
-        <div class="location">Ideas & Live Notes</div>
-        <textarea id="scratchpadInput" class="scratchpad-textarea" placeholder="Jot down random ideas, shopping targets, train times, or reminders here..."></textarea>
-        <button class="budget-btn" onclick="saveScratchpad()">Save Note</button>
-        <div id="scratchpadStatus" class="scratchpad-status">All changes saved locally</div>
     </div>
 
     <!-- Food Guide -->
@@ -708,6 +759,24 @@
     </div>
 </div>
 
+<!-- Sticky FAB Trigger Button -->
+<button class="scratchpad-fab" onclick="toggleScratchpad(true)">📝 Notes</button>
+
+<!-- Slide-Up Modal Scratchpad Framework -->
+<div id="scratchpadModal" class="modal-overlay" onclick="handleOutsideClick(event)">
+    <div class="modal-content">
+        <div class="modal-header">
+            <div style="font-weight: bold; font-size: 1.1rem; color: var(--text-color);">📝 Quick Scratchpad</div>
+            <button class="modal-close-btn" onclick="toggleScratchpad(false)">✕</button>
+        </div>
+        <textarea id="scratchpadInput" class="scratchpad-textarea" placeholder="Jot down random ideas, shopping targets, train times, or reminders here..."></textarea>
+        <button class="budget-btn" style="background-color: #f72585;" onclick="saveScratchpad()">Save Note</button>
+        <div style="text-align: center; width: 100%;">
+            <div id="scratchpadStatus" class="scratchpad-status">All changes saved locally</div>
+        </div>
+    </div>
+</div>
+
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
     // 1. Weather Data
@@ -837,7 +906,24 @@
         updateBudget();
     }
 
-    // 6. Scratchpad Functions
+    // 6. Refactored Popup Scratchpad Engine
+    function toggleScratchpad(show) {
+        const modal = document.getElementById('scratchpadModal');
+        if (show) {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevents background body scrolling
+        } else {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+
+    function handleOutsideClick(event) {
+        if (event.target.id === 'scratchpadModal') {
+            toggleScratchpad(false);
+        }
+    }
+
     function loadScratchpad() {
         const savedNote = localStorage.getItem('japan_scratchpad') || '';
         document.getElementById('scratchpadInput').value = savedNote;
@@ -871,8 +957,6 @@
 
     // 8. Flight Departure Countdown Engine
     function updateCountdown() {
-        // Departure Target: 18 June 2026 at 09:25 AM London (BST / UTC+1)
-        // ISO format with explicitly specified target timezone offset (+01:00)
         const targetDate = new Date("2026-06-18T09:25:00+01:00");
         const now = new Date();
         const diff = targetDate - now;
@@ -889,7 +973,6 @@
         const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((diff % (1000 * 60)) / 1000);
 
-        // Standardized padding to prevent layout jitter
         const displayHours = String(hours).padStart(2, '0');
         const displayMinutes = String(minutes).padStart(2, '0');
         const displaySeconds = String(seconds).padStart(2, '0');
@@ -897,7 +980,7 @@
         timerElement.innerText = `${days}d ${displayHours}h ${displayMinutes}m ${displaySeconds}s until departure`;
     }
 
-    // Centralized interval loop handling clocks and countdown updates perfectly in sync
+    // Centralized loop interval updates
     setInterval(function() {
         updateClocks();
         updateCountdown();
