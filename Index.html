@@ -256,28 +256,6 @@
             width: 100%;
             min-height: 48px;
         }
-        
-        /* Red & White Open Scratchpad Notes Button Styling */
-        .scratchpad-btn {
-            background-color: var(--primary) !important;
-            color: #ffffff !important;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 0.95rem;
-            cursor: pointer;
-            min-height: 44px;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 6px rgba(217, 4, 41, 0.2);
-            transition: opacity 0.2s ease;
-        }
-        .scratchpad-btn:hover {
-            opacity: 0.9;
-        }
-
         .expense-table-container {
             max-height: 200px;
             overflow-y: auto;
@@ -736,12 +714,124 @@
         document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
     }
 
-    // 5. Cache Storage Systems
+    // 5. Cache Storage & Budget Systems
     let expenses = [];
     try {
         expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
     } catch(e) {
         expenses = [];
+    }
+
+    // Load initial data on page startup
+    document.addEventListener("DOMContentLoaded", () => {
+        const savedBudget = localStorage.getItem('japan_total_budget');
+        if (savedBudget) {
+            document.getElementById('totalBudgetInput').value = savedBudget;
+        }
+        renderExpenses();
+    });
+
+    function updateBudget() {
+        const budgetVal = document.getElementById('totalBudgetInput').value || 0;
+        localStorage.setItem('japan_total_budget', budgetVal);
+        calculateBudgetTotals();
+    }
+
+    function addExpense() {
+        const nameInput = document.getElementById('expName');
+        const amountInput = document.getElementById('expAmount');
+        
+        const name = nameInput.value.trim();
+        const amount = parseFloat(amountInput.value);
+
+        if (!name || isNaN(amount) || amount <= 0) {
+            alert("Please enter a valid item description and amount.");
+            return;
+        }
+
+        // Auto-categorize based on keywords in the item name
+        let category = "Other";
+        const lowerName = name.toLowerCase();
+        if (lowerName.includes("ramen") || lowerName.includes("sushi") || lowerName.includes("food") || lowerName.includes("cafe") || lowerName.includes("eat")) {
+            category = "Food 🍣";
+        } else if (lowerName.includes("hotel") || lowerName.includes("stay") || lowerName.includes("stay info")) {
+            category = "Hotel 🏨";
+        } else if (lowerName.includes("teamlab") || lowerName.includes("ticket") || lowerName.includes("game") || lowerName.includes("museum")) {
+            category = "Activities 🎡";
+        } else if (lowerName.includes("train") || lowerName.includes("subway") || lowerName.includes("flight") || lowerName.includes("ropeway")) {
+            category = "Transport 🚇";
+        }
+
+        const newExpense = {
+            id: Date.now(),
+            name: name,
+            amount: amount,
+            category: category
+        };
+
+        expenses.push(newExpense);
+        saveAndRender();
+
+        // Clear input forms
+        nameInput.value = "";
+        amountInput.value = "";
+    }
+
+    function deleteExpense(id) {
+        expenses = expenses.filter(exp => exp.id !== id);
+        saveAndRender();
+    }
+
+    function saveAndRender() {
+        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
+        renderExpenses();
+    }
+
+    function renderExpenses() {
+        const tbody = document.getElementById('expenseTableBody');
+        tbody.innerHTML = "";
+
+        expenses.forEach(exp => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <strong>${exp.name}</strong><br>
+                    <span class="tag" style="font-size:10px; margin-top:2px; display:inline-block;">${exp.category}</span>
+                </td>
+                <td style="font-weight:600; vertical-align:middle;">£${exp.amount.toFixed(2)}</td>
+                <td style="text-align:right; vertical-align:middle;">
+                    <button class="delete-btn" onclick="deleteExpense(${exp.id})">❌</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+
+        calculateBudgetTotals();
+    }
+
+    function calculateBudgetTotals() {
+        const totalBudget = parseFloat(document.getElementById('totalBudgetInput').value) || 0;
+        
+        // Sum up total expenses
+        const totalSpent = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+        
+        // Split precisely between 2 people (based on header icon)
+        const perPerson = totalSpent / 2;
+        const remaining = totalBudget - totalSpent;
+
+        // Dynamic DOM Injection
+        document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('perPersonSpent').innerText = "£" + perPerson.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        
+        const remainingBox = document.getElementById('remainingBalance');
+        remainingBox.innerText = "£" + remaining.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        
+        // Dynamic Color shifting warning if over budget
+        if (remaining < 0) {
+            remainingBox.style.color = "#d90429";
+        } else {
+            remainingBox.style.color = "#06d6a0";
+        }
     }
 </script>
 </body>
