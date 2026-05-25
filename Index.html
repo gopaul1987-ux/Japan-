@@ -18,6 +18,7 @@
             --link-color: #0077b6;
             --modal-overlay: rgba(0, 0, 0, 0.4);
             --tracking-color: #3a86ff;
+            --budget-color: #7209b7;
         }
 
         /* Seamless Native Dark Mode Styling */
@@ -104,12 +105,12 @@
         /* Layout Master Navigation Bar */
         .layout-nav {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
             margin-bottom: 15px;
         }
         .layout-btn {
-            padding: 12px;
+            padding: 10px 5px;
             border-radius: 12px;
             border: none;
             background: var(--card-bg);
@@ -120,8 +121,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            font-size: 0.95rem;
+            gap: 6px;
+            font-size: 0.85rem;
             min-height: 48px;
         }
         .layout-btn.active {
@@ -260,7 +261,7 @@
             border: 2px solid white;
         }
 
-        /* Budget Form Layout */
+        /* Budget Form Layout styling adjustments */
         .budget-summary {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -270,14 +271,14 @@
         }
         .budget-box {
             background: var(--tab-inactive);
-            padding: 10px;
+            padding: 12px;
             border-radius: 10px;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
         .budget-amount {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             font-weight: bold;
         }
         .budget-input-row {
@@ -307,7 +308,7 @@
             min-height: 48px;
         }
         .expense-table-container, .tracking-table-container {
-            max-height: 250px;
+            max-height: 320px;
             overflow-y: auto;
             border-radius: 8px;
             border: 1px solid var(--border);
@@ -511,6 +512,7 @@
         @media (max-width: 600px) { 
             .widget-row { grid-template-columns: 1fr; }
             .tracking-grid-form { grid-template-columns: 1fr; }
+            .layout-nav { grid-template-columns: 1fr; gap: 5px; }
         }
     </style>
 </head>
@@ -518,10 +520,11 @@
 
 <div class="container">
     
-    <!-- Separate Layout Nav Toggle Header -->
+    <!-- Separate Layout Nav Toggle Header (Now featuring 3 clear layout partitions) -->
     <nav class="layout-nav">
         <button id="navItinerary" class="layout-btn active" onclick="switchLayout('itinerary')">🗺 Main Itinerary</button>
-        <button id="navTracking" class="layout-btn" onclick="switchLayout('tracking')">📦 Luggage Desk (Takuhaibin)</button>
+        <button id="navBudget" class="layout-btn" onclick="switchLayout('budget')">💰 Live Budget Desk</button>
+        <button id="navTracking" class="layout-btn" onclick="switchLayout('tracking')">📦 Luggage Desk</button>
     </nav>
 
     <!-- LAYOUT VIEW 1: MAIN ITINERARY DASHBOARD -->
@@ -563,62 +566,19 @@
                 </div>
             </div>
 
+            <!-- Pocket Currency Calculator remains accessible on Dashboard for swift conversion lookups -->
             <div class="widget-card">
-                <span class="widget-label">Currency Converter</span>
+                <span class="widget-label">Quick Currency</span>
                 <div class="calc-container">
                     <div class="calc-group">
                         <input type="number" id="yenInput" class="calc-input" placeholder="Enter ¥" oninput="convertYenToGbp()">
-                        <div id="gbp-output" class="result-text">£ 0.00</div>
+                        <div id="gbp-output" class="result-text" style="font-size:1rem;">£ 0.00</div>
                     </div>
                     <div class="calc-group">
                         <input type="number" id="gbpInput" class="calc-input" placeholder="Enter £" oninput="convertGbpToYen()">
-                        <div id="yen-output" class="result-text">¥ 0</div>
+                        <div id="yen-output" class="result-text" style="font-size:1rem;">¥ 0</div>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Budget Tracker -->
-        <div class="card" style="border-left-color: #7209b7;">
-            <div class="date">💰 Budget & Expenditure</div>
-            <div class="location">Live Trip Tracker</div>
-            
-            <div class="budget-summary" style="grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));">
-                <div class="budget-box">
-                    <span class="widget-label">Total Budget (£)</span>
-                    <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="text-align:center; font-weight:bold; padding: 6px;" oninput="updateBudget()">
-                </div>
-                <div class="budget-box">
-                    <span class="widget-label">Total Spent</span>
-                    <div id="totalSpentBalance" class="budget-amount" style="color: #fb5607; padding-top: 5px;">£0.00</div>
-                </div>
-                <div class="budget-box">
-                    <span class="widget-label">Per Person Spend</span>
-                    <div id="perPersonSpent" class="budget-amount" style="color: #3a86ff; padding-top: 5px;">£0.00</div>
-                </div>
-                <div class="budget-box">
-                    <span class="widget-label">Remaining Balance</span>
-                    <div id="remainingBalance" class="budget-amount" style="color: #06d6a0; padding-top: 5px;">£2,000.00</div>
-                </div>
-            </div>
-
-            <div class="budget-input-row">
-                <input type="text" id="expName" class="budget-input" placeholder="Item (e.g., Ramen)">
-                <input type="number" id="expAmount" class="budget-input" placeholder="£ Amount">
-                <button class="budget-btn" onclick="addExpense()">Add</button>
-            </div>
-
-            <div class="expense-table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Amount</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="expenseTableBody"></tbody>
-                </table>
             </div>
         </div>
 
@@ -823,7 +783,70 @@
         </div>
     </div>
 
-    <!-- LAYOUT VIEW 2: LUGGAGE FORWARDING DESK (TAKUHAIBIN) -->
+    <!-- LAYOUT VIEW 2: LIVE TRIP TRACKER BUDGET DESK (Fully isolated into its own screen view) -->
+    <div id="viewBudget" class="app-view">
+        <header style="background: var(--budget-color); box-shadow: 0 4px 12px rgba(114, 9, 183, 0.25);">
+            <h1 style="margin-bottom: 5px;">Live Budget Desk 💰</h1>
+            <p style="margin: 0;">Track spending in real-time, compute ledger distributions, and observe parameters.</p>
+        </header>
+
+        <div class="card" style="border-left-color: var(--budget-color); padding: 25px 20px;">
+            <div class="date" style="color: var(--budget-color);">Financial Status Dashboard</div>
+            <div class="location" style="margin-bottom: 20px;">Real-time Metrics</div>
+            
+            <div class="budget-summary" style="grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 12px;">
+                <div class="budget-box">
+                    <span class="widget-label">Total Budget (£)</span>
+                    <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="text-align:center; font-weight:bold; font-size: 1.1rem; padding: 8px;" oninput="updateBudget()">
+                </div>
+                <div class="budget-box">
+                    <span class="widget-label">Total Spent</span>
+                    <div id="totalSpentBalance" class="budget-amount" style="color: #fb5607; padding-top: 5px;">£0.00</div>
+                </div>
+                <div class="budget-box">
+                    <span class="widget-label">Per Person (1/2)</span>
+                    <div id="perPersonSpent" class="budget-amount" style="color: #3a86ff; padding-top: 5px;">£0.00</div>
+                </div>
+                <div class="budget-box">
+                    <span class="widget-label">Remaining Funds</span>
+                    <div id="remainingBalance" class="budget-amount" style="color: #06d6a0; padding-top: 5px;">£2,000.00</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #fb5607;">
+            <div class="date" style="color: #fb5607;">💸 Record New Expenditure</div>
+            <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Instantly Log Cost</div>
+            
+            <div class="budget-input-row">
+                <input type="text" id="expName" class="budget-input" placeholder="Expense description (e.g., Shinkansen Ticket, Ramen)">
+                <input type="number" id="expAmount" class="budget-input" placeholder="Amount in British Pounds (£)">
+                <button class="budget-btn" style="background: var(--budget-color);" onclick="addExpense()">Commit Purchase</button>
+            </div>
+        </div>
+
+        <div class="card" style="border-left-color: #2b2d42;">
+            <div class="date">📋 Account Ledger Manifest</div>
+            <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Itemized Audits</div>
+            
+            <div class="expense-table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Acquired Goods / Services</th>
+                            <th>Cost Equivalence</th>
+                            <th style="text-align:right; width: 60px;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="expenseTableBody">
+                        <!-- Dynamic population via LocalStorage array logic -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- LAYOUT VIEW 3: LUGGAGE FORWARDING DESK (TAKUHAIBIN) -->
     <div id="viewTracking" class="app-view">
         <header style="background: var(--tracking-color); box-shadow: 0 4px 12px rgba(58, 134, 255, 0.2);">
             <h1 style="margin-bottom: 5px;">Takuhaibin Desk 📦</h1>
@@ -845,7 +868,6 @@
             </div>
         </div>
 
-        <!-- Shipping Manifest Form Card -->
         <div class="card" style="border-left-color: var(--tracking-color);">
             <div class="date">📝 Register Shipment</div>
             <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Log Waybill / Tracking Voucher</div>
@@ -879,7 +901,6 @@
             <button class="budget-btn" style="background: var(--tracking-color);" onclick="addShipment()">Add to Shipping Ledger</button>
         </div>
 
-        <!-- Manifest Data Ledger Table -->
         <div class="card" style="border-left-color: #2b2d42;">
             <div class="date">📋 Live Manifest Ledger</div>
             <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Your Saved Forwarding Slips</div>
@@ -923,7 +944,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // 1. Layout View Switching Controller
+    // 1. Layout Master View Switching Logic 
     function switchLayout(layoutName) {
         document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
         document.querySelectorAll('.layout-btn').forEach(btn => btn.classList.remove('active'));
@@ -931,8 +952,10 @@
         if (layoutName === 'itinerary') {
             document.getElementById('viewItinerary').classList.add('active');
             document.getElementById('navItinerary').classList.add('active');
-            // Invalidate Map size to ensure Leaflet renders container coordinates correctly upon layout reveal
             setTimeout(() => { map.invalidateSize(); }, 50);
+        } else if (layoutName === 'budget') {
+            document.getElementById('viewBudget').classList.add('active');
+            document.getElementById('navBudget').classList.add('active');
         } else if (layoutName === 'tracking') {
             document.getElementById('viewTracking').classList.add('active');
             document.getElementById('navTracking').classList.add('active');
@@ -948,7 +971,7 @@
     };
     document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
 
-    // 3. Navigation Tab Script
+    // 3. Navigation Tab Script for internal card tabs (Food / Itinerary sections)
     function handleTabClick(evt, cityName) {
         const button = evt.currentTarget;
         const parentCard = button.closest('.card');
@@ -1035,7 +1058,7 @@
         expenses.forEach((exp, index) => {
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>${exp.name}</td>
+                <td><strong>${exp.name}</strong></td>
                 <td>£${exp.amount.toFixed(2)}</td>
                 <td style="text-align:right;"><button class="delete-btn" onclick="deleteExpense(${index})">×</button></td>
             `;
@@ -1070,12 +1093,16 @@
     let shipments = [];
     try {
         shipments = JSON.parse(localStorage.getItem('japan_shipments')) || [
-            // Sample initialization values matching itinerary context flow
             { slip: "4051-9231-5023", carrier: "Yamato (Black Cat)", route: "Kyoto Hotel ➔ Tokyo Bellustar", eta: "29 June Morning", status: "In Transit" }
         ];
     } catch(e) {
         shipments = [];
     }
+
+    // Explicit function scope attachment to preserve operational event triggers across DOM shifts
+    window.addExpense = addExpense;
+    window.deleteExpense = deleteExpense;
+    window.updateBudget = updateBudget;
 
     function renderShipments() {
         const tbody = document.getElementById('trackingTableBody');
@@ -1140,8 +1167,6 @@
         localStorage.setItem('japan_shipments', JSON.stringify(shipments));
         renderShipments();
     }
-
-    document.toggleShipmentStatus = toggleShipmentStatus;
 
     function deleteShipment(index) {
         shipments.splice(index, 1);
@@ -1233,7 +1258,7 @@
     window.onload = function() {
         const savedBudget = localStorage.getItem('japan_budget');
         if (savedBudget) {
-            document.getElementById('totalBudgetInput').value = savedBudget;
+            document.querySelectorAll('#totalBudgetInput').forEach(el => el.value = savedBudget);
         }
         renderExpenses();
         updateBudget();
