@@ -18,7 +18,7 @@
             --link-color: #0077b6;
         }
 
-        /* Seamless Native Dark Mode Styling */
+        /* Native Dark Mode Styles */
         @media (prefers-color-scheme: dark) {
             :root {
                 --primary: #ef233c;
@@ -31,59 +31,22 @@
                 --border: #333333;
                 --link-color: #4ea8de;
             }
-            body {
-                background-color: var(--bg);
-                color: var(--text-color);
-            }
-            .card {
+            body { background-color: var(--bg); color: var(--text-color); }
+            .card, .widget-card {
                 background: var(--card-bg) !important;
                 color: var(--text-color) !important;
                 box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
             }
-            .widget-card {
-                background: var(--card-bg) !important;
-                color: var(--text-color) !important;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-            }
-            .stay-info {
-                background: #252525 !important;
-                border: 1px solid #333 !important;
-                color: var(--text-color) !important;
-            }
-            .tab-button {
-                background: var(--tab-inactive) !important;
-                color: var(--text-color) !important;
-            }
-            .tab-button.active {
-                background: var(--primary) !important;
-                color: white !important;
-            }
-            .calc-input, .budget-input {
-                background: #252525 !important;
-                border: 1px solid #444 !important;
-                color: #fff !important;
-            }
-            .section-title {
-                color: #fff !important;
-            }
-            .tag {
-                background: #333 !important;
-                color: #fff !important;
-            }
-            table th {
-                background: #252525 !important;
-                color: #fff !important;
-            }
-            table td {
-                border-bottom: 1px solid #333 !important;
-            }
-            /* Dark-mode map tile inversion filter for native aesthetic */
-            .leaflet-tile-container {
-                filter: brightness(0.6) invert(1) contrast(95%) hue-rotate(180deg);
-            }
-            .leaflet-container {
-                background: #1a1a1a !important;
-            }
+            .stay-info { background: #252525 !important; border: 1px solid #333 !important; color: var(--text-color) !important; }
+            .tab-button { background: var(--tab-inactive) !important; color: var(--text-color) !important; }
+            .tab-button.active { background: var(--primary) !important; color: white !important; }
+            .calc-input, .budget-input, .budget-select { background: #252525 !important; border: 1px solid #444 !important; color: #fff !important; }
+            .section-title { color: #fff !important; }
+            .tag { background: #333 !important; color: #fff !important; }
+            table th { background: #252525 !important; color: #fff !important; }
+            table td { border-bottom: 1px solid #333 !important; }
+            .leaflet-tile-container { filter: brightness(0.6) invert(1) contrast(95%) hue-rotate(180deg); }
+            .leaflet-container { background: #1a1a1a !important; }
         }
 
         body {
@@ -122,232 +85,49 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
             z-index: 10;
         }
-        .widget-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .widget-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            text-align: center;
-            box-sizing: border-box;
-        }
-        .widget-label {
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .calc-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .calc-group {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
-        }
+        .widget-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 20px; }
+        .widget-card { background: var(--card-bg); border-radius: 15px; padding: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); text-align: center; box-sizing: border-box; }
+        .widget-label { font-size: 0.7rem; font-weight: bold; color: var(--accent); text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .calc-container { display: flex; flex-direction: column; gap: 10px; }
+        .calc-group { border-bottom: 1px solid var(--border); padding-bottom: 10px; }
         .calc-group:last-child { border-bottom: none; }
-        .calc-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 1rem;
-            margin-bottom: 5px;
-            box-sizing: border-box;
-        }
-        .result-text {
-            font-weight: bold;
-            color: #d90429;
-            font-size: 1.1rem;
-        }
-        .card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 6px solid var(--primary);
-            box-sizing: border-box;
-            width: 100%;
-            overflow: hidden;
-        }
+        .calc-input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 8px; text-align: center; font-size: 1rem; margin-bottom: 5px; box-sizing: border-box; }
+        .result-text { font-weight: bold; color: #d90429; font-size: 1.1rem; }
+        .card { background: var(--card-bg); border-radius: 15px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); border-left: 6px solid var(--primary); box-sizing: border-box; width: 100%; overflow: hidden; }
         .date { font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 0.85rem; }
         .location { font-size: 1.4rem; font-weight: 800; margin: 5px 0; }
         .stay-info { background: #f8f9fa; padding: 12px; border-radius: 8px; margin: 10px 0; border: 1px solid #dee2e6; }
         .section-title { font-size: 0.9rem; font-weight: bold; margin-top: 10px; color: var(--text-color); display: block; }
         .tag { font-size: 0.7rem; background: #eee; padding: 2px 6px; border-radius: 4px; vertical-align: middle; }
-        .custom-number-icon {
-            background-color: #d90429;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 2px solid white;
-        }
+        .custom-number-icon { background-color: #d90429; color: white; font-weight: bold; display: flex; align-items: center; justify-content: center; border-radius: 50%; border: 2px solid white; }
+        
+        /* Budget Tracker Style Adjustments */
+        .budget-summary { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 15px; text-align: center; }
+        .budget-box { background: var(--tab-inactive); padding: 10px; border-radius: 10px; display: flex; flex-direction: column; justify-content: center; }
+        .budget-amount { font-size: 1.2rem; font-weight: bold; }
+        .budget-input-row { display: flex; flex-direction: column; gap: 10px; margin-bottom: 15px; }
+        .budget-input, .budget-select { padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 0.95rem; width: 100%; box-sizing: border-box; }
+        .budget-btn { background: var(--primary); color: white; border: none; padding: 12px; border-radius: 8px; cursor: pointer; font-weight: bold; font-size: 0.95rem; width: 100%; min-height: 48px; }
+        .expense-table-container { max-height: 250px; overflow-y: auto; border-radius: 8px; border: 1px solid var(--border); width: 100%; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; text-align: left; }
+        table th { background: #eee; padding: 8px; position: sticky; top: 0; }
+        table td { padding: 8px; border-bottom: 1px solid var(--border); }
+        .action-btn { background: none; border: none; cursor: pointer; font-weight: bold; font-size: 1rem; padding: 4px 8px; min-height: 38px; }
+        .delete-btn { color: #d90429; }
+        .edit-btn { color: #0077b6; margin-right: 5px; }
+        .cat-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; color: white; display: inline-block; margin-top: 2px; }
 
-        /* Interactive Navigation Links */
-        .nav-link {
-            color: var(--link-color);
-            text-decoration: none;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            min-height: 44px; /* Fluid touch target padding */
-            gap: 4px;
-        }
-        .nav-link:hover {
-            text-decoration: underline;
-        }
-
-        /* Fixed Mobile Budget Form Layout */
-        .budget-summary {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .budget-box {
-            background: var(--tab-inactive);
-            padding: 10px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .budget-amount {
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        .budget-input-row {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .budget-input {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .budget-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.95rem;
-            width: 100%;
-            min-height: 48px;
-        }
-        .expense-table-container {
-            max-height: 200px;
-            overflow-y: auto;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            width: 100%;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            text-align: left;
-        }
-        table th {
-            background: #eee;
-            padding: 8px;
-            position: sticky;
-            top: 0;
-        }
-        table td {
-            padding: 8px;
-            border-bottom: 1px solid var(--border);
-        }
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #d90429;
-            cursor: pointer;
-            font-weight: bold;
-            padding: 8px 12px;
-            font-size: 1rem;
-            min-height: 44px;
-        }
-
-        /* Tabs UI */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        .tab-button {
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: none;
-            background: var(--tab-inactive);
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-color);
-            min-height: 44px;
-        }
-        .tab-button.active {
-            background: var(--primary);
-            color: white;
-        }
-        .tab-content {
-            display: none;
-            font-size: 0.9rem;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .food-list {
-            padding-left: 20px;
-            margin-top: 5px;
-        }
-        .food-list li { margin-bottom: 6px; }
-        .section-subtitle {
-            font-weight: bold;
-            margin-top: 12px;
-            font-size: 0.95rem;
-        }
-
-        /* Group Heading Style */
-        .group-heading {
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin: 25px 0 10px 5px;
-            color: var(--text-color);
-        }
-
-        /* Mobile Viewport Adjustments */
-        @media (max-width: 600px) { 
-            .widget-row { grid-template-columns: 1fr; }
-        }
-        @media (max-width: 480px) {
-            .budget-summary {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
+        /* Tabs UI Layout */
+        .tabs { display: flex; gap: 8px; margin-bottom: 10px; margin-top: 10px; flex-wrap: wrap; }
+        .tab-button { padding: 10px 14px; border-radius: 8px; border: none; background: var(--tab-inactive); cursor: pointer; font-size: 0.85rem; font-weight: 600; color: var(--text-color); min-height: 44px; }
+        .tab-button.active { background: var(--primary); color: white; }
+        .tab-content { display: none; font-size: 0.9rem; }
+        .tab-content.active { display: block; }
+        .food-list { padding-left: 20px; margin-top: 5px; list-style-type: none; }
+        .food-list li { margin-bottom: 8px; font-size: 0.95rem; }
+        .section-subtitle { font-weight: bold; margin-top: 12px; font-size: 0.95rem; }
+        .group-heading { font-size: 1.4rem; font-weight: 800; margin: 25px 0 10px 5px; color: var(--text-color); }
+        @media (max-width: 600px) { .widget-row { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -387,7 +167,6 @@
         </div>
     </div>
 
-    <!-- Budget Tracker -->
     <div class="card" style="border-left-color: #7209b7;">
         <div class="date">💰 Budget & Expenditure</div>
         <div class="location">Live Trip Tracker</div>
@@ -412,18 +191,26 @@
         </div>
 
         <div class="budget-input-row">
-            <input type="text" id="expName" class="budget-input" placeholder="Item (e.g., Ramen)">
-            <input type="number" id="expAmount" class="budget-input" placeholder="£ Amount">
-            <button class="budget-btn" onclick="addExpense()">Add</button>
+            <input type="hidden" id="editId" value="">
+            <input type="text" id="expName" class="budget-input" placeholder="Item Name (e.g., Ichiran Ramen)">
+            <input type="number" id="expAmount" class="budget-input" placeholder="Amount (£)">
+            <select id="expCategory" class="budget-select">
+                <option value="Food 🍣">Food 🍣</option>
+                <option value="Hotel 🏨">Hotel 🏨</option>
+                <option value="Transport 🚄">Transport 🚄</option>
+                <option value="Activities 🎡">Activities 🎡</option>
+                <option value="Shopping 🛍️">Shopping 🛍️</option>
+            </select>
+            <button class="budget-btn" id="submitBudgetBtn" onclick="addExpense()">Add Expense</button>
         </div>
 
         <div class="expense-table-container">
             <table>
                 <thead>
                     <tr>
-                        <th>Item</th>
+                        <th>Item Details</th>
                         <th>Amount</th>
-                        <th></th>
+                        <th style="text-align:right; padding-right:15px;">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="expenseTableBody"></tbody>
@@ -431,7 +218,6 @@
         </div>
     </div>
 
-    <!-- Food Guide -->
     <div class="card" style="border-left-color: #06d6a0;">
         <div class="date">🍣 Food Guide</div>
         <div class="location">Must Book + Hidden Gems</div>
@@ -446,64 +232,63 @@
         <div id="tokyoFood" class="tab-content active">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Gyukatsu+Motomura+Shibuya" target="_blank">🗺️ Gyukatsu Motomura (Shibuya)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Sushi+no+Midori+Shibuya" target="_blank">🗺️ Sushi no Midori (Shibuya)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Chukasoba+Ginza+Hachigo" target="_blank">🗺️ Chukasoba Ginza Hachigo</a></li>
+                <li>🇯🇵 Gyukatsu Motomura (Shibuya)</li>
+                <li>🇯🇵 Sushi no Midori (Shibuya)</li>
+                <li>🇯🇵 Chukasoba Ginza Hachigo</li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Fuunji+Shinjuku" target="_blank">🗺️ Fuunji (Tsukemen)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Tonki+Meguro+Tokyo" target="_blank">🗺️ Tonki (Tonkatsu)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Cafe+Aaliya+Shinjuku" target="_blank">🗺️ Cafe Aaliya (French Toast)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Afuri+Harajuku+Tokyo" target="_blank">🗺️ Afuri (Yuzu Ramen)</a></li>
+                <li>💎 Fuunji (Tsukemen)</li>
+                <li>💎 Tonki (Tonkatsu)</li>
+                <li>💎 Cafe Aaliya (French Toast)</li>
+                <li>💎 Afuri (Yuzu Ramen)</li>
             </ul>
         </div>
 
         <div id="osakaFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Mizuno+Okonomiyaki+Osaka" target="_blank">🗺️ Mizuno (Okonomiyaki)</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Yakiniku+M+Hozenji+Osaka" target="_blank">🗺️ Yakiniku M Hozenji</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Kushikatsu+Daruma+Dotombori" target="_blank">🗺️ Kushikatsu Daruma</a></li>
+                <li>🇯🇵 Mizuno (Okonomiyaki)</li>
+                <li>🇯🇵 Yakiniku M Hozenji</li>
+                <li>🇯🇵 Kushikatsu Daruma</li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Udon+Shin+Osaka" target="_blank">🗺️ Udon Shin</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Hajime+Yakiniku+Osaka" target="_blank">🗺️ Hajime Yakiniku</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Takoyaki+Wanaka+Dotonbori" target="_blank">🗺️ Takoyaki Wanaka</a></li>
+                <li>💎 Udon Shin</li>
+                <li>💎 Hajime Yakiniku</li>
+                <li>💎 Takoyaki Wanaka</li>
             </ul>
         </div>
 
         <div id="kyotoFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Book</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Kichi+Kichi+Omurice+Kyoto" target="_blank">🗺️ Kichi Kichi Omurice</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Restaurant+Monk+Kyoto" target="_blank">🗺️ Monk</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Gion+Karyo+Kyoto" target="_blank">🗺️ Gion Karyo</a></li>
+                <li>🇯🇵 Kichi Kichi Omurice</li>
+                <li>🇯🇵 Monk</li>
+                <li>🇯🇵 Gion Karyo</li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Omen+Kodai-ji+Kyoto" target="_blank">🗺️ Omen Kodai-ji</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Men-ya+Inoichi+Kyoto" target="_blank">🗺️ Men-ya Inoichi</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Panel+Cafe+Kyoto" target="_blank">🗺️ Panel Cafe</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Nishiki+Market+Kyoto" target="_blank">🗺️ Nishiki Market</a></li>
+                <li>💎 Omen Kodai-ji</li>
+                <li>💎 Men-ya Inoichi</li>
+                <li>💎 Panel Cafe</li>
+                <li>💎 Nishiki Market</li>
             </ul>
         </div>
 
         <div id="hakoneFood" class="tab-content">
             <div class="section-subtitle">🔥 Must Do</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Amazake+Chaya+Hakone" target="_blank">🗺️ Amazake Chaya</a></li>
+                <li>🇯🇵 Amazake Chaya</li>
             </ul>
             <div class="section-subtitle">💎 Hidden Gems</div>
             <ul class="food-list">
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Tamura+Ginkatsutei+Hakone" target="_blank">🗺️ Tamura Ginkatsutei</a></li>
-                <li><a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Lake+Ashi+Soba+Hakone" target="_blank">🗺️ Lake Ashi Local Soba Spots</a></li>
+                <li>💎 Tamura Ginkatsutei</li>
+                <li>💎 Lake Ashi Local Soba Spots</li>
             </ul>
         </div>
     </div>
 
-    <!-- Itinerary Planner -->
     <div class="card" style="border-left-color: #118ab2;">
         <div class="date">🗓 Itinerary Planner</div>
         <div class="location">Your Destinational Plans</div>
@@ -518,24 +303,24 @@
         <div id="tokyoItinerary" class="tab-content active">
             <div class="section-subtitle">First Stint (Arrival)</div>
             <ul class="food-list">
-                <li><strong>19 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Audemars+Piguet+House+Tokyo" target="_blank">🗺️ AP Watch Museum 17:00pm</a></li>
-                <li><strong>20 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Tokyo+Dome" target="_blank">🗺️ Baseball Game Tokyo Dome 14:00</a></li>
+                <li><strong>19 June:</strong> 🏎️ AP Watch Museum 17:00pm</li>
+                <li><strong>20 June:</strong> ⚾ Baseball Game Tokyo Dome 14:00</li>
             </ul>
             <div class="section-subtitle">Second Stint (Grand Finale)</div>
             <ul class="food-list">
-                <li><strong>29 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=teamLab+Borderless+Azabudai+Hills+Tokyo" target="_blank">🗺️ Return, Shinjuku, teamLabs Borderless 18:30</a></li>
-                <li><strong>30 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=teamLab+Planets+Toyosu+Tokyo" target="_blank">🗺️ Akihabara, teamLab Planets</a></li>
-                <li><strong>1 July:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Senso-ji+Asakusa+Tokyo" target="_blank">🗺️ Asakusa, Senso-ji, Skytree</a></li>
-                <li><strong>2 July:</strong> Shopping, Imperial Palace, Shibuya</li>
-                <li><strong>3 July:</strong> Departure</li>
+                <li><strong>29 June:</strong> 🖼️ Return, Shinjuku, teamLabs Borderless 18:30</li>
+                <li><strong>30 June:</strong> ⚡ Akihabara, teamLab Planets</li>
+                <li><strong>1 July:</strong> 🏮 Asakusa, Senso-ji, Skytree</li>
+                <li><strong>2 July:</strong> 🛍️ Shopping, Imperial Palace, Shibuya</li>
+                <li><strong>3 July:</strong> ✈️ Departure</li>
             </ul>
         </div>
 
         <div id="osakaItinerary" class="tab-content">
             <div class="section-subtitle">Osaka Exploration</div>
             <ul class="food-list">
-                <li><strong>21 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Dotonbori+Osaka" target="_blank">🗺️ Travel + Dotonbori Food Night</a></li>
-                <li><strong>22 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Universal+Studios+Japan+Osaka" target="_blank">🗺️ Universal Studios Japan</a></li>
+                <li><strong>21 June:</strong> 🧳 Travel + Dotonbori Food Night</li>
+                <li><strong>22 June:</strong> 🏰 Universal Studios Japan</li>
                 <li><strong>23 June:</strong> Osaka Castle, Kuromon Market, Shinsekai</li>
             </ul>
         </div>
@@ -544,8 +329,8 @@
             <div class="section-subtitle">Cultural Highlights</div>
             <ul class="food-list">
                 <li><strong>24 June:</strong> Nara or Kobe (optional), travel to Kyoto</li>
-                <li><strong>25 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Arashiyama+Bamboo+Grove+Kyoto" target="_blank">🗺️ Arashiyama Bamboo Grove, Monkey Park</a></li>
-                <li><strong>26 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Kiyomizu-dera+Kyoto" target="_blank">🗺️ Kiyomizu-dera, Gion, Higashiyama Streets</a></li>
+                <li><strong>25 June:</strong> 🎋 Arashiyama Bamboo Grove, Monkey Park</li>
+                <li><strong>26 June:</strong> ⛩️ Kiyomizu-dera, Gion, Higashiyama Streets</li>
             </ul>
         </div>
 
@@ -553,21 +338,18 @@
             <div class="section-subtitle">Relaxation & Scenic Views</div>
             <ul class="food-list">
                 <li><strong>27 June:</strong> Travel, Open Air Museum, onsen</li>
-                <li><strong>28 June:</strong> <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Hakone+Ropeway" target="_blank">🗺️ Ropeway, Lake Ashi, Hakone Shrine</a></li>
+                <li><strong>28 June:</strong> 🚠 Ropeway, Lake Ashi, Hakone Shrine</li>
             </ul>
         </div>
     </div>
 
     <div class="group-heading">🏨 Hotels</div>
 
-    <!-- Hotel List -->
     <div class="card">
         <div class="date">1. 19 June - 21 June (2 Nights)</div>
         <div class="location">Tokyo: Tokyo-to <span class="tag">Arrival</span></div>
         <div class="stay-info">
-            <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Mitsui+Garden+Hotel+Kyobashi+Tokyo" target="_blank">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</a>
-            </span>
+            <span class="section-title">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</span>
             <p style="margin:5px 0; font-size:0.85rem;">Address: Tokyo-to, Tokyo, Chuo-ku Kyobashi 1-3-6, 💰 £385</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -581,9 +363,7 @@
         <div class="date">2. 21 June - 24 June (3 Nights)</div>
         <div class="location">Osaka Honmachi <span class="tag">Food Capital</span></div>
         <div class="stay-info">
-            <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=The+Lively+Osaka+Honmachi+Hotel" target="_blank">🏨 The Lively Osaka Honmachi</a>
-            </span>
+            <span class="section-title">🏨 The Lively Osaka Honmachi</span>
             <p style="margin:5px 0; font-size:0.85rem;">541-0054 Osaka, Chuo-ku, Minami-Honmachi 1-5-11 • Near Sakaisuji-Hommachi Station • 💰 £277</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -597,9 +377,7 @@
         <div class="date">3. 24 June - 27 June (3 Nights)</div>
         <div class="location">Kyoto Higashiiru <span class="tag">Culture</span></div>
         <div class="stay-info">
-            <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Mitsui+Garden+Hotel+Kyoto+Sanjo+Premier" target="_blank">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</a>
-            </span>
+            <span class="section-title">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</span>
             <p style="margin:5px 0; font-size:0.85rem;">45-1, Hishiya-cho, Higashiiru, Higashinotoin, Sanjo-dori, Nakagyo-ku,Kyoto, 604-8131. 💰 £391</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -613,9 +391,7 @@
         <div class="date">4. 27 June - 29 June (2 Nights)</div>
         <div class="location">🏔 Hakone <span class="tag">Relax & Fuji</span></div>
         <div class="stay-info">
-            <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=Nol+Hakone+Myojindai" target="_blank">🏨 Nol Hakone Myojindai</a>
-            </span>
+            <span class="section-title">🏨 Nol Hakone Myojindai</span>
             <p style="margin:5px 0; font-size:0.85rem;">1488-205 Miyagino, Hakone, Ashigarashimo District, Kanagawa 250-0401, Japan 💰 £529</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -629,9 +405,7 @@
         <div class="date">5. 29 June - 03 July (4 Nights)</div>
         <div class="location">Tokyo Shinjuku City<span class="tag">Mid-Luxury Finish</span></div>
         <div class="stay-info">
-            <span class="section-title">
-                <a class="nav-link" href="https://www.google.com/maps/search/?api=1&query=BELLUSTAR+TOKYO+Pan+Pacific+Hotel" target="_blank">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</a>
-            </span>
+            <span class="section-title">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</span>
             <p style="margin:5px 0; font-size:0.85rem;">KABUKICHO TOWER, 45F, 1 Chome-29-1 Kabukicho, Shinjuku City, Tokyo 160-0021, Japan 💰 £1,629</p>
         </div>
         <span class="section-title">Must Do:</span>
@@ -645,7 +419,7 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script>
-    // 1. Weather Data Engine
+    // 1. Weather Setup
     const travelWeather = {
         "Tokyo": "27°C • 🌧 High Humidity / Rainy Season Risk",
         "Osaka": "29°C • 🌦 Very Warm & Muggy",
@@ -654,7 +428,7 @@
     };
     document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
 
-    // 2. Scoped Navigation Tab Engine
+    // 2. Tab Navigation Engines
     function handleTabClick(evt, cityName) {
         const button = evt.currentTarget;
         const parentCard = button.closest('.card');
@@ -665,9 +439,7 @@
 
         button.classList.add("active");
         const targetContent = document.getElementById(targetId);
-        if (targetContent) {
-            targetContent.classList.add("active");
-        }
+        if (targetContent) { targetContent.classList.add("active"); }
 
         if (cityName && travelWeather[cityName]) {
             document.getElementById("weatherBox").innerHTML = travelWeather[cityName];
@@ -675,7 +447,7 @@
         }
     }
 
-    // 3. Leaflet Mapping System
+    // 3. Leaflet Mapping
     const map = L.map('map').setView([35.15, 137.5], 6);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map);
 
@@ -689,17 +461,13 @@
 
     const latlngs = [];
     locations.forEach((loc, index) => {
-        const numberIcon = L.divIcon({
-            className: 'custom-number-icon',
-            html: index + 1,
-            iconSize: [30, 30]
-        });
+        const numberIcon = L.divIcon({ className: 'custom-number-icon', html: index + 1, iconSize: [30, 30] });
         L.marker(loc.coords, {icon: numberIcon}).addTo(map).bindPopup("<b>"+loc.name+"</b><br>"+loc.date);
         latlngs.push(loc.coords);
     });
     L.polyline(latlngs, {color: '#d90429', weight: 3, opacity: 0.7, dashArray: '5, 10'}).addTo(map);
 
-    // 4. Currency Math Converter
+    // 4. Converter
     const RATE = 213.93; 
     function convertYenToGbp() {
         const yen = document.getElementById('yenInput').value;
@@ -712,8 +480,10 @@
         document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
     }
 
-    // 5. Complete Budget Tracker System
+    // 5. Complete Budget, Categorization and Inline Editing Engine
     let expenses = [];
+    const catColors = { "Food 🍣": "#fb5607", "Hotel 🏨": "#ffbe0b", "Transport 🚄": "#3a86ff", "Activities 🎡": "#7209b7", "Shopping 🛍️": "#06d6a0" };
+
     try {
         expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
     } catch(e) {
@@ -729,9 +499,7 @@
         localStorage.setItem('japan_budget_total', totalBudget);
         
         let totalSpent = 0;
-        expenses.forEach(exp => {
-            totalSpent += parseFloat(exp.amount) || 0;
-        });
+        expenses.forEach(exp => { totalSpent += parseFloat(exp.amount) || 0; });
 
         const remaining = totalBudget - totalSpent;
         const perPerson = totalSpent / 2;
@@ -749,25 +517,41 @@
     function addExpense() {
         const nameInput = document.getElementById('expName');
         const amountInput = document.getElementById('expAmount');
+        const catInput = document.getElementById('expCategory');
+        const editIdInput = document.getElementById('editId');
         
         const name = nameInput.value.trim();
         const amount = parseFloat(amountInput.value) || 0;
+        const category = catInput.value;
 
         if (name === "" || amount <= 0) return;
 
-        const newExpense = {
-            id: Date.now(),
-            name: name,
-            amount: amount
-        };
+        if (editIdInput.value !== "") {
+            // Edit existing item mode
+            const targetId = parseInt(editIdInput.value);
+            expenses = expenses.map(exp => exp.id === targetId ? { ...exp, name: name, amount: amount, category: category } : exp);
+            editIdInput.value = "";
+            document.getElementById('submitBudgetBtn').innerText = "Add Expense";
+        } else {
+            // Standard append mode
+            expenses.push({ id: Date.now(), name: name, amount: amount, category: category });
+        }
 
-        expenses.push(newExpense);
         localStorage.setItem('japan_expenses', JSON.stringify(expenses));
-        
-        nameInput.value = "";
-        amountInput.value = "";
-        
+        nameInput.value = ""; amountInput.value = "";
         updateBudget();
+    }
+
+    function startEdit(id) {
+        const item = expenses.find(exp => exp.id === id);
+        if (!item) return;
+
+        document.getElementById('expName').value = item.name;
+        document.getElementById('expAmount').value = item.amount;
+        document.getElementById('expCategory').value = item.category || "Food 🍣";
+        document.getElementById('editId').value = item.id;
+        document.getElementById('submitBudgetBtn').innerText = "Update Item";
+        document.getElementById('expName').focus();
     }
 
     function deleteExpense(id) {
@@ -781,21 +565,25 @@
         tbody.innerHTML = "";
 
         expenses.forEach(exp => {
+            const cat = exp.category || "Food 🍣";
+            const color = catColors[cat] || "#8d99ae";
             const row = document.createElement('tr');
             row.innerHTML = `
-                <td style="word-break: break-word;">${exp.name}</td>
-                <td>£${exp.amount.toFixed(2)}</td>
-                <td style="text-align: right; width: 40px;">
-                    <button class="delete-btn" onclick="deleteExpense(${exp.id})">×</button>
+                <td style="word-break: break-word; padding: 10px 8px;">
+                    <strong>${exp.name}</strong><br>
+                    <span class="cat-tag" style="background:${color};">${cat}</span>
+                </td>
+                <td style="font-weight:600; vertical-align:middle;">£${exp.amount.toFixed(2)}</td>
+                <td style="text-align: right; width: 90px; vertical-align:middle;">
+                    <button class="action-btn edit-btn" onclick="startEdit(${exp.id})">✏️</button>
+                    <button class="action-btn delete-btn" onclick="deleteExpense(${exp.id})">×</button>
                 </td>
             `;
             tbody.appendChild(row);
         });
     }
 
-    window.onload = function() {
-        updateBudget();
-    };
+    window.onload = function() { updateBudget(); };
 </script>
 </body>
 </html>
