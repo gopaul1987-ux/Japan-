@@ -229,7 +229,7 @@
         }
         .budget-input-row {
             display: grid;
-            grid-template-columns: 1fr 1fr auto;
+            grid-template-columns: 1.5fr 1fr 1fr auto;
             gap: 10px;
             margin-bottom: 15px;
         }
@@ -240,6 +240,15 @@
             font-size: 0.95rem;
             width: 100%;
             box-sizing: border-box;
+            height: 48px;
+        }
+        /* Style adjustments for select field alignment */
+        select.budget-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path d='M0 3l5 5 5-5z' fill='%23666'/></svg>");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            padding-right: 30px;
         }
         .budget-btn {
             background: var(--primary);
@@ -251,6 +260,7 @@
             font-weight: bold;
             font-size: 0.95rem;
             min-height: 48px;
+            height: 48px;
         }
         .expense-table-container {
             max-height: 200px;
@@ -335,7 +345,7 @@
 
         @media (max-width: 600px) { 
             .widget-row { grid-template-columns: 1fr; }
-            .budget-input-row { grid-template-columns: 1fr; }
+            .budget-input-row { grid-template-columns: 1fr; gap: 8px; }
         }
     </style>
 </head>
@@ -402,6 +412,13 @@
         <div class="budget-input-row">
             <input type="text" id="expName" class="budget-input" placeholder="Item (e.g., Ramen)">
             <input type="number" id="expAmount" class="budget-input" placeholder="£ Amount">
+            <select id="expCategory" class="budget-input">
+                <option value="🍔 Food">🍔 Food</option>
+                <option value="🏨 Hotel">🏨 Hotel</option>
+                <option value="🚄 Transport">🚄 Transport</option>
+                <option value="🛍️ Shopping">🛍️ Shopping</option>
+                <option value="🎟️ Activities">🎟️ Activities</option>
+            </select>
             <button class="budget-btn" onclick="addExpense()">Add</button>
         </div>
 
@@ -410,6 +427,7 @@
                 <thead>
                     <tr>
                         <th>Item</th>
+                        <th>Category</th>
                         <th>Amount</th>
                         <th>Action</th>
                     </tr>
@@ -735,13 +753,12 @@
         });
 
         const remaining = totalBudget - totalSpent;
-        const perPerson = totalSpent / 2; // Assuming 2 travelers based on header emoji
+        const perPerson = totalSpent / 2;
 
         document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toFixed(2);
         document.getElementById('perPersonSpent').innerText = "£" + perPerson.toFixed(2);
         document.getElementById('remainingBalance').innerText = "£" + remaining.toFixed(2);
         
-        // Color alert transitions based on staying within budget limits
         const remainingElement = document.getElementById('remainingBalance');
         if (remaining < 0) {
             remainingElement.style.color = "#d90429";
@@ -755,9 +772,13 @@
         tbody.innerHTML = '';
         
         expenses.forEach((exp, index) => {
+            // Handle backwards compatibility if items don't have a category saved yet
+            const displayCategory = exp.category ? exp.category : "🍔 Food"; 
+            
             const tr = document.createElement('tr');
             tr.innerHTML = `
                 <td>${escapeHtml(exp.name)}</td>
+                <td><span class="tag" style="font-weight:600;">${displayCategory}</span></td>
                 <td>£${exp.amount.toFixed(2)}</td>
                 <td><button class="delete-btn" onclick="deleteExpense(${index})">×</button></td>
             `;
@@ -769,11 +790,14 @@
     function addExpense() {
         const nameInput = document.getElementById('expName');
         const amountInput = document.getElementById('expAmount');
+        const categoryInput = document.getElementById('expCategory');
+        
         const name = nameInput.value.trim();
         const amount = parseFloat(amountInput.value);
+        const category = categoryInput.value;
 
         if (name && !isNaN(amount) && amount > 0) {
-            expenses.push({ name, amount });
+            expenses.push({ name, amount, category });
             localStorage.setItem('japan_expenses', JSON.stringify(expenses));
             nameInput.value = '';
             amountInput.value = '';
@@ -791,7 +815,6 @@
         return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
     }
 
-    // Initial load view setup execution
     renderExpenses();
 </script>
 </body>
