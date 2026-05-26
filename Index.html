@@ -37,7 +37,7 @@
                 --modal-overlay: rgba(0, 0, 0, 0.7);
                 --tracking-color: #3a86ff;
                 --budget-color: #7209b7;
-                --hotel-color: #ff702e; /* Enhanced contrast for dark mode */
+                --hotel-color: #ff702e;
             }
             body {
                 background-color: var(--bg);
@@ -1018,7 +1018,7 @@
     locations.forEach((loc, index) => {
         const numberIcon = L.divIcon({
             className: 'custom-number-icon',
-            html: index + 1,
+            html: (index + 1).toString(),
             iconSize: [30, 30]
         });
         L.marker(loc.coords, {icon: numberIcon}).addTo(map).bindPopup("<b>"+loc.name+"</b><br>"+loc.date);
@@ -1143,8 +1143,8 @@
             tbody.appendChild(tr);
         });
 
-        document.getElementById('countTransit').innerText = transitCount;
-        document.getElementById('countDelivered').innerText = deliveredCount;
+        document.getElementById('countTransit').innerText = transitCount.toString();
+        document.getElementById('countDelivered').innerText = deliveredCount.toString();
     }
 
     function addShipment() {
@@ -1201,8 +1201,8 @@
         const now = new Date();
         const options = { hour: '2-digit', minute: '2-digit', hour12: false };
         
-        const lonStr = now.toLocaleTimeString('en-GB', { ...options, timeZone: 'Europe/London' });
-        const tyoStr = now.toLocaleTimeString('en-GB', { ...options, timeZone: 'Asia/Tokyo' });
+        const lonStr = now.toLocaleTimeString('en-GB', Object.assign({}, options, { timeZone: 'Europe/London' }));
+        const tyoStr = now.toLocaleTimeString('en-GB', Object.assign({}, options, { timeZone: 'Asia/Tokyo' }));
         
         document.getElementById('londonTime').innerText = lonStr;
         document.getElementById('tokyoTime').innerText = tyoStr;
