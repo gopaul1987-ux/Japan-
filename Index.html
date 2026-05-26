@@ -19,6 +19,7 @@
             --modal-overlay: rgba(0, 0, 0, 0.4);
             --tracking-color: #3a86ff;
             --budget-color: #7209b7;
+            --hotel-color: #fb5607;
         }
 
         /* Seamless Native Dark Mode Styling */
@@ -105,12 +106,12 @@
         /* Layout Master Navigation Bar */
         .layout-nav {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 8px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
             margin-bottom: 15px;
         }
         .layout-btn {
-            padding: 10px 5px;
+            padding: 10px 2px;
             border-radius: 12px;
             border: none;
             background: var(--card-bg);
@@ -121,8 +122,8 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
-            font-size: 0.85rem;
+            gap: 4px;
+            font-size: 0.78rem;
             min-height: 48px;
         }
         .layout-btn.active {
@@ -512,7 +513,7 @@
         @media (max-width: 600px) { 
             .widget-row { grid-template-columns: 1fr; }
             .tracking-grid-form { grid-template-columns: 1fr; }
-            .layout-nav { grid-template-columns: 1fr; gap: 5px; }
+            .layout-nav { grid-template-columns: repeat(2, 1fr); gap: 5px; }
         }
     </style>
 </head>
@@ -520,14 +521,13 @@
 
 <div class="container">
     
-    <!-- Separate Layout Nav Toggle Header (Now featuring 3 clear layout partitions) -->
     <nav class="layout-nav">
-        <button id="navItinerary" class="layout-btn active" onclick="switchLayout('itinerary')">🗺 Main Itinerary</button>
-        <button id="navBudget" class="layout-btn" onclick="switchLayout('budget')">💰 Live Budget Desk</button>
+        <button id="navItinerary" class="layout-btn active" onclick="switchLayout('itinerary')">🗺 Itinerary</button>
+        <button id="navHotels" class="layout-btn" onclick="switchLayout('hotels')">🏨 Hotels Desk</button>
+        <button id="navBudget" class="layout-btn" onclick="switchLayout('budget')">💰 Budget Desk</button>
         <button id="navTracking" class="layout-btn" onclick="switchLayout('tracking')">📦 Luggage Desk</button>
     </nav>
 
-    <!-- LAYOUT VIEW 1: MAIN ITINERARY DASHBOARD -->
     <div id="viewItinerary" class="app-view active">
         <header>
             <h1 style="margin-bottom: 5px;">Japan Adventure 2026 🇯🇵</h1>
@@ -566,7 +566,6 @@
                 </div>
             </div>
 
-            <!-- Pocket Currency Calculator remains accessible on Dashboard for swift conversion lookups -->
             <div class="widget-card">
                 <span class="widget-label">Quick Currency</span>
                 <div class="calc-container">
@@ -582,7 +581,6 @@
             </div>
         </div>
 
-        <!-- Food Guide -->
         <div class="card" style="border-left-color: #06d6a0;">
             <div class="date">🍣 Food Guide</div>
             <div class="location">Must Book + Hidden Gems</div>
@@ -654,7 +652,6 @@
             </div>
         </div>
 
-        <!-- Itinerary Planner -->
         <div class="card" style="border-left-color: #118ab2;">
             <div class="date">🗓 Itinerary Planner</div>
             <div class="location">Your Destinational Plans</div>
@@ -708,8 +705,13 @@
                 </ul>
             </div>
         </div>
+    </div>
 
-        <div class="group-heading">🏨 Hotels</div>
+    <div id="viewHotels" class="app-view">
+        <header style="background: var(--hotel-color); box-shadow: 0 4px 12px rgba(251, 86, 7, 0.25);">
+            <h1 style="margin-bottom: 5px;">Hotels Ledger 🏨</h1>
+            <p style="margin: 0;">Reservation Details, Addresses, Prices & Essential On-Site Checklists</p>
+        </header>
 
         <div class="card">
             <div class="date">1. 19 June - 21 June (2 Nights)</div>
@@ -783,7 +785,6 @@
         </div>
     </div>
 
-    <!-- LAYOUT VIEW 2: LIVE TRIP TRACKER BUDGET DESK (Fully isolated into its own screen view) -->
     <div id="viewBudget" class="app-view">
         <header style="background: var(--budget-color); box-shadow: 0 4px 12px rgba(114, 9, 183, 0.25);">
             <h1 style="margin-bottom: 5px;">Live Budget Desk 💰</h1>
@@ -839,14 +840,12 @@
                         </tr>
                     </thead>
                     <tbody id="expenseTableBody">
-                        <!-- Dynamic population via LocalStorage array logic -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
     </div>
 
-    <!-- LAYOUT VIEW 3: LUGGAGE FORWARDING DESK (TAKUHAIBIN) -->
     <div id="viewTracking" class="app-view">
         <header style="background: var(--tracking-color); box-shadow: 0 4px 12px rgba(58, 134, 255, 0.2);">
             <h1 style="margin-bottom: 5px;">Takuhaibin Desk 📦</h1>
@@ -916,18 +915,15 @@
                         </tr>
                     </thead>
                     <tbody id="trackingTableBody">
-                        <!-- Filled via JavaScript Engine -->
-                    </tbody>
+                        </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Sticky Popup Note Trigger -->
 <button class="scratchpad-fab" onclick="toggleScratchpad(true)">📝 Notes</button>
 
-<!-- Slide-Up Quick Scratchpad Overlay Frame -->
 <div id="scratchpadModal" class="modal-overlay" onclick="handleOutsideClick(event)">
     <div class="modal-content">
         <div class="modal-header">
@@ -953,6 +949,9 @@
             document.getElementById('viewItinerary').classList.add('active');
             document.getElementById('navItinerary').classList.add('active');
             setTimeout(() => { map.invalidateSize(); }, 50);
+        } else if (layoutName === 'hotels') {
+            document.getElementById('viewHotels').classList.add('active');
+            document.getElementById('navHotels').classList.add('active');
         } else if (layoutName === 'budget') {
             document.getElementById('viewBudget').classList.add('active');
             document.getElementById('navBudget').classList.add('active');
@@ -1186,6 +1185,18 @@
         }
     }
 
+    // 9. Clock Synchronizer Engine
+    function updateClocks() {
+        const now = new Date();
+        const options = { hour: '2-digit', minute: '2-digit', hour12: false };
+        
+        const lonStr = now.toLocaleTimeString('en-GB', { ...options, timeZone: 'Europe/London' });
+        const tyoStr = now.toLocaleTimeString('en-GB', { ...options, timeZone: 'Asia/Tokyo' });
+        
+        document.getElementById('londonTime').innerText = lonStr;
+        document.getElementById('tokyoTime').innerText = tyoStr;
+    }
+
     function handleOutsideClick(event) {
         if (event.target.id === 'scratchpadModal') {
             toggleScratchpad(false);
@@ -1209,18 +1220,6 @@
             status.innerText = "All changes saved locally";
             status.style.color = "";
         }, 3000);
-    }
-
-    // 9. Clock Synchronizer Engine
-    function updateClocks() {
-        const now = new Date();
-        const options = { hour: '2-digit', minute: '2-digit', hour12: false };
-        
-        const lonStr = now.toLocaleTimeString('en-GB', { ...options, timeZone: 'Europe/London' });
-        const tyoStr = now.toLocaleTimeString('en-GB', { ...options, timeZone: 'Asia/Tokyo' });
-        
-        document.getElementById('londonTime').innerText = lonStr;
-        document.getElementById('tokyoTime').innerText = tyoStr;
     }
 
     // 10. Live Countdown Timer Engine
