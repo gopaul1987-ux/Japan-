@@ -35,6 +35,9 @@
                 --border: #333333;
                 --link-color: #4ea8de;
                 --modal-overlay: rgba(0, 0, 0, 0.7);
+                --tracking-color: #3a86ff;
+                --budget-color: #7209b7;
+                --hotel-color: #ff702e; /* Enhanced contrast for dark mode */
             }
             body {
                 background-color: var(--bg);
@@ -60,6 +63,14 @@
                 color: var(--text-color) !important;
             }
             .tab-button.active {
+                background: var(--primary) !important;
+                color: white !important;
+            }
+            .layout-btn {
+                background: var(--card-bg) !important;
+                color: var(--text-color) !important;
+            }
+            .layout-btn.active {
                 background: var(--primary) !important;
                 color: white !important;
             }
@@ -840,7 +851,7 @@
                         </tr>
                     </thead>
                     <tbody id="expenseTableBody">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -915,7 +926,7 @@
                         </tr>
                     </thead>
                     <tbody id="trackingTableBody">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
@@ -943,7 +954,7 @@
     // 1. Layout Master View Switching Logic 
     function switchLayout(layoutName) {
         document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
-        document.querySelectorAll('.layout-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.layout-nav .layout-btn').forEach(btn => btn.classList.remove('active'));
         
         if (layoutName === 'itinerary') {
             document.getElementById('viewItinerary').classList.add('active');
