@@ -1,1283 +1,227 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japan Itinerary 2026</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <style>
-        :root {
-            --primary: #d90429;
-            --secondary: #2b2d42;
-            --accent: #8d99ae;
-            --bg: #f1f3f5;
-            --card-bg: #ffffff;
-            --text-color: #2b2d42;
-            --tab-inactive: #eee;
-            --border: #dee2e6;
-            --link-color: #0077b6;
-            --modal-overlay: rgba(0, 0, 0, 0.4);
-            --tracking-color: #3a86ff;
-            --budget-color: #7209b7;
-            --hotel-color: #fb5607;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Japan Travel App</title>
+  <style>
+    :root {
+      --bg: #121212;
+      --surface: #1e1e1e;
+      --primary: #ff4757;
+      --text: #ffffff;
+      --text-muted: #a0a0a0;
+      --border: #333333;
+      --link-color: #4ea8de;
+      --modal-overlay: rgba(0, 0, 0, 0.7);
+      --tracking-color: #3a86ff;
+      --budget-color: #7209b7;
+      --hotel-color: #ff702e; /* Enhanced contrast for dark mode */
+    }
 
-        /* Seamless Native Dark Mode Styling */
-        @media (prefers-color-scheme: dark) {
-            :root {
-                --primary: #ef233c;
-                --secondary: #edf2f4;
-                --accent: #8d99ae;
-                --bg: #121212;
-                --card-bg: #1e1e1e;
-                --text-color: #e0e0e0;
-                --tab-inactive: #2b2d42;
-                --border: #333333;
-                --link-color: #4ea8de;
-                --modal-overlay: rgba(0, 0, 0, 0.7);
-                --tracking-color: #3a86ff;
-                --budget-color: #7209b7;
-                --hotel-color: #ff702e; /* Enhanced contrast for dark mode */
-            }
-            body {
-                background-color: var(--bg);
-                color: var(--text-color);
-            }
-            .card {
-                background: var(--card-bg) !important;
-                color: var(--text-color) !important;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-            }
-            .widget-card {
-                background: var(--card-bg) !important;
-                color: var(--text-color) !important;
-                box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
-            }
-            .stay-info {
-                background: #252525 !important;
-                border: 1px solid #333 !important;
-                color: var(--text-color) !important;
-            }
-            .tab-button {
-                background: var(--tab-inactive) !important;
-                color: var(--text-color) !important;
-            }
-            .tab-button.active {
-                background: var(--primary) !important;
-                color: white !important;
-            }
-            .layout-btn {
-                background: var(--card-bg) !important;
-                color: var(--text-color) !important;
-            }
-            .layout-btn.active {
-                background: var(--primary) !important;
-                color: white !important;
-            }
-            .calc-input, .budget-input, .scratchpad-textarea, .tracking-input, .tracking-select {
-                background: #252525 !important;
-                border: 1px solid #444 !important;
-                color: #fff !important;
-            }
-            .section-title {
-                color: #fff !important;
-            }
-            .tag {
-                background: #333 !important;
-                color: #fff !important;
-            }
-            table th {
-                background: #252525 !important;
-                color: #fff !important;
-            }
-            table td {
-                border-bottom: 1px solid #333 !important;
-            }
-            .leaflet-tile-container {
-                filter: brightness(0.6) invert(1) contrast(95%) hue-rotate(180deg);
-            }
-            .leaflet-container {
-                background: #1a1a1a !important;
-            }
-            .tracking-badge {
-                background: #252525 !important;
-            }
-        }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      padding-bottom: 70px; /* Space for bottom nav */
+    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-color);
-            margin: 0;
-            padding: 15px;
-            line-height: 1.5;
-        }
-        .container { max-width: 700px; margin: 0 auto; box-sizing: border-box; width: 100%; }
-        
-        /* Layout Master Navigation Bar */
-        .layout-nav {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 6px;
-            margin-bottom: 15px;
-        }
-        .layout-btn {
-            padding: 10px 2px;
-            border-radius: 12px;
-            border: none;
-            background: var(--card-bg);
-            color: var(--text-color);
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            font-size: 0.78rem;
-            min-height: 48px;
-        }
-        .layout-btn.active {
-            background: var(--secondary);
-            color: white;
-        }
-        
-        /* Screen View Visibility Control */
-        .app-view {
-            display: none;
-        }
-        .app-view.active {
-            display: block;
-        }
+    .header {
+      background-color: var(--surface);
+      padding: 15px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
-        header {
-            background: #d90429;
-            color: white;
-            padding: 25px;
-            border-radius: 20px;
-            text-align: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(217, 4, 41, 0.2);
-        }
-        
-        .countdown-container {
-            background: rgba(0, 0, 0, 0.25);
-            padding: 10px 15px;
-            border-radius: 12px;
-            margin-top: 15px;
-            font-size: 0.95rem;
-            display: inline-block;
-            letter-spacing: 0.5px;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
-        }
-        #countdownTimer {
-            font-weight: 700;
-            font-variant-numeric: tabular-nums;
-        }
+    .header h1 {
+      margin: 0;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+    }
 
-        .flight-bar {
-            background: #2b2d42;
-            color: white;
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 20px;
-            font-size: 0.9rem;
-            display: flex;
-            justify-content: space-between;
-        }
-        #map {
-            height: 350px;
-            width: 100%;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            z-index: 10;
-        }
-        .widget-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-        .widget-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 15px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            text-align: center;
-            box-sizing: border-box;
-        }
-        .widget-label {
-            font-size: 0.7rem;
-            font-weight: bold;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .time-display {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin: 2px 0;
-        }
-        .calc-container {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-        .calc-group {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: 10px;
-        }
-        .calc-group:last-child { border-bottom: none; }
-        .calc-input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 1rem;
-            margin-bottom: 5px;
-            box-sizing: border-box;
-        }
-        .result-text {
-            font-weight: bold;
-            color: #d90429;
-            font-size: 1.1rem;
-        }
-        .card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-            border-left: 6px solid var(--primary);
-            box-sizing: border-box;
-            width: 100%;
-            overflow: hidden;
-        }
-        .date { font-weight: bold; color: var(--primary); text-transform: uppercase; font-size: 0.85rem; }
-        .location { font-size: 1.4rem; font-weight: 800; margin: 5px 0; }
-        .stay-info { background: #f8f9fa; padding: 12px; border-radius: 8px; margin: 10px 0; border: 1px solid #dee2e6; }
-        .section-title { font-size: 0.9rem; font-weight: bold; margin-top: 10px; color: var(--text-color); display: block; }
-        .tag { font-size: 0.7rem; background: #eee; padding: 2px 6px; border-radius: 4px; vertical-align: middle; }
-        .custom-number-icon {
-            background-color: #d90429;
-            color: white;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            border: 2px solid white;
-        }
+    .container {
+      padding: 15px;
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
-        /* Budget Form Layout styling adjustments */
-        .budget-summary {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
-        .budget-box {
-            background: var(--tab-inactive);
-            padding: 12px;
-            border-radius: 10px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .budget-amount {
-            font-size: 1.3rem;
-            font-weight: bold;
-        }
-        .budget-input-row {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-        .budget-input, .tracking-input, .tracking-select {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .budget-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.95rem;
-            width: 100%;
-            min-height: 48px;
-        }
-        .expense-table-container, .tracking-table-container {
-            max-height: 320px;
-            overflow-y: auto;
-            border-radius: 8px;
-            border: 1px solid var(--border);
-            width: 100%;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-            text-align: left;
-        }
-        table th {
-            background: #eee;
-            padding: 8px;
-            position: sticky;
-            top: 0;
-            z-index: 5;
-        }
-        table td {
-            padding: 12px 8px;
-            border-bottom: 1px solid var(--border);
-        }
-        .delete-btn {
-            background: none;
-            border: none;
-            color: #d90429;
-            cursor: pointer;
-            font-weight: bold;
-            padding: 8px 12px;
-            font-size: 1rem;
-            min-height: 44px;
-        }
+    /* Tab Layout Views */
+    .app-view {
+      display: none;
+    }
 
-        /* Floating Trigger Button for Popup Scratchpad */
-        .scratchpad-fab {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #f72585;
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 12px 20px;
-            font-weight: bold;
-            font-size: 0.95rem;
-            box-shadow: 0 4px 16px rgba(247, 37, 133, 0.4);
-            cursor: pointer;
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            min-height: 44px;
-            transition: transform 0.2s ease;
-        }
-        .scratchpad-fab:active {
-            transform: scale(0.95);
-        }
+    .app-view.active {
+      display: block;
+    }
 
-        /* Scratchpad Modal Overlay Frame */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--modal-overlay);
-            backdrop-filter: blur(4px);
-            -webkit-backdrop-filter: blur(4px);
-            z-index: 1000;
-            display: none;
-            justify-content: center;
-            align-items: flex-end;
-        }
-        .modal-overlay.active {
-            display: flex;
-        }
-        .modal-content {
-            background: var(--card-bg);
-            width: 100%;
-            max-width: 600px;
-            border-top-left-radius: 20px;
-            border-top-right-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 -4px 24px rgba(0,0,0,0.15);
-            box-sizing: border-box;
-            animation: slideUp 0.25s ease-out forwards;
-        }
-        @keyframes slideUp {
-            from { transform: translateY(100%); }
-            to { transform: translateY(0); }
-        }
-        .modal-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        .modal-close-btn {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            color: var(--accent);
-            cursor: pointer;
-            padding: 5px 10px;
-            min-height: 44px;
-        }
-        .scratchpad-textarea {
-            width: 100%;
-            height: 220px;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.95rem;
-            resize: none;
-            box-sizing: border-box;
-            margin-bottom: 10px;
-        }
-        .scratchpad-status {
-            font-size: 0.8rem;
-            color: var(--accent);
-            margin-top: 5px;
-            display: inline-block;
-        }
+    /* Hotel Cards Styling */
+    .hotel-card {
+      background: var(--surface);
+      border-left: 4px solid var(--hotel-color);
+      border-radius: 8px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
 
-        /* Tabs UI */
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 10px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-        .tab-button {
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: none;
-            background: var(--tab-inactive);
-            cursor: pointer;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-color);
-            min-height: 44px;
-        }
-        .tab-button.active {
-            background: var(--primary);
-            color: white;
-        }
-        .tab-content {
-            display: none;
-            font-size: 0.9rem;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        .food-list {
-            padding-left: 20px;
-            margin-top: 5px;
-        }
-        .food-list li { margin-bottom: 6px; }
-        .section-subtitle {
-            font-weight: bold;
-            margin-top: 12px;
-            font-size: 0.95rem;
-        }
+    .hotel-name {
+      font-size: 1.1rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: var(--text);
+    }
 
-        .group-heading {
-            font-size: 1.4rem;
-            font-weight: 800;
-            margin: 25px 0 10px 5px;
-            color: var(--text-color);
-        }
+    .hotel-meta {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
 
-        /* Luggage Tracking Layout UI Elements */
-        .tracking-grid-form {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        .tracking-badge {
-            background: #f1f3f5;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-        .status-transit { color: #fb5607; border: 1px solid #fb5607; }
-        .status-delivered { color: #06d6a0; border: 1px solid #06d6a0; }
-        
-        .info-blockquote {
-            background: rgba(58, 134, 255, 0.1);
-            border-left: 4px solid var(--tracking-color);
-            padding: 15px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            margin-bottom: 20px;
-        }
+    .hotel-stay {
+      display: inline-block;
+      background: rgba(255, 112, 46, 0.15);
+      color: var(--hotel-color);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
 
-        @media (max-width: 600px) { 
-            .widget-row { grid-template-columns: 1fr; }
-            .tracking-grid-form { grid-template-columns: 1fr; }
-            .layout-nav { grid-template-columns: repeat(2, 1fr); gap: 5px; }
-        }
-    </style>
+    /* Bottom Navigation */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background-color: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      z-index: 100;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      cursor: pointer;
+      width: 33.33%;
+    }
+
+    .nav-item.active {
+      color: var(--primary);
+    }
+
+    .nav-item i {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+  </style>
 </head>
 <body>
 
-<div class="container">
+  <div class="header">
+    <h1 id="view-title">Itinerary</h1>
+  </div>
+
+  <div class="container">
     
-    <nav class="layout-nav">
-        <button id="navItinerary" class="layout-btn active" onclick="switchLayout('itinerary')">🗺 Itinerary</button>
-        <button id="navHotels" class="layout-btn" onclick="switchLayout('hotels')">🏨 Hotels Desk</button>
-        <button id="navBudget" class="layout-btn" onclick="switchLayout('budget')">💰 Budget Desk</button>
-        <button id="navTracking" class="layout-btn" onclick="switchLayout('tracking')">📦 Luggage Desk</button>
-    </nav>
-
     <div id="viewItinerary" class="app-view active">
-        <header>
-            <h1 style="margin-bottom: 5px;">Japan Adventure 2026 🇯🇵</h1>
-            <p style="margin: 0 0 10px 0;">15 Days | 14 Nights | London Heathrow ⇌ Tokyo Haneda</p>
-            <div class="countdown-container">
-                ⏳ <span id="countdownTimer">Calculating countdown...</span>
-            </div>
-        </header>
-
-        <div class="flight-bar">
-            <div>✈️ <strong>OUT: BA0007</strong><br>18 Jun | 09:25 LHR</div>
-            <div>🛬 <strong>RTN: BA0008</strong><br>03 Jul | 08:55 HND</div>
-            <div>💰 <strong>£600</strong></div>
-        </div>
-
-        <div id="map"></div>
-
-        <div class="widget-row">
-            <div class="widget-card">
-                <span class="widget-label" id="weatherTitle">🌦 Tokyo Weather</span>
-                <div id="weatherBox" style="font-size:16px; font-weight:600; padding:10px 0;">Loading...</div>
-            </div>
-
-            <div class="widget-card">
-                <span class="widget-label">🕒 Time Sync</span>
-                <div style="display: flex; justify-content: space-around; align-items: center; height: 100%; padding-top: 5px;">
-                    <div>
-                        <span style="font-size: 0.65rem; font-weight: bold; color: var(--accent);">LON (BST)</span>
-                        <div id="londonTime" class="time-display">00:00</div>
-                    </div>
-                    <div style="font-weight: bold; color: var(--accent); font-size: 1.1rem;">✈️</div>
-                    <div>
-                        <span style="font-size: 0.65rem; font-weight: bold; color: var(--accent);">TYO (JST)</span>
-                        <div id="tokyoTime" class="time-display">00:00</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="widget-card">
-                <span class="widget-label">Quick Currency</span>
-                <div class="calc-container">
-                    <div class="calc-group">
-                        <input type="number" id="yenInput" class="calc-input" placeholder="Enter ¥" oninput="convertYenToGbp()">
-                        <div id="gbp-output" class="result-text" style="font-size:1rem;">£ 0.00</div>
-                    </div>
-                    <div class="calc-group">
-                        <input type="number" id="gbpInput" class="calc-input" placeholder="Enter £" oninput="convertGbpToYen()">
-                        <div id="yen-output" class="result-text" style="font-size:1rem;">¥ 0</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="border-left-color: #06d6a0;">
-            <div class="date">🍣 Food Guide</div>
-            <div class="location">Must Book + Hidden Gems</div>
-
-            <div class="tabs">
-                <button class="tab-button active" data-target="tokyoFood" onclick="handleTabClick(event, 'Tokyo')">Tokyo</button>
-                <button class="tab-button" data-target="osakaFood" onclick="handleTabClick(event, 'Osaka')">Osaka</button>
-                <button class="tab-button" data-target="kyotoFood" onclick="handleTabClick(event, 'Kyoto')">Kyoto</button>
-                <button class="tab-button" data-target="hakoneFood" onclick="handleTabClick(event, 'Hakone')">Hakone</button>
-            </div>
-
-            <div id="tokyoFood" class="tab-content active">
-                <div class="section-subtitle">🔥 Must Book</div>
-                <ul class="food-list">
-                    <li>🍱 Gyukatsu Motomura (Shibuya)</li>
-                    <li>🍣 Sushi no Midori (Shibuya)</li>
-                    <li>🍜 Chukasoba Ginza Hachigo</li>
-                </ul>
-                <div class="section-subtitle">💎 Hidden Gems</div>
-                <ul class="food-list">
-                    <li>🥢 Fuunji (Tsukemen)</li>
-                    <li>🥩 Tonki (Tonkatsu)</li>
-                    <li>🍞 Cafe Aaliya (French Toast)</li>
-                    <li>🍋 Afuri (Yuzu Ramen)</li>
-                </ul>
-            </div>
-
-            <div id="osakaFood" class="tab-content">
-                <div class="section-subtitle">🔥 Must Book</div>
-                <ul class="food-list">
-                    <li>🥞 Mizuno (Okonomiyaki)</li>
-                    <li>🥩 Yakiniku M Hozenji</li>
-                    <li>🍢 Kushikatsu Daruma</li>
-                </ul>
-                <div class="section-subtitle">💎 Hidden Gems</div>
-                <ul class="food-list">
-                    <li>🥢 Udon Shin</li>
-                    <li>🔥 Hajime Yakiniku</li>
-                    <li>🐙 Takoyaki Wanaka</li>
-                </ul>
-            </div>
-
-            <div id="kyotoFood" class="tab-content">
-                <div class="section-subtitle">🔥 Must Book</div>
-                <ul class="food-list">
-                    <li>🍳 Kichi Kichi Omurice</li>
-                    <li>🍕 Monk</li>
-                    <li>🍱 Gion Karyo</li>
-                </ul>
-                <div class="section-subtitle">💎 Hidden Gems</div>
-                <ul class="food-list">
-                    <li>🥢 Omen Kodai-ji</li>
-                    <li>🍜 Men-ya Inoichi</li>
-                    <li>🥞 Panel Cafe</li>
-                    <li>🍡 Nishiki Market</li>
-                </ul>
-            </div>
-
-            <div id="hakoneFood" class="tab-content">
-                <div class="section-subtitle">🔥 Must Do</div>
-                <ul class="food-list">
-                    <li>🍶 Amazake Chaya</li>
-                </ul>
-                <div class="section-subtitle">💎 Hidden Gems</div>
-                <ul class="food-list">
-                    <li>🥩 Tamura Ginkatsutei</li>
-                    <li>🥢 Lake Ashi Local Soba Spots</li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="card" style="border-left-color: #118ab2;">
-            <div class="date">🗓 Itinerary Planner</div>
-            <div class="location">Your Destinational Plans</div>
-
-            <div class="tabs">
-                <button class="tab-button active" data-target="tokyoItinerary" onclick="handleTabClick(event, 'Tokyo')">Tokyo</button>
-                <button class="tab-button" data-target="osakaItinerary" onclick="handleTabClick(event, 'Osaka')">Osaka</button>
-                <button class="tab-button" data-target="kyotoItinerary" onclick="handleTabClick(event, 'Kyoto')">Kyoto</button>
-                <button class="tab-button" data-target="hakoneItinerary" onclick="handleTabClick(event, 'Hakone')">Hakone</button>
-            </div>
-
-            <div id="tokyoItinerary" class="tab-content active">
-                <div class="section-subtitle">First Stint (Arrival)</div>
-                <ul class="food-list">
-                    <li><strong>19 June:</strong> ⌚ AP Watch Museum 17:00pm</li>
-                    <li><strong>20 June:</strong> ⚾ Baseball Game Tokyo Dome 14:00</li>
-                </ul>
-                <div class="section-subtitle">Second Stint (Grand Finale)</div>
-                <ul class="food-list">
-                    <li><strong>29 June:</strong> 🌆 Return, Shinjuku, teamLabs Borderless 18:30</li>
-                    <li><strong>30 June:</strong> ⚡ Akihabara, teamLab Planets</li>
-                    <li><strong>1 July:</strong> 🏮 Asakusa, Senso-ji, Skytree</li>
-                    <li><strong>2 July:</strong> 🛍 Shopping, Imperial Palace, Shibuya</li>
-                    <li><strong>3 July:</strong> ✈️ Departure</li>
-                </ul>
-            </div>
-
-            <div id="osakaItinerary" class="tab-content">
-                <div class="section-subtitle">Osaka Exploration</div>
-                <ul class="food-list">
-                    <li><strong>21 June:</strong> 🐙 Travel + Dotonbori Food Night</li>
-                    <li><strong>22 June:</strong> 🏰 Universal Studios Japan</li>
-                    <li><strong>23 June:</strong> 🏯 Osaka Castle, Kuromon Market, Shinsekai</li>
-                </ul>
-            </div>
-
-            <div id="kyotoItinerary" class="tab-content">
-                <div class="section-subtitle">Cultural Highlights</div>
-                <ul class="food-list">
-                    <li><strong>24 June:</strong> 🦌 Nara or Kobe (optional), travel to Kyoto</li>
-                    <li><strong>25 June:</strong> 🎋 Arashiyama Bamboo Grove, Monkey Park</li>
-                    <li><strong>26 June:</strong> ⛩ Kiyomizu-dera, Gion, Higashiyama Streets</li>
-                </ul>
-            </div>
-
-            <div id="hakoneItinerary" class="tab-content">
-                <div class="section-subtitle">Relaxation & Scenic Views</div>
-                <ul class="food-list">
-                    <li><strong>27 June:</strong> 🎨 Travel, Open Air Museum, onsen</li>
-                    <li><strong>28 June:</strong> 🚠 Ropeway, Lake Ashi, Hakone Shrine</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-
-    <div id="viewHotels" class="app-view">
-        <header style="background: var(--hotel-color); box-shadow: 0 4px 12px rgba(251, 86, 7, 0.25);">
-            <h1 style="margin-bottom: 5px;">Hotels Ledger 🏨</h1>
-            <p style="margin: 0;">Reservation Details, Addresses, Prices & Essential On-Site Checklists</p>
-        </header>
-
-        <div class="card">
-            <div class="date">1. 19 June - 21 June (2 Nights)</div>
-            <div class="location">Tokyo: Tokyo-to <span class="tag">Arrival</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</span>
-                <p style="margin:5px 0; font-size:0.85rem;">Address: Tokyo-to, Tokyo, Chuo-ku Kyobashi 1-3-6, 💰 £385</p>
-            </div>
-            <span class="section-title">Must Do:</span>
-            <ul>
-                <li>Explore Omoide Yokocho "Memory Lane" alleys.</li>
-                <li>Views from Tokyo Metropolitan Government Building.</li>
-            </ul>
-        </div>
-
-        <div class="card" style="border-left-color: #3a86ff;">
-            <div class="date">2. 21 June - 24 June (3 Nights)</div>
-            <div class="location">Osaka Honmachi <span class="tag">Food Capital</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 The Lively Osaka Honmachi</span>
-                <p style="margin:5px 0; font-size:0.85rem;">541-0054 Osaka, Chuo-ku, Minami-Honmachi 1-5-11 • Near Sakaisuji-Hommachi Station • 💰 £277</p>
-            </div>
-            <span class="section-title">Must Do:</span>
-            <ul>
-                <li>Try Takoyaki and Okonomiyaki in Dotonbori.</li>
-                <li>Day trip to Nara Park to see the deer and Great Buddha.</li>
-            </ul>
-        </div>
-
-        <div class="card" style="border-left-color: #fb5607;">
-            <div class="date">3. 24 June - 27 June (3 Nights)</div>
-            <div class="location">Kyoto Higashiiru <span class="tag">Culture</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</span>
-                <p style="margin:5px 0; font-size:0.85rem;">45-1, Hishiya-cho, Higashiiru, Higashinotoin, Sanjo-dori, Nakagyo-ku,Kyoto, 604-8131. 💰 £391</p>
-            </div>
-            <span class="section-title">Must Do:</span>
-            <ul>
-                <li>Walk through the Torii gates at Fushimi Inari.</li>
-                <li>Visit Arashiyama Bamboo Grove early morning.</li>
-            </ul>
-        </div>
-
-        <div class="card" style="border-left-color: #ffbe0b;">
-            <div class="date">4. 27 June - 29 June (2 Nights)</div>
-            <div class="location">🏔 Hakone <span class="tag">Relax & Fuji</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 Nol Hakone Myojindai</span>
-                <p style="margin:5px 0; font-size:0.85rem;">1488-205 Miyagino, Hakone, Ashigarashimo District, Kanagawa 250-0401, Japan 💰 £529</p>
-            </div>
-            <span class="section-title">Must Do:</span>
-            <ul>
-                <li>Ride the Hakone Ropeway for Mt. Fuji views.</li>
-                <li>Take the "Pirate Ship" cruise across Lake Ashi.</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <div class="date">5. 29 June - 03 July (4 Nights)</div>
-            <div class="location">Tokyo Shinjuku City<span class="tag">Mid-Luxury Finish</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</span>
-                <p style="margin:5px 0; font-size:0.85rem;">KABUKICHO TOWER, 45F, 1 Chome-29-1 Kabukicho, Shinjuku City, Tokyo 160-0021, Japan 💰 £1,629</p>
-            </div>
-            <span class="section-title">Must Do:</span>
-            <ul>
-                <li>Breakfast at Tsukiji Outer Fish Market.</li>
-                <li>Digital art at teamLab Borderless.</li>
-                <li>Souvenir shopping at Ginza Itoya.</li>
-            </ul>
-        </div>
+      <p>Your itinerary timeline details...</p>
     </div>
 
     <div id="viewBudget" class="app-view">
-        <header style="background: var(--budget-color); box-shadow: 0 4px 12px rgba(114, 9, 183, 0.25);">
-            <h1 style="margin-bottom: 5px;">Live Budget Desk 💰</h1>
-            <p style="margin: 0;">Track spending in real-time, compute ledger distributions, and observe parameters.</p>
-        </header>
-
-        <div class="card" style="border-left-color: var(--budget-color); padding: 25px 20px;">
-            <div class="date" style="color: var(--budget-color);">Financial Status Dashboard</div>
-            <div class="location" style="margin-bottom: 20px;">Real-time Metrics</div>
-            
-            <div class="budget-summary" style="grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); gap: 12px;">
-                <div class="budget-box">
-                    <span class="widget-label">Total Budget (£)</span>
-                    <input type="number" id="totalBudgetInput" class="budget-input" value="2000" style="text-align:center; font-weight:bold; font-size: 1.1rem; padding: 8px;" oninput="updateBudget()">
-                </div>
-                <div class="budget-box">
-                    <span class="widget-label">Total Spent</span>
-                    <div id="totalSpentBalance" class="budget-amount" style="color: #fb5607; padding-top: 5px;">£0.00</div>
-                </div>
-                <div class="budget-box">
-                    <span class="widget-label">Per Person (1/2)</span>
-                    <div id="perPersonSpent" class="budget-amount" style="color: #3a86ff; padding-top: 5px;">£0.00</div>
-                </div>
-                <div class="budget-box">
-                    <span class="widget-label">Remaining Funds</span>
-                    <div id="remainingBalance" class="budget-amount" style="color: #06d6a0; padding-top: 5px;">£2,000.00</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="card" style="border-left-color: #fb5607;">
-            <div class="date" style="color: #fb5607;">💸 Record New Expenditure</div>
-            <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Instantly Log Cost</div>
-            
-            <div class="budget-input-row">
-                <input type="text" id="expName" class="budget-input" placeholder="Expense description (e.g., Shinkansen Ticket, Ramen)">
-                <input type="number" id="expAmount" class="budget-input" placeholder="Amount in British Pounds (£)">
-                <button class="budget-btn" style="background: var(--budget-color);" onclick="addExpense()">Commit Purchase</button>
-            </div>
-        </div>
-
-        <div class="card" style="border-left-color: #2b2d42;">
-            <div class="date">📋 Account Ledger Manifest</div>
-            <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Itemized Audits</div>
-            
-            <div class="expense-table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Acquired Goods / Services</th>
-                            <th>Cost Equivalence</th>
-                            <th style="text-align:right; width: 60px;">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody id="expenseTableBody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      <p>Your expense and budget tracking analytics...</p>
     </div>
 
-    <div id="viewTracking" class="app-view">
-        <header style="background: var(--tracking-color); box-shadow: 0 4px 12px rgba(58, 134, 255, 0.2);">
-            <h1 style="margin-bottom: 5px;">Takuhaibin Desk 📦</h1>
-            <p style="margin: 0;">Hands-Free Luggage Forwarding Ledger & Manifest</p>
-        </header>
+    <div id="viewHotels" class="app-view">
+      
+      <div class="hotel-card">
+        <div class="hotel-name">Mitsui Garden Hotel Kyobashi</div>
+        <div class="hotel-meta">Tokyo | Near Tokyo Station</div>
+        <div class="hotel-stay">Days 1 - 4</div>
+      </div>
 
-        <div class="info-blockquote">
-            💡 <strong>Pro-Tip:</strong> Hand your suitcases to hotel front desks 24 hours before checkout. Use Yamato Transport (Black Cat). Forward bags straight from <strong>Kyoto ➔ Bellustar Tokyo</strong> to completely bypass dragging bags across Hakone mountain lines!
-        </div>
+      <div class="hotel-card">
+        <div class="hotel-name">Shigetsu Ryokan</div>
+        <div class="hotel-meta">Kyoto | Traditional Stay Arashiyama</div>
+        <div class="hotel-stay">Days 5 - 7</div>
+      </div>
 
-        <div class="widget-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 20px;">
-            <div class="widget-card">
-                <span class="widget-label">Active Transits</span>
-                <div id="countTransit" style="font-size: 2rem; font-weight: 800; color: #fb5607;">0</div>
-            </div>
-            <div class="widget-card">
-                <span class="widget-label">Safely Delivered</span>
-                <div id="countDelivered" style="font-size: 2rem; font-weight: 800; color: #06d6a0;">0</div>
-            </div>
-        </div>
+      <div class="hotel-card">
+        <div class="hotel-name">Hotel Granvia Osaka</div>
+        <div class="hotel-meta">Osaka | Direct Station Access</div>
+        <div class="hotel-stay">Days 8 - 10</div>
+      </div>
 
-        <div class="card" style="border-left-color: var(--tracking-color);">
-            <div class="date">📝 Register Shipment</div>
-            <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Log Waybill / Tracking Voucher</div>
-            
-            <div class="tracking-grid-form">
-                <div>
-                    <span class="widget-label" style="margin-bottom:5px;">Waybill Number</span>
-                    <input type="text" id="trackNum" class="tracking-input" placeholder="e.g., 1234-5678-9012">
-                </div>
-                <div>
-                    <span class="widget-label" style="margin-bottom:5px;">Carrier Service</span>
-                    <select id="trackCarrier" class="tracking-select">
-                        <option value="Yamato (Black Cat)">Yamato (Black Cat)</option>
-                        <option value="Sagawa Express">Sagawa Express</option>
-                        <option value="Japan Post (EMS)">Japan Post</option>
-                    </select>
-                </div>
-            </div>
-            
-            <div class="tracking-grid-form">
-                <div>
-                    <span class="widget-label" style="margin-bottom:5px;">Route Description</span>
-                    <input type="text" id="trackRoute" class="tracking-input" placeholder="e.g., Kyoto ➔ Tokyo Shinjuku">
-                </div>
-                <div>
-                    <span class="widget-label" style="margin-bottom:5px;">Expected Delivery</span>
-                    <input type="text" id="trackEta" class="tracking-input" placeholder="e.g., 29 June Morning">
-                </div>
-            </div>
+      <div class="hotel-card">
+        <div class="hotel-name">Miyajima Grand Hotel Arimoto</div>
+        <div class="hotel-meta">Itsukushima | Island View Stay</div>
+        <div class="hotel-stay">Day 11</div>
+      </div>
 
-            <button class="budget-btn" style="background: var(--tracking-color);" onclick="addShipment()">Add to Shipping Ledger</button>
-        </div>
+      <div class="hotel-card">
+        <div class="hotel-name">BELLUSTAR TOKYO</div>
+        <div class="hotel-meta">Shinjuku | Luxury Panoramic Suite</div>
+        <div class="hotel-stay">Days 12 - 14</div>
+      </div>
 
-        <div class="card" style="border-left-color: #2b2d42;">
-            <div class="date">📋 Live Manifest Ledger</div>
-            <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Your Saved Forwarding Slips</div>
-            
-            <div class="tracking-table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Route / Slip Info</th>
-                            <th>Target Date</th>
-                            <th>Status</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody id="trackingTableBody">
-                    </tbody>
-                </table>
-            </div>
-        </div>
     </div>
-</div>
 
-<button class="scratchpad-fab" onclick="toggleScratchpad(true)">📝 Notes</button>
+  </div>
 
-<div id="scratchpadModal" class="modal-overlay" onclick="handleOutsideClick(event)">
-    <div class="modal-content">
-        <div class="modal-header">
-            <div style="font-weight: bold; font-size: 1.1rem; color: var(--text-color);">📝 Quick Scratchpad</div>
-            <button class="modal-close-btn" onclick="toggleScratchpad(false)">✕</button>
-        </div>
-        <textarea id="scratchpadInput" class="scratchpad-textarea" placeholder="Jot down random ideas, shopping targets, train times, or reminders here..."></textarea>
-        <button class="budget-btn" style="background-color: #f72585;" onclick="saveScratchpad()">Save Note</button>
-        <div style="text-align: center; width: 100%;">
-            <div id="scratchpadStatus" class="scratchpad-status">All changes saved locally</div>
-        </div>
-    </div>
-</div>
+  <div class="bottom-nav">
+    <button class="nav-item active" onclick="switchLayout('itinerary', this)">
+      <i>📅</i>
+      <span>Itinerary</span>
+    </button>
+    <button class="nav-item" onclick="switchLayout('budget', this)">
+      <i>💰</i>
+      <span>Budget</span>
+    </button>
+    <button class="nav-item" onclick="switchLayout('hotels', this)">
+      <i>🏨</i>
+      <span>Hotels Desk</span>
+    </button>
+  </div>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<script>
-    // 1. Layout Master View Switching Logic 
-    function switchLayout(layoutName) {
-        document.querySelectorAll('.app-view').forEach(view => view.classList.remove('active'));
-        document.querySelectorAll('.layout-nav .layout-btn').forEach(btn => btn.classList.remove('active'));
-        
-        if (layoutName === 'itinerary') {
-            document.getElementById('viewItinerary').classList.add('active');
-            document.getElementById('navItinerary').classList.add('active');
-            setTimeout(() => { map.invalidateSize(); }, 50);
-        } else if (layoutName === 'hotels') {
-            document.getElementById('viewHotels').classList.add('active');
-            document.getElementById('navHotels').classList.add('active');
-        } else if (layoutName === 'budget') {
-            document.getElementById('viewBudget').classList.add('active');
-            document.getElementById('navBudget').classList.add('active');
-        } else if (layoutName === 'tracking') {
-            document.getElementById('viewTracking').classList.add('active');
-            document.getElementById('navTracking').classList.add('active');
-        }
+  <script>
+    function switchLayout(viewName, element) {
+      // Hide all layout views
+      document.querySelectorAll('.app-view').forEach(view => {
+        view.classList.remove('active');
+      });
+      
+      // Deactivate all navigation items
+      document.querySelectorAll('.nav-item').forEach(nav => {
+        nav.classList.remove('active');
+      });
+
+      // Show requested layout and set active nav element
+      if (viewName === 'itinerary') {
+        document.getElementById('viewItinerary').classList.add('active');
+        document.getElementById('view-title').innerText = 'Itinerary';
+      } else if (viewName === 'budget') {
+        document.getElementById('viewBudget').classList.add('active');
+        document.getElementById('view-title').innerText = 'Budget Dashboard';
+      } else if (viewName === 'hotels') {
+        document.getElementById('viewHotels').classList.add('active');
+        document.getElementById('view-title').innerText = 'Hotels Desk';
+      }
+
+      element.classList.add('active');
     }
-
-    // 2. Weather Simulation Manifest
-    const travelWeather = {
-        "Tokyo": "27°C • 🌧 High Humidity / Rainy Season Risk",
-        "Osaka": "29°C • 🌦 Very Warm & Muggy",
-        "Kyoto": "28°C • 🌧 Periodic Showers / Dense Air",
-        "Hakone": "22°C • 🌫 Cool, Misty Mountain Microclimate"
-    };
-    document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
-
-    // 3. Navigation Tab Script for internal card tabs (Food / Itinerary sections)
-    function handleTabClick(evt, cityName) {
-        const button = evt.currentTarget;
-        const parentCard = button.closest('.card');
-        const targetId = button.getAttribute('data-target');
-
-        parentCard.querySelectorAll(".tab-button").forEach(b => b.classList.remove("active"));
-        parentCard.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-
-        button.classList.add("active");
-        const targetContent = document.getElementById(targetId);
-        if (targetContent) {
-            targetContent.classList.add("active");
-        }
-
-        if (cityName && travelWeather[cityName]) {
-            document.getElementById("weatherBox").innerHTML = travelWeather[cityName];
-            document.getElementById("weatherTitle").innerText = cityName + " Weather";
-        }
-    }
-
-    // 4. Leaflet Geolocation Map System
-    const map = L.map('map').setView([35.15, 137.5], 6);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map);
-
-    const locations = [
-        {name: "Stop 1: Tokyo (Kyobashi)", coords: [35.6791, 139.7699], date: "June 19-21"},
-        {name: "Stop 2: Osaka Honmachi", coords: [34.6814, 135.5065], date: "June 21-24"},
-        {name: "Stop 3: Kyoto Nakagyo", coords: [35.0088, 135.7607], date: "June 24-27"},
-        {name: "Stop 4: Hakone Miyagino", coords: [35.2477, 139.0494], date: "June 27-29"},
-        {name: "Stop 5: Tokyo (Kabukicho)", coords: [35.6954, 139.7018], date: "June 29-July 3"}
-    ];
-
-    const latlngs = [];
-    locations.forEach((loc, index) => {
-        const numberIcon = L.divIcon({
-            className: 'custom-number-icon',
-            html: index + 1,
-            iconSize: [30, 30]
-        });
-        L.marker(loc.coords, {icon: numberIcon}).addTo(map).bindPopup("<b>"+loc.name+"</b><br>"+loc.date);
-        latlngs.push(loc.coords);
-    });
-    L.polyline(latlngs, {color: '#d90429', weight: 3, opacity: 0.7, dashArray: '5, 10'}).addTo(map);
-
-    // 5. Currency Converter Calculations
-    const RATE = 213.93; 
-    function convertYenToGbp() {
-        const yen = document.getElementById('yenInput').value;
-        const result = yen / RATE;
-        document.getElementById('gbp-output').innerText = "£ " + (yen ? result.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) : "0.00");
-    }
-    function convertGbpToYen() {
-        const gbp = document.getElementById('gbpInput').value;
-        const result = gbp * RATE;
-        document.getElementById('yen-output').innerText = "¥ " + (gbp ? Math.round(result).toLocaleString() : "0");
-    }
-
-    // 6. Budget Management Engine
-    let expenses = [];
-    try {
-        expenses = JSON.parse(localStorage.getItem('japan_expenses')) || [];
-    } catch(e) {
-        expenses = [];
-    }
-
-    function updateBudget() {
-        const totalBudget = parseFloat(document.getElementById('totalBudgetInput').value) || 0;
-        let totalSpent = 0;
-        expenses.forEach(exp => totalSpent += exp.amount);
-
-        const remaining = totalBudget - totalSpent;
-        const perPerson = totalSpent / 2;
-
-        document.getElementById('totalSpentBalance').innerText = "£" + totalSpent.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        document.getElementById('perPersonSpent').innerText = "£" + perPerson.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        document.getElementById('remainingBalance').innerText = "£" + remaining.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
-        
-        localStorage.setItem('japan_budget', totalBudget);
-    }
-
-    function renderExpenses() {
-        const tbody = document.getElementById('expenseTableBody');
-        tbody.innerHTML = '';
-        expenses.forEach((exp, index) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td><strong>${exp.name}</strong></td>
-                <td>£${exp.amount.toFixed(2)}</td>
-                <td style="text-align:right;"><button class="delete-btn" onclick="deleteExpense(${index})">×</button></td>
-            `;
-            tbody.appendChild(tr);
-        });
-    }
-
-    function addExpense() {
-        const nameInput = document.getElementById('expName');
-        const amountInput = document.getElementById('expAmount');
-        const name = nameInput.value.trim();
-        const amount = parseFloat(amountInput.value) || 0;
-
-        if (name && amount > 0) {
-            expenses.push({ name, amount });
-            localStorage.setItem('japan_expenses', JSON.stringify(expenses));
-            nameInput.value = '';
-            amountInput.value = '';
-            renderExpenses();
-            updateBudget();
-        }
-    }
-
-    function deleteExpense(index) {
-        expenses.splice(index, 1);
-        localStorage.setItem('japan_expenses', JSON.stringify(expenses));
-        renderExpenses();
-        updateBudget();
-    }
-
-    // 7. Luggage Forwarding Data Persistence & Tracking Engine
-    let shipments = [];
-    try {
-        shipments = JSON.parse(localStorage.getItem('japan_shipments')) || [
-            { slip: "4051-9231-5023", carrier: "Yamato (Black Cat)", route: "Kyoto Hotel ➔ Tokyo Bellustar", eta: "29 June Morning", status: "In Transit" }
-        ];
-    } catch(e) {
-        shipments = [];
-    }
-
-    // Explicit function scope attachment to preserve operational event triggers across DOM shifts
-    window.addExpense = addExpense;
-    window.deleteExpense = deleteExpense;
-    window.updateBudget = updateBudget;
-
-    function renderShipments() {
-        const tbody = document.getElementById('trackingTableBody');
-        tbody.innerHTML = '';
-        
-        let transitCount = 0;
-        let deliveredCount = 0;
-
-        shipments.forEach((ship, index) => {
-            if (ship.status === 'In Transit') transitCount++;
-            if (ship.status === 'Delivered') deliveredCount++;
-
-            const badgeClass = ship.status === 'In Transit' ? 'status-transit' : 'status-delivered';
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-                <td>
-                    <strong>${ship.route}</strong><br>
-                    <span style="font-size:0.75rem; color:var(--accent); font-family:monospace;">${ship.slip} (${ship.carrier})</span>
-                </td>
-                <td>${ship.eta}</td>
-                <td>
-                    <span class="tracking-badge ${badgeClass}" style="cursor:pointer;" onclick="toggleShipmentStatus(${index})" title="Click to toggle status">
-                        ${ship.status} 🔄
-                    </span>
-                </td>
-                <td style="text-align:right;"><button class="delete-btn" onclick="deleteShipment(${index})">×</button></td>
-            `;
-            tbody.appendChild(tr);
-        });
-
-        document.getElementById('countTransit').innerText = transitCount;
-        document.getElementById('countDelivered').innerText = deliveredCount;
-    }
-
-    function addShipment() {
-        const slipInput = document.getElementById('trackNum');
-        const carrierInput = document.getElementById('trackCarrier');
-        const routeInput = document.getElementById('trackRoute');
-        const etaInput = document.getElementById('trackEta');
-
-        const slip = slipInput.value.trim();
-        const carrier = carrierInput.value;
-        const route = routeInput.value.trim();
-        const eta = etaInput.value.trim();
-
-        if (slip && route) {
-            shipments.push({ slip, carrier, route, eta, status: "In Transit" });
-            localStorage.setItem('japan_shipments', JSON.stringify(shipments));
-            
-            slipInput.value = '';
-            routeInput.value = '';
-            etaInput.value = '';
-            
-            renderShipments();
-        } else {
-            alert("Please complete the Tracking Number and Route fields before saving.");
-        }
-    }
-
-    function toggleShipmentStatus(index) {
-        shipments[index].status = shipments[index].status === 'In Transit' ? 'Delivered' : 'In Transit';
-        localStorage.setItem('japan_shipments', JSON.stringify(shipments));
-        renderShipments();
-    }
-
-    function deleteShipment(index) {
-        shipments.splice(index, 1);
-        localStorage.setItem('japan_shipments', JSON.stringify(shipments));
-        renderShipments();
-    }
-
-    // 8. Popup Scratchpad Modal Handlers
-    function toggleScratchpad(show) {
-        const modal = document.getElementById('scratchpadModal');
-        if (show) {
-            modal.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        } else {
-            modal.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-
-    // 9. Clock Synchronizer Engine
-    function updateClocks() {
-        const now = new Date();
-        const options = { hour: '2-digit', minute: '2-digit', hour12: false };
-        
-        const lonStr = now.toLocaleTimeString('en-GB', { ...options, timeZone: 'Europe/London' });
-        const tyoStr = now.toLocaleTimeString('en-GB', { ...options, timeZone: 'Asia/Tokyo' });
-        
-        document.getElementById('londonTime').innerText = lonStr;
-        document.getElementById('tokyoTime').innerText = tyoStr;
-    }
-
-    function handleOutsideClick(event) {
-        if (event.target.id === 'scratchpadModal') {
-            toggleScratchpad(false);
-        }
-    }
-
-    function loadScratchpad() {
-        const savedNote = localStorage.getItem('japan_scratchpad') || '';
-        document.getElementById('scratchpadInput').value = savedNote;
-    }
-
-    function saveScratchpad() {
-        const noteContent = document.getElementById('scratchpadInput').value;
-        localStorage.setItem('japan_scratchpad', noteContent);
-        
-        const status = document.getElementById('scratchpadStatus');
-        status.innerText = "Saved successfully! ✔";
-        status.style.color = "#06d6a0";
-        
-        setTimeout(() => {
-            status.innerText = "All changes saved locally";
-            status.style.color = "";
-        }, 3000);
-    }
-
-    // 10. Live Countdown Timer Engine
-    function updateCountdown() {
-        const targetDate = new Date("2026-06-18T09:25:00+01:00");
-        const now = new Date();
-        const diff = targetDate - now;
-
-        const timerElement = document.getElementById('countdownTimer');
-
-        if (diff <= 0) {
-            timerElement.innerText = "✈️ Trip Started! Enjoy Japan!";
-            return;
-        }
-
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-
-        const displayHours = String(hours).padStart(2, '0');
-        const displayMinutes = String(minutes).padStart(2, '0');
-        const displaySeconds = String(seconds).padStart(2, '0');
-
-        timerElement.innerText = `${days}d ${displayHours}h ${displayMinutes}m ${displaySeconds}s until departure`;
-    }
-
-    // Interval Loops
-    setInterval(function() {
-        updateClocks();
-        updateCountdown();
-    }, 1000);
-
-    // Onload Trigger Manifest Initialization
-    window.onload = function() {
-        const savedBudget = localStorage.getItem('japan_budget');
-        if (savedBudget) {
-            document.querySelectorAll('#totalBudgetInput').forEach(el => el.value = savedBudget);
-        }
-        renderExpenses();
-        updateBudget();
-        renderShipments();
-        loadScratchpad();
-        updateClocks();
-        updateCountdown();
-    };
-</script>
+  </script>
 </body>
 </html>
-html
