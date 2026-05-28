@@ -555,16 +555,11 @@
         .tab-content.active {
             display: block;
         }
-        .food-list {
+        .itinerary-list {
             padding-left: 20px;
             margin-top: 5px;
         }
-        .food-list li { margin-bottom: 6px; }
-        .section-subtitle {
-            font-weight: bold;
-            margin-top: 12px;
-            font-size: 0.95rem;
-        }
+        .itinerary-list li { margin-bottom: 6px; }
 
         .group-heading {
             font-size: 1.4rem;
@@ -714,77 +709,6 @@
             </div>
         </div>
 
-        <div class="card" style="border-left-color: #06d6a0;">
-            <div class="date">🍣 Food Guide</div>
-            <div class="location">Must Book + Hidden Gems</div>
-
-            <div class="tabs">
-                <button class="tab-button active" data-target="tokyoFood" onclick="handleTabClick(event, 'Tokyo')">Tokyo</button>
-                <button class="tab-button" data-target="osakaFood" onclick="handleTabClick(event, 'Osaka')">Osaka</button>
-                <button class="tab-button" data-target="kyotoFood" onclick="handleTabClick(event, 'Kyoto')">Kyoto</button>
-                <button class="tab-button" data-target="hakoneFood" onclick="handleTabClick(event, 'Hakone')">Hakone</button>
-            </div>
-
-            <div id="tokyoFood" class="tab-content active">
-                <div class="section-subtitle">🔥 Must Book</div>
-                <ul class="food-list">
-                    <li>🍱 Gyukatsu Motomura (Shibuya)</li>
-                    <li>🍣 Sushi no Midori (Shibuya)</li>
-                    <li>🍜 Chukasoba Ginza Hachigo</li>
-                </ul>
-                <div class="section-subtitle">💎 Hidden Gems</div>
-                <ul class="food-list">
-                    <li>🥢 Fuunji (Tsukemen)</li>
-                    <li>🥩 Tonki (Tonkatsu)</li>
-                    <li>🍞 Cafe Aaliya (French Toast)</li>
-                    <li>🍋 Afuri (Yuzu Ramen)</li>
-                </ul>
-            </div>
-
-            <div id="osakaFood" class="tab-content">
-                <div class="section-subtitle">🔥 Must Book</div>
-                <ul class="food-list">
-                    <li>🥞 Mizuno (Okonomiyaki)</li>
-                    <li>🥩 Yakiniku M Hozenji</li>
-                    <li>🍢 Kushikatsu Daruma</li>
-                </ul>
-                <div class="section-subtitle">💎 Hidden Gems</div>
-                <ul class="food-list">
-                    <li>🥢 Udon Shin</li>
-                    <li>🔥 Hajime Yakiniku</li>
-                    <li>🐙 Takoyaki Wanaka</li>
-                </ul>
-            </div>
-
-            <div id="kyotoFood" class="tab-content">
-                <div class="section-subtitle">🔥 Must Book</div>
-                <ul class="food-list">
-                    <li>🍳 Kichi Kichi Omurice</li>
-                    <li>🍕 Monk</li>
-                    <li>🍱 Gion Karyo</li>
-                </ul>
-                <div class="section-subtitle">💎 Hidden Gems</div>
-                <ul class="food-list">
-                    <li>🥢 Omen Kodai-ji</li>
-                    <li>🍜 Men-ya Inoichi</li>
-                    <li>🥞 Panel Cafe</li>
-                    <li>🍡 Nishiki Market</li>
-                </ul>
-            </div>
-
-            <div id="hakoneFood" class="tab-content">
-                <div class="section-subtitle">🔥 Must Do</div>
-                <ul class="food-list">
-                    <li>🍶 Amazake Chaya</li>
-                </ul>
-                <div class="section-subtitle">💎 Hidden Gems</div>
-                <ul class="food-list">
-                    <li>🥩 Tamura Ginkatsutei</li>
-                    <li>🥢 Lake Ashi Local Soba Spots</li>
-                </ul>
-            </div>
-        </div>
-
         <div class="card" style="border-left-color: #118ab2;">
             <div class="date">🗓 Itinerary Planner</div>
             <div class="location">Your Destinational Plans</div>
@@ -797,13 +721,13 @@
             </div>
 
             <div id="tokyoItinerary" class="tab-content active">
-                <div class="section-subtitle">First Stint (Arrival)</div>
-                <ul class="food-list">
+                <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">First Stint (Arrival)</div>
+                <ul class="itinerary-list">
                     <li><strong>19 June:</strong> ⌚ AP Watch Museum 17:00pm</li>
                     <li><strong>20 June:</strong> ⚾ Baseball Game Tokyo Dome 14:00</li>
                 </ul>
-                <div class="section-subtitle">Second Stint (Grand Finale)</div>
-                <ul class="food-list">
+                <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Second Stint (Grand Finale)</div>
+                <ul class="itinerary-list">
                     <li><strong>29 June:</strong> 🌆 Return, Shinjuku, teamLabs Borderless 18:30</li>
                     <li><strong>30 June:</strong> ⚡ Akihabara, teamLab Planets</li>
                     <li><strong>1 July:</strong> 🏮 Asakusa, Senso-ji, Skytree</li>
@@ -813,8 +737,8 @@
             </div>
 
             <div id="osakaItinerary" class="tab-content">
-                <div class="section-subtitle">Osaka Exploration</div>
-                <ul class="food-list">
+                <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Osaka Exploration</div>
+                <ul class="itinerary-list">
                     <li><strong>25 June:</strong> 🐟 Osaka Aquarium Kaiyukan 10:30 </li>
                     <li><strong>22 June:</strong> 🏰 Universal Studios Japan</li>
                     <li><strong>23 June:</strong> 🏯 Osaka Castle, Kuromon Market, Shinsekai</li>
@@ -822,8 +746,8 @@
             </div>
 
             <div id="kyotoItinerary" class="tab-content">
-                <div class="section-subtitle">Cultural Highlights</div>
-                <ul class="food-list">
+                <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Cultural Highlights</div>
+                <ul class="itinerary-list">
                     <li><strong>24 June:</strong> 🦌 Nara or Kobe (optional), travel to Kyoto</li>
                     <li><strong>25 June:</strong> 🎋 Arashiyama Bamboo Grove, Monkey Park</li>
                     <li><strong>26 June:</strong> ⛩ Kiyomizu-dera, Gion, Higashiyama Streets</li>
@@ -831,8 +755,8 @@
             </div>
 
             <div id="hakoneItinerary" class="tab-content">
-                <div class="section-subtitle">Relaxation & Scenic Views</div>
-                <ul class="food-list">
+                <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Relaxation & Scenic Views</div>
+                <ul class="itinerary-list">
                     <li><strong>27 June:</strong> 🎨 Travel, Open Air Museum, onsen</li>
                     <li><strong>28 June:</strong> 🚠 Ropeway, Lake Ashi, Hakone Shrine</li>
                 </ul>
@@ -1103,7 +1027,7 @@
     };
     document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
 
-    // 3. Navigation Tab Script for internal card tabs (Food / Itinerary sections)
+    // 3. Navigation Tab Script for internal card tabs (Itinerary section)
     function handleTabClick(evt, cityName) {
         const button = evt.currentTarget;
         const parentCard = button.closest('.card');
