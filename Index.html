@@ -20,6 +20,7 @@
             --tracking-color: #3a86ff;
             --budget-color: #7209b7;
             --hotel-color: #fb5607;
+            --alfred-color: #f72585;
         }
 
         /* Seamless Native Dark Mode Styling */
@@ -71,7 +72,7 @@
                 color: var(--text-color) !important;
             }
             .layout-btn.active {
-                background: var(--primary) !important;
+                background: var(--secondary) !important;
                 color: white !important;
             }
             .calc-input, .budget-input, .scratchpad-textarea, .tracking-input, .tracking-select {
@@ -101,6 +102,10 @@
             }
             .tracking-badge {
                 background: #252525 !important;
+            }
+            .alfred-ideas-box {
+                background: #25121e !important;
+                border: 1px dashed var(--alfred-color) !important;
             }
         }
 
@@ -561,6 +566,25 @@
         }
         .itinerary-list li { margin-bottom: 6px; }
 
+        /* Alfred Ideas Layout Styles */
+        .alfred-ideas-box {
+            background: #fff0f6;
+            border: 1px dashed var(--alfred-color);
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-top: 12px;
+        }
+        .alfred-title {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: var(--alfred-color);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+        }
+
         .group-heading {
             font-size: 1.4rem;
             font-weight: 800;
@@ -743,8 +767,8 @@
                     <li><strong>19 June:</strong> 🐟 Katsuo Shokudo Lunch 12:30</li>
                     <li><strong>19 June:</strong> ⌚ AP Watch Museum 17:00pm</li>
                     <li><strong>20 June:</strong> 💅 Freja Nails, Ginza 10:00</li>      
-                    <li><strong>20 June:</strong> ⚾ Baseball Game Tokyo Dome 14:00</li>                 <li><strong>21 June:</strong> 🚆 Tokyo Station - Shin-Osaka Station 11:30 - 14:00 </li> 
-
+                    <li><strong>20 June:</strong> ⚾ Baseball Game Tokyo Dome 14:00</li>
+                    <li><strong>21 June:</strong> 🚆 Tokyo Station - Shin-Osaka Station 11:30 - 14:00 </li> 
                 </ul>
                 <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Second Stint (Grand Finale)</div>
                 <ul class="itinerary-list">
@@ -754,21 +778,29 @@
                     <li><strong>2 July:</strong> 🛍 Shopping, Imperial Palace, Shibuya</li>
                     <li><strong>3 July:</strong> ✈️ Departure</li>
                 </ul>
+                <div class="alfred-ideas-box">
+                    <div class="alfred-title">💡 Alfred Ideas (Tokyo)</div>
+                    <ul class="itinerary-list" style="margin: 0; padding-left: 15px; font-size: 0.85rem;">
+                        <li>Check out local cycle pathways around Tokyo Bay if time permits.</li>
+                        <li>Explore electronics shops in Akihabara on the Grand Finale tour.</li>
+                    </ul>
+                </div>
             </div>
 
             <div id="osakaItinerary" class="tab-content">
                 <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Osaka Exploration</div>
                 <ul class="itinerary-list">
-
-                 <li><strong>21 June:</strong> 🐟 Osaka Aquarium Kaiyukan 16:30 </li>
-                    
-                 <li><strong>22 June:</strong> 🏰 Universal Studios Japan</li>
-
-                 <li><strong>22 June:</strong> Dinner - Chanko Izakaya Taichiyama 18:30 </li>
-
-                 <li><strong>23 June:</strong> 💆‍♀️ Hair Massage 19:00 </li>
-                  
+                    <li><strong>21 June:</strong> 🐟 Osaka Aquarium Kaiyukan 16:30 </li>
+                    <li><strong>22 June:</strong> 🏰 Universal Studios Japan</li>
+                    <li><strong>22 June:</strong> Dinner - Chanko Izakaya Taichiyama 18:30 </li>
+                    <li><strong>23 June:</strong> 💆‍♀️ Hair Massage 19:00 </li>
                 </ul>
+                <div class="alfred-ideas-box">
+                    <div class="alfred-title">💡 Alfred Ideas (Osaka)</div>
+                    <ul class="itinerary-list" style="margin: 0; padding-left: 15px; font-size: 0.85rem;">
+                        <li>Late night street food testing near Dotonbori neon displays.</li>
+                    </ul>
+                </div>
             </div>
 
             <div id="kyotoItinerary" class="tab-content">
@@ -778,17 +810,27 @@
                     <li><strong>25 June:</strong> 🚊 Sagano Kanko Train,10:30 </li>
                     <li><strong>26 June:</strong> 🥁 DRUM TAO THEATER, Kyoto,19:00</li>
                     <li><strong>27 June:</strong> 🚆 Kyoto - Odawara,08:33 - 10:38</li>
-
                 </ul>
+                <div class="alfred-ideas-box">
+                    <div class="alfred-title">💡 Alfred Ideas (Kyoto)</div>
+                    <ul class="itinerary-list" style="margin: 0; padding-left: 15px; font-size: 0.85rem;">
+                        <li>Rent local lightweight city bikes to explore traditional Machiya side streets.</li>
+                    </ul>
+                </div>
             </div>
 
             <div id="hakoneItinerary" class="tab-content">
                 <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Relaxation & Scenic Views</div>
                 <ul class="itinerary-list">
                     <li><strong>27 June:</strong> 🚠 Ropeway, Lake Ashi, Hakone Shrine</li>
-
-                   <li><strong>29 June:</strong> 🚆 Shinkansen Odawara Station 10:54 - 12:05 </li>
+                    <li><strong>29 June:</strong> 🚆 Shinkansen Odawara Station 10:54 - 12:05 </li>
                 </ul>
+                <div class="alfred-ideas-box">
+                    <div class="alfred-title">💡 Alfred Ideas (Hakone)</div>
+                    <ul class="itinerary-list" style="margin: 0; padding-left: 15px; font-size: 0.85rem;">
+                        <li>Look into high-elevation cycling routes or onsen rest periods.</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
