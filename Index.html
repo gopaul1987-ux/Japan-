@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Japan Adventure 2026</title>
+    <title>Japan Itinerary 2026</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <style>
         :root {
@@ -20,7 +20,6 @@
             --tracking-color: #3a86ff;
             --budget-color: #7209b7;
             --hotel-color: #fb5607;
-            --excel-color: #107c41;
         }
 
         /* Seamless Native Dark Mode Styling */
@@ -39,7 +38,6 @@
                 --tracking-color: #3a86ff;
                 --budget-color: #7209b7;
                 --hotel-color: #ff702e;
-                --excel-color: #1f9a55;
             }
             body {
                 background-color: var(--bg);
@@ -114,17 +112,17 @@
             padding: 15px;
             line-height: 1.5;
         }
-        .container { max-width: 850px; margin: 0 auto; box-sizing: border-box; width: 100%; }
+        .container { max-width: 700px; margin: 0 auto; box-sizing: border-box; width: 100%; }
         
-        /* Layout Navigation Bar */
+        /* Layout Master Navigation Bar */
         .layout-nav {
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 5px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 6px;
             margin-bottom: 15px;
         }
         .layout-btn {
-            padding: 10px 1px;
+            padding: 10px 2px;
             border-radius: 12px;
             border: none;
             background: var(--card-bg);
@@ -136,7 +134,7 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             min-height: 48px;
         }
         .layout-btn.active {
@@ -144,6 +142,7 @@
             color: white;
         }
         
+        /* Screen View Visibility Control */
         .app-view {
             display: none;
         }
@@ -176,7 +175,7 @@
             font-variant-numeric: tabular-nums;
         }
 
-        /* Flight Layout Card Styling */
+        /* Upgraded Premium Flight Layout Card Styling */
         .flight-card-premium {
             background-color: var(--card-bg);
             border: 1px solid var(--border);
@@ -353,6 +352,7 @@
             border: 2px solid white;
         }
 
+        /* Budget Form Layout styling adjustments */
         .budget-summary {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -398,8 +398,8 @@
             width: 100%;
             min-height: 48px;
         }
-        .expense-table-container, .tracking-table-container, .excel-grid-wrapper {
-            max-height: 480px;
+        .expense-table-container, .tracking-table-container {
+            max-height: 320px;
             overflow-y: auto;
             border-radius: 8px;
             border: 1px solid var(--border);
@@ -413,16 +413,14 @@
         }
         table th {
             background: #eee;
-            padding: 10px 8px;
+            padding: 8px;
             position: sticky;
             top: 0;
             z-index: 5;
-            font-weight: bold;
         }
         table td {
-            padding: 10px 8px;
+            padding: 12px 8px;
             border-bottom: 1px solid var(--border);
-            vertical-align: top;
         }
         .delete-btn {
             background: none;
@@ -563,6 +561,13 @@
         }
         .itinerary-list li { margin-bottom: 6px; }
 
+        .group-heading {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin: 25px 0 10px 5px;
+            color: var(--text-color);
+        }
+
         /* Luggage Tracking Layout UI Elements */
         .tracking-grid-form {
             display: grid;
@@ -590,11 +595,27 @@
             margin-bottom: 20px;
         }
 
+        /* Ledger Style Table Modifications for Hotel Data Sheets */
+        .hotel-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+        .hotel-table th {
+            background: rgba(0,0,0,0.04);
+            font-weight: bold;
+            padding: 8px;
+        }
+        .hotel-table td {
+            padding: 8px;
+            border-bottom: 1px solid var(--border);
+        }
+
         @media (max-width: 600px) { 
             .widget-row { grid-template-columns: 1fr; }
             .tracking-grid-form { grid-template-columns: 1fr; }
             .layout-nav { grid-template-columns: repeat(2, 1fr); gap: 5px; }
-            .layout-nav button:last-child { grid-column: span 2; }
             .flight-card-premium {
                 flex-direction: column;
                 align-items: stretch;
@@ -620,10 +641,9 @@
     
     <nav class="layout-nav">
         <button id="navItinerary" class="layout-btn active" onclick="switchLayout('itinerary')">🗺 Itinerary</button>
-        <button id="navHotels" class="layout-btn" onclick="switchLayout('hotels')">🏨 Hotels</button>
-        <button id="navExcel" class="layout-btn" onclick="switchLayout('excel')"> Alfred Things To Do</button>
-        <button id="navBudget" class="layout-btn" onclick="switchLayout('budget')">💰 Budget</button>
-        <button id="navTracking" class="layout-btn" onclick="switchLayout('tracking')">📦 Luggage</button>
+        <button id="navHotels" class="layout-btn" onclick="switchLayout('hotels')">🏨 Hotels Desk</button>
+        <button id="navBudget" class="layout-btn" onclick="switchLayout('budget')">💰 Budget Desk</button>
+        <button id="navTracking" class="layout-btn" onclick="switchLayout('tracking')">📦 Luggage Desk</button>
     </nav>
 
     <div id="viewItinerary" class="app-view active">
@@ -715,60 +735,59 @@
                 <button class="tab-button" data-target="osakaItinerary" onclick="handleTabClick(event, 'Osaka')">Osaka</button>
                 <button class="tab-button" data-target="kyotoItinerary" onclick="handleTabClick(event, 'Kyoto')">Kyoto</button>
                 <button class="tab-button" data-target="hakoneItinerary" onclick="handleTabClick(event, 'Hakone')">Hakone</button>
-                <button class="tab-button" data-target="fujiItinerary" onclick="handleTabClick(event, 'Fuji')">Fuji</button>
             </div>
 
             <div id="tokyoItinerary" class="tab-content active">
                 <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">First Stint (Arrival)</div>
                 <ul class="itinerary-list">
-                    <li><strong>19 June:</strong> 🐟 Katsuo Shokudo Lunch Booking 12:30pm</li>
-                    <li><strong>19 June:</strong> ⌚ AP Watch Booking 17:00pm</li>
-                    <li><strong>20 June:</strong> 🛍 Explore Ginza Area</li>      
-                    <li><strong>20 June:</strong> ⚾ Baseball Game Tokyo Dome Booking 14:00pm</li>                 
-                    <li><strong>21 June:</strong> 🚆 Luggage forward setup straight to Osaka</li> 
+                    <li><strong>19 June:</strong> 🐟 Katsuo Shokudo Lunch 12:30</li>
+                    <li><strong>19 June:</strong> ⌚ AP Watch Museum 17:00pm</li>
+                    <li><strong>20 June:</strong> 💅 Freja Nails, Ginza 10:00</li>      
+                    <li><strong>20 June:</strong> ⚾ Baseball Game Tokyo Dome 14:00</li>                 <li><strong>21 June:</strong> 🚆 Tokyo Station - Shin-Osaka Station 11:30 - 14:00 </li> 
+
                 </ul>
                 <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Second Stint (Grand Finale)</div>
                 <ul class="itinerary-list">
-                    <li><strong>1 July:</strong> 🏮 Drop off luggage at Smile Hotel Shinagawa Sengakuji Ekimae</li>
-                    <li><strong>2 July:</strong> 🏙 Kamakura / Yokohama Day Trip</li>
-                    <li><strong>3 July:</strong> 🏮 Asakusa / Akihabara Exploration (Preeti & Jason Flight Home)</li>
-                    <li><strong>4 July:</strong> 🛍 Shopping & City Sightseeing</li>
+                    <li><strong>29 June:</strong> 🌆 Return, Shinjuku, teamLabs Borderless 18:30</li>
+                    <li><strong>30 June:</strong> Kamakura </li>
+                    <li><strong>1 July:</strong> 🏮 Asakusa, Senso-ji, Skytree</li>
+                    <li><strong>2 July:</strong> 🛍 Shopping, Imperial Palace, Shibuya</li>
+                    <li><strong>3 July:</strong> ✈️ Departure</li>
                 </ul>
             </div>
 
             <div id="osakaItinerary" class="tab-content">
                 <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Osaka Exploration</div>
                 <ul class="itinerary-list">
-                 <li><strong>21 June:</strong> 🐟 Osaka Aquarium Kaiyukan Booking 15:30pm</li>
-                 <li><strong>22 June:</strong> 🏰 Universal Studios Japan & Umeda Sky Tower</li>
-                 <li><strong>22 June:</strong> 🍽 Dinner Reservation 18:30pm</li>
-                 <li><strong>23 June:</strong> 🦌 Nara Park Day Trip & TeamLab Osaka 19:30pm</li>
+
+                 <li><strong>21 June:</strong> 🐟 Osaka Aquarium Kaiyukan 16:30 </li>
+                    
+                 <li><strong>22 June:</strong> 🏰 Universal Studios Japan</li>
+
+                 <li><strong>22 June:</strong> Dinner - Chanko Izakaya Taichiyama 18:30 </li>
+
+                 <li><strong>23 June:</strong> 💆‍♀️ Hair Massage 19:00 </li>
+                  
                 </ul>
             </div>
 
             <div id="kyotoItinerary" class="tab-content">
                 <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Cultural Highlights</div>
                 <ul class="itinerary-list">
-                    <li><strong>24 June:</strong> 💆‍♀️ Hair Massage Booking 14:00pm / Gion & Kiyomizudera</li>
-                    <li><strong>25 June:</strong> 🚊 Sagano Romantic Train Booking 10:30am / Bamboo Grove</li>
-                    <li><strong>26 June:</strong> 🥁 Nishiki Market / Fushimi Inari Evening Walk / Drum Tao 19:00pm</li>
+                    <li><strong>24 June:</strong> 🦌 Nara or Kobe (optional), travel to Kyoto</li>
+                    <li><strong>25 June:</strong> 🚊 Sagano Kanko Train,10:30 </li>
+                    <li><strong>26 June:</strong> 🥁 DRUM TAO THEATER, Kyoto,19:00</li>
+                    <li><strong>27 June:</strong> 🚆 Kyoto - Odawara,08:33 - 10:38</li>
+
                 </ul>
             </div>
 
             <div id="hakoneItinerary" class="tab-content">
                 <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Relaxation & Scenic Views</div>
                 <ul class="itinerary-list">
-                    <li><strong>27 June:</strong> 🚆 Shinkansen to Odawara (10:54am - 12:00pm)</li>
-                    <li><strong>27 June:</strong> 🚠 Hakone Ropeway & Lake Ashi Pirate Ship Cruise</li>
-                    <li><strong>28 June:</strong> 🏯 Explore Hakone Area & Samurai Base Location</li>
-                </ul>
-            </div>
+                    <li><strong>27 June:</strong> 🚠 Ropeway, Lake Ashi, Hakone Shrine</li>
 
-            <div id="fujiItinerary" class="tab-content">
-                <div style="font-weight: bold; margin-top: 12px; font-size: 0.95rem;">Mount Fuji Regional Excursions</div>
-                <ul class="itinerary-list">
-                    <li><strong>29 June:</strong> 🗻 Travel to Fuji Area / Gotemba Premium Outlets & Lake Yamanaka</li>
-                    <li><strong>30 June:</strong> 🏞 Oshino Hakkai (Oshino Pond) Sightseeing</li>
+                   <li><strong>29 June:</strong> 🚆 Shinkansen Odawara Station 10:54 - 12:05 </li>
                 </ul>
             </div>
         </div>
@@ -780,121 +799,125 @@
             <p style="margin: 0;">Reservation Details, Addresses, Prices & Essential On-Site Checklists</p>
         </header>
 
-        <div class="card">
-            <div class="date">1. 19 June - 21 June (2 Nights)</div>
-            <div class="location">Tokyo: Kyobashi <span class="tag">Arrival Base</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 Sotetsu Fresa Inn Tokyo Kyobashi</span>
-                <p style="margin:5px 0; font-size:0.85rem;">Address: 2-11-1 Kyobashi, Tokyo, Tokyo-to, 104-0031 Japan</p>
+        <div class="tabs" style="margin-bottom: 20px;">
+            <button class="tab-button active" onclick="switchHotelTab(event, 'ourHotelsTab')">🇯🇵 Our Hotels (Japan)</button>
+            <button class="tab-button" onclick="switchHotelTab(event, 'alfredRiaTab')">🇪🇺 Alfred & Ria Sheet</button>
+        </div>
+
+        <div id="ourHotelsTab" class="hotel-tab-content" style="display: block;">
+            <div class="card">
+                <div class="date">1. 19 June - 21 June (2 Nights)</div>
+                <div class="location">Tokyo: Tokyo-to <span class="tag">Arrival</span></div>
+                <div class="stay-info">
+                    <span class="section-title">🏨 Mitsui Garden Hotel Kyobashi - Tokyo Station</span>
+                    <p style="margin:5px 0; font-size:0.85rem;">Address: Tokyo-to, Tokyo, Chuo-ku Kyobashi 1-3-6, 💰 £385</p>
+                </div>
+                <span class="section-title">Must Do:</span>
+                <ul>
+                    <li>Explore Omoide Yokocho "Memory Lane" alleys.</li>
+                    <li>Views from Tokyo Metropolitan Government Building.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left-color: #3a86ff;">
+                <div class="date">2. 21 June - 24 June (3 Nights)</div>
+                <div class="location">Osaka Honmachi <span class="tag">Food Capital</span></div>
+                <div class="stay-info">
+                    <span class="section-title">🏨 The Lively Osaka Honmachi</span>
+                    <p style="margin:5px 0; font-size:0.85rem;">541-0054 Osaka, Chuo-ku, Minami-Honmachi 1-5-11 • Near Sakaisuji-Hommachi Station • 💰 £277</p>
+                </div>
+                <span class="section-title">Must Do:</span>
+                <ul>
+                    <li>Try Takoyaki and Okonomiyaki in Dotonbori.</li>
+                    <li>Day trip to Nara Park to see the deer and Great Buddha.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left-color: #fb5607;">
+                <div class="date">3. 24 June - 27 June (3 Nights)</div>
+                <div class="location">Kyoto Higashiiru <span class="tag">Culture</span></div>
+                <div class="stay-info">
+                    <span class="section-title">🏨 Mitsui Garden Hotel Kyoto Sanjo Premier</span>
+                    <p style="margin:5px 0; font-size:0.85rem;">45-1, Hishiya-cho, Higashiiru, Higashinotoin, Sanjo-dori, Nakagyo-ku,Kyoto, 604-8131. 💰 £391</p>
+                </div>
+                <span class="section-title">Must Do:</span>
+                <ul>
+                    <li>Walk through the Torii gates at Fushimi Inari.</li>
+                    <li>Visit Arashiyama Bamboo Grove early morning.</li>
+                </ul>
+            </div>
+
+            <div class="card" style="border-left-color: #ffbe0b;">
+                <div class="date">4. 27 June - 29 June (2 Nights)</div>
+                <div class="location">🏔 Hakone <span class="tag">Relax & Fuji</span></div>
+                <div class="stay-info">
+                    <span class="section-title">🏨 Nol Hakone Myojindai</span>
+                    <p style="margin:5px 0; font-size:0.85rem;">1488-205 Miyagino, Hakone, Ashigarashimo District, Kanagawa 250-0401, Japan 💰 £529</p>
+                </div>
+                <span class="section-title">Must Do:</span>
+                <ul>
+                    <li>Ride the Hakone Ropeway for Mt. Fuji views.</li>
+                    <li>Take the "Pirate Ship" cruise across Lake Ashi.</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <div class="date">5. 29 June - 03 July (4 Nights)</div>
+                <div class="location">Tokyo Shinjuku City<span class="tag">Mid-Luxury Finish</span></div>
+                <div class="stay-info">
+                    <span class="section-title">🏨 BELLUSTAR TOKYO, A Pan Pacific Hotel</span>
+                    <p style="margin:5px 0; font-size:0.85rem;">KABUKICHO TOWER, 45F, 1 Chome-29-1 Kabukicho, Shinjuku City, Tokyo 160-0021, Japan 💰 £1,629</p>
+                </div>
+                <span class="section-title">Must Do:</span>
+                <ul>
+                    <li>Breakfast at Tsukiji Outer Fish Market.</li>
+                    <li>Digital art at teamLab Borderless.</li>
+                    <li>Souvenir shopping at Ginza Itoya.</li>
+                </ul>
             </div>
         </div>
 
-        <div class="card" style="border-left-color: #3a86ff;">
-            <div class="date">2. 21 June - 24 June (3 Nights)</div>
-            <div class="location">Osaka: Honmachi <span class="tag">Food Capital</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 HOTEL MYSTAYS Midosuji Honmachi</span>
-                <p style="margin:5px 0; font-size:0.85rem;">Address: 3-2-10 Honmachi, Chuo-ku, Osaka, 541-0053 Japan</p>
-            </div>
-        </div>
-
-        <div class="card" style="border-left-color: #fb5607;">
-            <div class="date">3. 24 June - 27 June (3 Nights)</div>
-            <div class="location">Kyoto: Central <span class="tag">Culture Hub</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 HOTEL MYSTAYS Kyoto Shijo (or Similar Kyoto Unit)</span>
-                <p style="margin:5px 0; font-size:0.85rem;">Convenient access to Nishiki Market & Central Transit Arteries</p>
-            </div>
-        </div>
-
-        <div class="card" style="border-left-color: #ffbe0b;">
-            <div class="date">4. 27 June - 29 June (2 Nights)</div>
-            <div class="location">🏔 Hakone <span class="tag">Samurai Base Resort</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 Samurai Base Hakone Stay</span>
-                <p style="margin:5px 0; font-size:0.85rem;">Address: 250-0401 Kanagawa, Hakone, 宮城野５７８, Japan</p>
-            </div>
-        </div>
-
-        <div class="card" style="border-left-color: #7209b7;">
-            <div class="date">5. 29 June - 1 July (2 Nights)</div>
-            <div class="location">🗻 Mount Fuji Resort <span class="tag">Onsen Premium</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 HOTEL MYSTAYS Fuji Onsen Resort</span>
-                <p style="margin:5px 0; font-size:0.85rem;">Address: Yamanashi, Fujiyoshida, Arakura 2654, Japan</p>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="date">6. 1 July - 4 July (3 Nights)</div>
-            <div class="location">Tokyo: Shinagawa <span class="tag">Mid-Luxury Finish</span></div>
-            <div class="stay-info">
-                <span class="section-title">🏨 Smile Hotel Shinagawa Sengakuji Ekimae</span>
-                <p style="margin:5px 0; font-size:0.85rem;">Address: Tokyo-to, Tokyo, Minato-ku, Mita 3-11-26, Japan</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="viewExcel" class="app-view">
-        <header style="background: var(--excel-color); box-shadow: 0 4px 12px rgba(16, 124, 65, 0.25);">
-            <h1 style="margin-bottom: 5px;">Things to Do & Reservations </h1>
-            <p style="margin: 0;">Master Activity Tracker</p>
-        </header>
-
-        <div class="card" style="border-left-color: var(--excel-color); max-width: 100%;">
-            <div class="excel-grid-wrapper">
-                <table style="font-size: 0.9rem;">
+        <div id="alfredRiaTab" class="hotel-tab-content" style="display: none;">
+            <div class="card" style="border-left-color: #7209b7;">
+                <div class="date">Hotel ID: hotel-alfred</div>
+                <div class="location">Hotel Alfred Sommier <span class="tag">⭐⭐⭐⭐⭐</span></div>
+                <p style="margin: 2px 0 10px 0; font-size:0.82rem; color:var(--accent);">20 Rue de l'Arcade, 75008 Paris, France</p>
+                <p style="font-size:0.85rem; line-height:1.4; color:var(--text-color);">A prestigious Haussmannian mansion offering modern luxury, high ceilings, period features, and historic charm in the heart of Paris.</p>
+                
+                <span class="section-title">Amenities:</span>
+                <p style="font-size:0.8rem; margin:4px 0 12px 0;">Free Wi-Fi, 24-Hour Fitness Center, Gourmet Restaurant, Private Garden, Pet Friendly</p>
+                
+                <span class="section-title">Room Rates & Baseline Ledger</span>
+                <table class="hotel-table">
                     <thead>
-                        <tr style="background-color: #f2f2f2;">
-                            <th style="width: 120px;">Day Track</th>
-                            <th>Things to do and any reservations?</th>
-                        </tr>
+                        <tr><th>Room Type</th><th style="text-align:right;">Price / Night</th></tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td><strong>18 Jun (Thu)</strong></td>
-                            <td>Flying out from London to Tokyo.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>19 Jun (Fri)</strong></td>
-                            <td>1). Drop off luggage at hotel. 2). Katsuo Shokudo Booking at 12:30pm. 3). Explore around Shibuya/ Harajuku area. 4). AP Watch booking at 17:00pm</td>
-                        </tr>
-                        <tr>
-                            <td><strong>20 Jun (Sat)</strong></td>
-                            <td>1). Explore Ginza. 2). Tokyo Dome Baseball Booking at 14:00pm. 3). Send Luggages to OSAKA.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>21 Jun (Sun)</strong></td>
-                            <td>1). Drop off luggage at hotel. 2).Osaka Aquarium booking at 15:30pm. 3). Explore Dotonbori area.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>22 Jun (Mon)</strong></td>
-                            <td>1). Universal Studios Japan. 2). Umeda Sky Building. 3). Dinner Booking at 18:30pm.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>23 Jun (Tue)</strong></td>
-                            <td>1). Nara Park Day trip. 2). Teamlab Osaka 19:30pm.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>24 Jun (Wed)</strong></td>
-                            <td>1). Kyoto Hair Massage Booking at 14:00pm. 2). Explore Gion / Kiyomizudera Temple.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>25 Jun (Thu)</strong></td>
-                            <td>1). Sagano Romantic Train Booking at 10:30am. 2). Arashiyama Bamboo Grove. 3). Kinkaku-ji (Golden Pavilion).</td>
-                        </tr>
-                        <tr>
-                            <td><strong>26 Jun (Fri)</strong></td>
-                            <td>1). Nishiki Market. 2). Fushimi Inari Shrine (Evening walk). 3). Drum Tao Kyoto Booking at 19:00pm.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>27 Jun (Sat)</strong></td>
-                            <td>1). Shinkansen to Odawara at 10:54am -> arrive at 12:00pm 2). Drive to Hakone Ropeway. 3). Hakone Pirate Ship around Lake Ashi.</td>
-                        </tr>
-                        <tr>
-                            <td><strong>28 Jun (Sun)</strong></td>
-                            <td>1). Lawson Kawaguchiko 2). Kawaguchiko Natural Living Center 3). Chureito Pagoda (Fuji Views)</td>
-                        </tr>
+                        <tr><td>Standard Double</td><td style="text-align:right; font-weight:bold; color:var(--primary);">EUR 290.00</td></tr>
+                        <tr><td>Executive Room (Monument View)</td><td style="text-align:right; font-weight:bold; color:var(--primary);">EUR 420.00</td></tr>
+                        <tr><td>Prestige Suite</td><td style="text-align:right; font-weight:bold; color:var(--primary);">EUR 650.00</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="border-left-color: #3a86ff;">
+                <div class="date">Hotel ID: hotel-ria</div>
+                <div class="location">Hotel Ria & Spa <span class="tag">⭐⭐⭐⭐</span></div>
+                <p style="margin: 2px 0 10px 0; font-size:0.82rem; color:var(--accent);">Avenida da Ria Formosa, 8700 Olhão, Algarve, Portugal</p>
+                <p style="font-size:0.85rem; line-height:1.4; color:var(--text-color);">An exquisite coastal escape overlooking the natural beauty of the Ria Formosa lagoon, featuring full-service wellness treatments and ocean-view dining.</p>
+                
+                <span class="section-title">Amenities:</span>
+                <p style="font-size:0.8rem; margin:4px 0 12px 0;">Infinity Pool, Full-Service Spa, Ocean-View Dining, Free Wi-Fi, Bicycle Hire</p>
+                
+                <span class="section-title">Room Rates & Baseline Ledger</span>
+                <table class="hotel-table">
+                    <thead>
+                        <tr><th>Room Type</th><th style="text-align:right;">Price / Night</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Standard Room (Garden View)</td><td style="text-align:right; font-weight:bold; color:var(--primary);">EUR 145.00</td></tr>
+                        <tr><td>Deluxe Room (Sea View)</td><td style="text-align:right; font-weight:bold; color:var(--primary);">EUR 195.00</td></tr>
+                        <tr><td>Ria Luxury Suite with Balcony</td><td style="text-align:right; font-weight:bold; color:var(--primary);">EUR 310.00</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -904,7 +927,7 @@
     <div id="viewBudget" class="app-view">
         <header style="background: var(--budget-color); box-shadow: 0 4px 12px rgba(114, 9, 183, 0.25);">
             <h1 style="margin-bottom: 5px;">Live Budget Desk 💰</h1>
-            <p style="margin: 0;">Track spending in real-time and manage your travel finances.</p>
+            <p style="margin: 0;">Track spending in real-time, compute ledger distributions, and observe parameters.</p>
         </header>
 
         <div class="card" style="border-left-color: var(--budget-color); padding: 25px 20px;">
@@ -936,7 +959,7 @@
             <div class="location" style="font-size:1.1rem; margin-bottom:15px;">Instantly Log Cost</div>
             
             <div class="budget-input-row">
-                <input type="text" id="expName" class="budget-input" placeholder="Expense description">
+                <input type="text" id="expName" class="budget-input" placeholder="Expense description (e.g., Shinkansen Ticket, Ramen)">
                 <input type="number" id="expAmount" class="budget-input" placeholder="Amount in British Pounds (£)">
                 <button class="budget-btn" style="background: var(--budget-color);" onclick="addExpense()">Commit Purchase</button>
             </div>
@@ -969,7 +992,7 @@
         </header>
 
         <div class="info-blockquote">
-            💡 <strong>Pro-Tip:</strong> Hand your suitcases to hotel front desks 24 hours before checkout. Use Yamato Transport (Black Cat). Forward bags straight from <strong>Kyoto ➔ Tokyo</strong> to completely bypass dragging bags across Hakone mountain lines!
+            💡 <strong>Pro-Tip:</strong> Hand your suitcases to hotel front desks 24 hours before checkout. Use Yamato Transport (Black Cat). Forward bags straight from <strong>Kyoto ➔ Bellustar Tokyo</strong> to completely bypass dragging bags across Hakone mountain lines!
         </div>
 
         <div class="widget-row" style="grid-template-columns: 1fr 1fr; margin-bottom: 20px;">
@@ -1005,7 +1028,7 @@
             <div class="tracking-grid-form">
                 <div>
                     <span class="widget-label" style="margin-bottom:5px;">Route Description</span>
-                    <input type="text" id="trackRoute" class="tracking-input" placeholder="e.g., Kyoto ➔ Tokyo Shinagawa">
+                    <input type="text" id="trackRoute" class="tracking-input" placeholder="e.g., Kyoto ➔ Tokyo Shinjuku">
                 </div>
                 <div>
                     <span class="widget-label" style="margin-bottom:5px;">Expected Delivery</span>
@@ -1046,7 +1069,7 @@
             <div style="font-weight: bold; font-size: 1.1rem; color: var(--text-color);">📝 Quick Scratchpad</div>
             <button class="modal-close-btn" onclick="toggleScratchpad(false)">✕</button>
         </div>
-        <textarea id="scratchpadInput" class="scratchpad-textarea" placeholder="Jot down random ideas or reminders here..."></textarea>
+        <textarea id="scratchpadInput" class="scratchpad-textarea" placeholder="Jot down random ideas, shopping targets, train times, or reminders here..."></textarea>
         <button class="budget-btn" style="background-color: #f72585;" onclick="saveScratchpad()">Save Note</button>
         <div style="text-align: center; width: 100%;">
             <div id="scratchpadStatus" class="scratchpad-status">All changes saved locally</div>
@@ -1068,9 +1091,6 @@
         } else if (layoutName === 'hotels') {
             document.getElementById('viewHotels').classList.add('active');
             document.getElementById('navHotels').classList.add('active');
-        } else if (layoutName === 'excel') {
-            document.getElementById('viewExcel').classList.add('active');
-            document.getElementById('navExcel').classList.add('active');
         } else if (layoutName === 'budget') {
             document.getElementById('viewBudget').classList.add('active');
             document.getElementById('navBudget').classList.add('active');
@@ -1080,17 +1100,25 @@
         }
     }
 
+    // New Sub-tab switching engine for Hotel View
+    function switchHotelTab(evt, tabId) {
+        document.querySelectorAll('.hotel-tab-content').forEach(tab => tab.style.display = 'none');
+        evt.currentTarget.closest('.tabs').querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+        
+        document.getElementById(tabId).style.display = 'block';
+        evt.currentTarget.classList.add('active');
+    }
+
     // 2. Weather Simulation Manifest
     const travelWeather = {
         "Tokyo": "27°C • 🌧 High Humidity / Rainy Season Risk",
         "Osaka": "29°C • 🌦 Very Warm & Muggy",
         "Kyoto": "28°C • 🌧 Periodic Showers / Dense Air",
-        "Hakone": "22°C • 🌫 Cool, Misty Mountain Microclimate",
-        "Fuji": "20°C • 🌤 Crisp Clear Altitudes"
+        "Hakone": "22°C • 🌫 Cool, Misty Mountain Microclimate"
     };
     document.getElementById("weatherBox").innerHTML = travelWeather["Tokyo"];
 
-    // 3. Navigation Tab Script for internal card tabs
+    // 3. Navigation Tab Script for internal card tabs (Itinerary section)
     function handleTabClick(evt, cityName) {
         const button = evt.currentTarget;
         const parentCard = button.closest('.card');
@@ -1118,10 +1146,9 @@
     const locations = [
         {name: "Stop 1: Tokyo (Kyobashi)", coords: [35.6791, 139.7699], date: "June 19-21"},
         {name: "Stop 2: Osaka Honmachi", coords: [34.6814, 135.5065], date: "June 21-24"},
-        {name: "Stop 3: Kyoto Central", coords: [35.0088, 135.7607], date: "June 24-27"},
+        {name: "Stop 3: Kyoto Nakagyo", coords: [35.0088, 135.7607], date: "June 24-27"},
         {name: "Stop 4: Hakone Miyagino", coords: [35.2477, 139.0494], date: "June 27-29"},
-        {name: "Stop 5: Mount Fuji Stay", coords: [35.4864, 138.7952], date: "June 29-July 1"},
-        {name: "Stop 6: Tokyo (Shinagawa)", coords: [35.6341, 139.7407], date: "July 1-July 4"}
+        {name: "Stop 5: Tokyo (Kabukicho)", coords: [35.6954, 139.7018], date: "June 29-July 3"}
     ];
 
     const latlngs = [];
@@ -1209,15 +1236,20 @@
         updateBudget();
     }
 
-    // 7. Luggage Forwarding Data Engine
+    // 7. Luggage Forwarding Data Persistence & Tracking Engine
     let shipments = [];
     try {
         shipments = JSON.parse(localStorage.getItem('japan_shipments')) || [
-            { slip: "4051-9231-5023", carrier: "Yamato (Black Cat)", route: "Kyoto Hotel ➔ Tokyo Shinagawa", eta: "29 June Morning", status: "In Transit" }
+            { slip: "4051-9231-5023", carrier: "Yamato (Black Cat)", route: "Kyoto Hotel ➔ Tokyo Bellustar", eta: "29 June Morning", status: "In Transit" }
         ];
     } catch(e) {
         shipments = [];
     }
+
+    // Explicit function scope attachment to preserve operational event triggers across DOM shifts
+    window.addExpense = addExpense;
+    window.deleteExpense = deleteExpense;
+    window.updateBudget = updateBudget;
 
     function renderShipments() {
         const tbody = document.getElementById('trackingTableBody');
@@ -1363,33 +1395,17 @@
         timerElement.innerText = `${days}d ${displayHours}h ${displayMinutes}m ${displaySeconds}s until departure`;
     }
 
-    // Map Scope and Window Exposure Declarations
-    window.switchLayout = switchLayout;
-    window.handleTabClick = handleTabClick;
-    window.convertYenToGbp = convertYenToGbp;
-    window.convertGbpToYen = convertGbpToYen;
-    window.addExpense = addExpense;
-    window.deleteExpense = deleteExpense;
-    window.updateBudget = updateBudget;
-    window.addShipment = addShipment;
-    window.toggleShipmentStatus = toggleShipmentStatus;
-    window.deleteShipment = deleteShipment;
-    window.toggleScratchpad = toggleScratchpad;
-    window.handleOutsideClick = handleOutsideClick;
-    window.saveScratchpad = saveScratchpad;
-
     // Interval Loops
     setInterval(function() {
         updateClocks();
         updateCountdown();
     }, 1000);
 
-    // Onload Initialization
+    // Onload Trigger Manifest Initialization
     window.onload = function() {
         const savedBudget = localStorage.getItem('japan_budget');
         if (savedBudget) {
-            const el = document.getElementById('totalBudgetInput');
-            if(el) el.value = savedBudget;
+            document.querySelectorAll('#totalBudgetInput').forEach(el => el.value = savedBudget);
         }
         renderExpenses();
         updateBudget();
